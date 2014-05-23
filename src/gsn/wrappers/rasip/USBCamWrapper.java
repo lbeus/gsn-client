@@ -51,8 +51,27 @@ public class USBCamWrapper extends AbstractWrapper {
                 Thread.sleep(rate);
                 
                 imageGrabber = FrameGrabber.createDefault(deviceId);
-                imageGrabber.start();
+                //imageGrabber.start();
                 
+                boolean done = false;
+
+                final int MAX_ATTEMPTS = 160;
+                int attempt = 0;
+                
+                while (!done) {
+                	attempt += 1;
+                    try {
+                    	imageGrabber.start();
+                    	done = true;
+                    } 
+                    catch (Exception e) {
+                    	if (attempt == MAX_ATTEMPTS) {
+                    		done=true;
+                    		logger.error("Camera initialisation aborted. Max attempts reached");
+                    	}
+                    }
+                }
+                      
                 IplImage img = imageGrabber.grab();            
                 
                 BufferedImage image = resizeImage(img.getBufferedImage());

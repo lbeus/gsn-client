@@ -6,10 +6,15 @@ var app = angular.module('gsnClientApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'google-maps'
+  'google-maps',
+  'ui.date',
+  'ngQuickDate',
+  'ngGrid',
+  'NgSwitchery'
 ]);
 
-app.config(function ($routeProvider) {
+
+app.config(function ($routeProvider, $httpProvider) {
    $routeProvider.
       when ('/', {
           templateUrl: 'views/home.html',
@@ -27,10 +32,50 @@ app.config(function ($routeProvider) {
           templateUrl: 'views/map.html',
           controller: 'MapController'
       })
+      .when('/passiveHeating', {
+        templateUrl: 'views/passiveHeating.html',
+        controller: 'PassiveHeatingController'
+      })
+      .when('/relay', {
+        templateUrl: 'views/relay.html',
+        controller: 'RelayController'
+      })
       .otherwise({
         redirectTo: '/'
       });
+  
+    $httpProvider.defaults.transformRequest = function(data){
+        if (data === undefined) {
+            return data;
+        }
+        return $.param(data);
+    };
+
+    /*$httpProvider.responseInterceptors.push('myHttpInterceptor');
+
+    var spinnerFunction = function spinnerFunction(data, headersGetter) {
+      $("#spinner").show();
+      console.log('prikazi spinner');
+      return data;
+    };
+
+    $httpProvider.defaults.transformRequest.push(spinnerFunction);*/
   });
+
+app.factory('myHttpInterceptor', function ($q, $window) {
+  return function (promise) {
+    return promise.then(function (response) {
+      console.log('makni spinner');
+      $("#spinner").hide();
+      return response;
+    }, function (response) {
+      console.log('makni spinner');
+      $("#spinner").hide();
+      return $q.reject(response);
+    });
+  };
+});
+
 
 
 app.run(function($rootScope, $location, NavigationService) {

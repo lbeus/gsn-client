@@ -35,8 +35,6 @@ public class ContainerInfoHandler implements RequestHandler {
 	  response.setStatus( HttpServletResponse.SC_OK );
 	  String reqName = request.getParameter("name");
 
-
-
         //Added by Behnaz
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -44,7 +42,6 @@ public class ContainerInfoHandler implements RequestHandler {
         response.setHeader("Cache-Control","no-store");
         response.setDateHeader("Expires", 0);
         response.setHeader("Pragma","no-cache");
-
 
 
         response.getWriter( ).write( buildOutput(reqName,user));
@@ -104,8 +101,10 @@ public class ContainerInfoHandler implements RequestHandler {
               sb.append(" description=\"").append(StringEscapeUtils.escapeXml(df.getDescription())).append("\"");
             sb.append(">");
             if (se!= null ) 
-              if (df.getType().toLowerCase( ).trim( ).indexOf( "binary" ) > 0 )
-                sb.append( se.getData( df.getName( ) ) );
+            	//logger.error("erverv "+se.getData(df.getName()));
+              if (df.getType().toLowerCase( ).trim( ).indexOf( "binary" ) > 0 ){
+                sb.append( se.getData( df.getName( ) ) ); 
+              }
               else
                 sb.append( se.getData( StringEscapeUtils.escapeXml( df.getName( ) ) ) );
             sb.append("</field>\n");

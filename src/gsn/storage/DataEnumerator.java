@@ -48,6 +48,8 @@ public class DataEnumerator implements DataEnumeratorIF {
     private boolean                  downloadReport   = false;
 
 	private boolean manualCloseConnection;
+	
+	private String tableName;
 
 	/**
 	 * Creats an empty data enumerator.
@@ -89,11 +91,21 @@ public class DataEnumerator implements DataEnumeratorIF {
 			// Initializing the fieldNames and fieldTypes.
 			// Also setting the values for <code> hasTimedFieldInResultSet</code>
 			// if the timed field is present in the result set.
-			String tableName = null;
+			//String tableName = null;
             for ( int i = 1 ; i <= resultSet.getMetaData( ).getColumnCount( ) ; i++ ) {
 				if (i == 1)
                     tableName = resultSet.getMetaData().getTableName(1);
-                String colName = resultSet.getMetaData( ).getColumnLabel( i );
+				
+				if(tableName.equals("")){
+					String[] queryParts =  preparedStatement.toString().split(" ");
+					for(int index = 0; i< queryParts.length; index++)
+						if(queryParts[index].equals("from")){
+							tableName = queryParts[index+1];
+							break;
+						}
+				}
+                
+				String colName = resultSet.getMetaData( ).getColumnLabel( i );
 				int colTypeInJDBCFormat = resultSet.getMetaData( ).getColumnType( i );
 				int colScale=resultSet.getMetaData().getScale(i);
 				if ( colName.equalsIgnoreCase( "PK" ) ) {
@@ -167,8 +179,8 @@ public class DataEnumerator implements DataEnumeratorIF {
                                output [ innerIndex ] = resultSet.getBytes( actualColIndex );
                             }
                             else{
-
-							output[ innerIndex ] = "field?vs=" + resultSet.getMetaData( ).getTableName( actualColIndex ) + "&amp;field=" + resultSet.getMetaData( ).getColumnLabel( actualColIndex ) + "&amp;pk=" + pkValue;
+                            //logger.error("cdc " + resultSet.getMetaData( ).getTableName( 1 ));
+							output[ innerIndex ] = "field?vs=" + tableName + "&amp;field=" + resultSet.getMetaData( ).getColumnLabel( actualColIndex ) + "&amp;pk=" + pkValue;
                             //output[ innerIndex ] = resultSet.getString(actualColIndex);
                             resultSet.getBytes( actualColIndex );
                             //output[ innerIndex ] = resultSet.getBytes( actualColIndex );

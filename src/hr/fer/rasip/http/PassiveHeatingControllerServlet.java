@@ -26,7 +26,5 @@ public class PassiveHeatingControllerServlet extends HttpServlet {
    public void doPost (HttpServletRequest request, HttpServletResponse res) throws ServletException, IOException {
       doGet (request, res);
    }
-
-
 }
 

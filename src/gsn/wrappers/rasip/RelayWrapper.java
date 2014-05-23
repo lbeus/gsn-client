@@ -131,7 +131,7 @@ public class RelayWrapper extends AbstractWrapper implements CommandWrapper {
             relayControl = new Control(local, localPort, address, port);
             nazivi = new String[relays];
             types = new Byte[relays];
-           outputStructure = new DataField[relays];
+            outputStructure = new DataField[relays];
             for(int i = 0; i < relays; i++){
                 String naziv = "Relay_" + i;
                 nazivi[i] = naziv;

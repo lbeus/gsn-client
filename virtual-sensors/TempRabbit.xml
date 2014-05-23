@@ -18,7 +18,7 @@
     <storage history-size="5m" />
     <streams>
         <stream name="input1">
-            <source alias="source1" sampling-rate="1" storage-size="1">
+            <source alias="source1" sampling-rate="100" storage-size="1">
                 <address wrapper="rabbit">
                     <predicate key="sampling-rate">60000</predicate>
                 </address>

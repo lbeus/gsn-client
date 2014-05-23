@@ -183,5 +183,5 @@
 	<classpathentry kind="lib" path="lib/stringtemplate.jar"/>
 	<classpathentry kind="lib" path="lib/xom-1.2.10.jar"/>
 	<classpathentry kind="lib" path="lib/slf/commons-math-1.2.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="build/classes"/>
 </classpath>

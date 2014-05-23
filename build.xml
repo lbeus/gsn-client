@@ -61,7 +61,7 @@
 
     <target name="build" depends="setup" description="Compile the cource code.">
         <javac debug="true" srcdir="${src.dir}" optimize="off"
-               destdir="${build.dir}" failonerror="true" classpathref="classpath">
+               destdir="${build.dir}" failonerror="true" classpathref="classpath" encoding="UTF8">
             <exclude name="**/TCPConnPool.java"/>
             <exclude name="**/NetworkUtility.java"/>
         </javac>
@@ -94,7 +94,7 @@
     </target>
 
     <target name="gsn" depends="bind,cleandb" description="Run GSN server in non graphical mode.">
-        <java classname="gsn.Main" maxmemory="${maxMemoryUsage}" fork="true" dir="${basedir}">
+        <java classname="gsn.Main" maxmemory="${maxMemoryUsage}" fork="true" dir="${basedir}" >
             <classpath refid="classpath"/>
             <jvmarg value="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JLogger"/>
             <jvmarg value="-DmaxServlets=${max-servlets}"/>

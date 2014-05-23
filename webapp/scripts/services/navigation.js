@@ -6,13 +6,17 @@ angular.module('gsnClientApp')
 
   		this.pages = [{pageName:"Home", url:"home", active:true},
 					  {pageName:"Data", url:"data", active:false},
-					  {pageName:"Map", url:"map", active:false}];
+					  {pageName:"Map", url:"map", active:false},
+					  {pageName:"Passive heating", url:"passiveHeating", active:false},
+					  {pageName:"Relay managment", url:"relay", active:false}];
 
 		this.pagesMapping = {
 			"/" : 0 ,
 			"/home" : 0,
 			"/data" : 1,
-			"/map" : 2
+			"/map" : 2,
+			"/passiveHeating" : 3,
+			"/relay" : 4
 		};
 
 		this.pageChanged = function(page){

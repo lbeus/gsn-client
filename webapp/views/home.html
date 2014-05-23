@@ -13,12 +13,10 @@
 	            <p>Auto-refresh every :</p>
 
 	            <div class="medium-2 columns left">
-	             
 			            <select ng-model="interval" 
 			            			ng-options="o.name for o in intervalOptions" ng-change="setRefreshInterval()">
 			            </select>
 			    </div>        
-
 
 			    <div class="medium-5 columns left">
 			            <input ng-click="refreshClicked()" type="button" value="refresh" class="button tiny radius" />
@@ -50,8 +48,7 @@
 											</strong>
 								            <small><span class="timed" ng-show="updating">Loading...</span></small>
 								        </h4>
-								   		
-								       	                     	  
+								   		                 	  
 					                   <dl ng-init="selectedTab[$index-1] = 1" ng-model="selectedTab[$index-1]" class="tabs" data-tab>
 										
 											<dd ng-class = "{'active' : selectedTab[$index-1] == 1 }">
@@ -69,13 +66,23 @@
 									   </dl>
 									   <div class="tabs-content">
 											  <div class="content" ng-class = "{'active' : selectedTab[$index-1]  == 1 }">
-											    <p ng-repeat="field in sensor.structureFields">{{field}} : {{sensor.fields[field].value}} </p>
+											    <div ng-repeat="field in sensor.structureFields">
+											    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg'">
+											    			<img ng-src="{{sensor.fields[field].value}}" width="400" height="400" />
+											    	</div>
+													<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg'">	
+														<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
+													</div>
+													<br/>
+											    </div>
 											  </div>
 											  <div class="content" ng-class = "{'active' : selectedTab[$index-1]  == 2 }">
 											    <p>{{sensor.description}}</p>
 											  </div>
 											  <div class="content" ng-class = "{'active' : selectedTab[$index-1]  == 3 }">
-											    <p ng-repeat = "field in sensor.structureFields">{{field}}:{{sensor.fields[field].type}} </p>
+											    <p ng-repeat = "field in sensor.structureFields">
+											    	<i>{{field}}</i> : <b>{{sensor.fields[field].type}}</b> 
+											    </p>
 											  </div>
 											  <div class="content" ng-class = "{'active' : selectedTab[$index-1]  == 4 }">
 											    <p>Fourth panel content goes here...</p>
@@ -86,12 +93,8 @@
 							</div>
 		                </div>
 		            </div>
-	            
-
-	            </div>  
-			         
+	            </div>
             </div>
-
 
 			<div id="sidebar" class="medium-3 columns right">
                 <h3>Description</h3>

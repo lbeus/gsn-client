@@ -248,6 +248,7 @@ public final class StreamElement implements Serializable {
 			logger.info("There is a request for field "+fieldName+" for StreamElement: "+this.toString()+". As the requested field doesn't exist, GSN returns Null to the callee.");
 			return null;
 		}
+	
 		return this.fieldValues[ index ];
 	}
 	

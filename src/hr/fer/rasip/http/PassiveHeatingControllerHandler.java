@@ -37,6 +37,8 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
 	
 	private static final String CONFIG_SERVLET_PATH = "/passiveheating/config";
 	
+	private static final String CONFIG_UPDATE_SERVLET_PATH = "/passiveheating/config-update";
+	
 	private static final String AIR_SERVLET_PATH = "/passiveheating/air";
 	
 	private static final String FAN_PARAMETER_STRING = "fan";
@@ -53,7 +55,6 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
 	
 	private static transient Logger logger = Logger.getLogger(PassiveHeatingControllerHandler.class);
 
-
 	public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
         Main.getInstance();
@@ -63,6 +64,197 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
         
         String servletPath = request.getServletPath();
         
+       
+        if(servletPath.equalsIgnoreCase(CONFIG_UPDATE_SERVLET_PATH)) {
+        	
+        	 int externalTempLimit = Integer.MAX_VALUE;
+             int internalTempLimit1 = Integer.MAX_VALUE;
+             int internalTempLimit2 = Integer.MAX_VALUE;
+             int internalTempLimit3 = Integer.MAX_VALUE;
+             int state1Fan = -1;
+             int state1Heater = -1;
+             int state2Fan = -1;
+             int state2Heater = -1;
+             int state3Fan = -1;
+             int state3Heater = -1;
+             int state4Fan = -1;
+             int state4Heater = -1;
+             int state5Fan = -1;
+             int state5Heater = -1;
+             String rabbitIP = "-1";
+             int freeServerPort = -1;
+             /*int autoControl = -1;
+             int manualFan = -1;
+             int manualHeater = -1;
+             int airIntake = -1;*/
+             String email = "-1";
+             
+             if(request.getParameter("externalTempLimit") != null && request.getParameter("externalTempLimit").trim().length() != 0){
+            	 externalTempLimit = Integer.parseInt(request.getParameter("externalTempLimit"));
+         	 }
+                
+             if(request.getParameter("internalTempLimit1") != null && request.getParameter("internalTempLimit1").trim().length() != 0){
+            	 internalTempLimit1 = Integer.parseInt(request.getParameter("internalTempLimit1"));
+         	 }
+             
+             if(request.getParameter("internalTempLimit2") != null && request.getParameter("internalTempLimit2").trim().length() != 0){
+            	 internalTempLimit2 = Integer.parseInt(request.getParameter("internalTempLimit2"));
+         	 }
+             
+             if(request.getParameter("internalTempLimit3") != null && request.getParameter("internalTempLimit3").trim().length() != 0){
+            	 internalTempLimit3 = Integer.parseInt(request.getParameter("internalTempLimit3"));
+         	 }
+             
+             if(request.getParameter("state1-fan") != null && request.getParameter("state1-fan").trim().length() != 0){
+            	 state1Fan = Integer.parseInt(request.getParameter("state1-fan"));
+         	 }
+             
+             if(request.getParameter("state1-heater") != null && request.getParameter("state1-heater").trim().length() != 0){
+            	 state1Heater = Integer.parseInt(request.getParameter("state1-heater"));
+         	 }
+               
+             if(request.getParameter("state2-fan") != null && request.getParameter("state2-fan").trim().length() != 0){
+            	 state2Fan = Integer.parseInt(request.getParameter("state2-fan"));
+         	 }
+             
+             if(request.getParameter("state2-heater") != null && request.getParameter("state2-heater").trim().length() != 0){
+            	 state2Heater = Integer.parseInt(request.getParameter("state2-heater"));
+         	 }
+             
+             if(request.getParameter("state3-fan") != null && request.getParameter("state3-fan").trim().length() != 0){
+            	 state3Fan = Integer.parseInt(request.getParameter("state3-fan"));
+         	 }
+             
+             if(request.getParameter("state3-heater") != null && request.getParameter("state3-heater").trim().length() != 0){
+            	 state3Heater = Integer.parseInt(request.getParameter("state3-heater"));
+         	 }
+             
+             if(request.getParameter("state4-fan") != null && request.getParameter("state4-fan").trim().length() != 0){
+            	 state4Fan = Integer.parseInt(request.getParameter("state4-fan"));
+         	 }
+             
+             if(request.getParameter("state4-heater") != null && request.getParameter("state4-heater").trim().length() != 0){
+            	 state4Heater = Integer.parseInt(request.getParameter("state4-heater"));
+         	 }
+             
+             if(request.getParameter("state5-fan") != null && request.getParameter("state5-fan").trim().length() != 0){
+            	 state5Fan = Integer.parseInt(request.getParameter("state5-fan"));
+         	 }
+             
+             if(request.getParameter("state5-heater") != null && request.getParameter("state5-heater").trim().length() != 0){
+            	 state5Heater = Integer.parseInt(request.getParameter("state5-heater"));
+         	 }
+             
+             if(request.getParameter("rabbit-ip") != null && request.getParameter("rabbit-ip").trim().length() != 0){
+            	 rabbitIP = request.getParameter("rabbit-ip");
+         	 }
+             
+             if(request.getParameter("free-server-port") != null && request.getParameter("free-server-port").trim().length() != 0){
+            	 freeServerPort = Integer.parseInt(request.getParameter("free-server-port"));
+         	 }
+             
+             if(request.getParameter("email") != null && request.getParameter("email").trim().length() != 0){
+            	 email = request.getParameter("email");
+         	 }
+             
+                    
+        	try{
+            	SAXBuilder builder = new SAXBuilder();
+            	
+    			File xmlFile = new File(CONFIG_FILE_PATH);
+    			Document doc = (Document) builder.build(xmlFile);
+    			Element root = doc.getRootElement();
+    			Element corePrams = root.getChild("core-parameters");
+    			
+    			if(externalTempLimit != Integer.MAX_VALUE){
+    				corePrams.getChild("externalTempLimit").setText(String.valueOf(externalTempLimit));
+    			}
+    			
+    			if(internalTempLimit1 != Integer.MAX_VALUE){
+    				corePrams.getChild("internalTempLimit1").setText(String.valueOf(internalTempLimit1));
+    			}
+    			
+    			
+    			if(internalTempLimit2 != Integer.MAX_VALUE){
+    				corePrams.getChild("internalTempLimit2").setText(String.valueOf(internalTempLimit2));
+    			}
+    			
+    			if(internalTempLimit3 != Integer.MAX_VALUE){
+    				corePrams.getChild("internalTempLimit3").setText(String.valueOf(internalTempLimit3));
+    			}
+    			
+    			
+    			if(state1Fan != -1){
+    				corePrams.getChild("state1").getChild("fan").setText(String.valueOf(state1Fan));
+    			} 
+    			
+    			if(state1Heater != -1){
+    				corePrams.getChild("state1").getChild("heater").setText(String.valueOf(state1Heater));
+    			} 
+    			
+  
+    			if(state2Fan != -1){
+    				corePrams.getChild("state2").getChild("fan").setText(String.valueOf(state2Fan));
+    			} 
+    			
+    			if(state2Heater != -1){
+    				corePrams.getChild("state2").getChild("heater").setText(String.valueOf(state2Heater));
+    			}
+    			
+    			
+    			if(state3Fan != -1){
+    				corePrams.getChild("state3").getChild("fan").setText(String.valueOf(state3Fan));
+    			} 
+    			
+    			if(state3Heater != -1){
+    				corePrams.getChild("state3").getChild("heater").setText(String.valueOf(state3Heater));
+    			}
+    			
+    			if(state4Fan != -1){
+    				corePrams.getChild("state4").getChild("fan").setText(String.valueOf(state4Fan));
+    			} 
+    			
+    			if(state4Heater != -1){
+    				corePrams.getChild("state4").getChild("heater").setText(String.valueOf(state4Heater));
+    			}
+    			
+    			if(state5Fan != -1){
+    				corePrams.getChild("state5").getChild("fan").setText(String.valueOf(state5Fan));
+    			} 
+    			
+    			if(state5Heater != -1){
+    				corePrams.getChild("state5").getChild("heater").setText(String.valueOf(state5Heater));
+    			}
+    			
+    			if(!rabbitIP.equals("-1")){
+    				corePrams.getChild("rabbit-ip").setText(rabbitIP);
+    			}
+    			
+    			if(freeServerPort != -1){
+    				corePrams.getChild("free-server-port").setText(String.valueOf(freeServerPort));
+    			}
+    			
+    			if( !email.equals("-1")){
+    				root.getChild("notifications").getChild("email").setText(email);
+    			} 
+    			
+    			// save updated xml file
+    	        XMLOutputter xmlOutput = new XMLOutputter();
+    	   	 	xmlOutput.setFormat(Format.getPrettyFormat());
+    			xmlOutput.output(doc, new FileWriter(CONFIG_FILE_PATH));
+        	}
+        	catch(Exception e){
+        		sb.append("<status>exception</status>\n<description>"+ e.getClass()+": " + e.getMessage() + "</description>\n</response>");
+    			response.setHeader("Cache-Control", "no-store");
+    	        response.setDateHeader("Expires", 0);
+    	        response.setHeader("Pragma", "no-cache");
+    	        response.getWriter().write(sb.toString());
+        		return; 
+        	}  	
+        }
+        
+        
+       
         if(servletPath.equalsIgnoreCase(CONTROL_SERVLET_PATH)){
         	//control servlet
         	int fan = -1;
@@ -240,8 +432,6 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
         	else{
         		sb.append("<status>ok</status>\n<description>Air intake set to " + INTAKE_OVERRIDE_STRING + "</description></response>\n");
         	}
-        	
-        	
         }
     	
         //control and servlet finished successfully
@@ -258,7 +448,11 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
     	
         String servletPath = request.getServletPath();
         
-        if(servletPath.equalsIgnoreCase(CONTROL_SERVLET_PATH)){
+        if(servletPath.equalsIgnoreCase(CONFIG_UPDATE_SERVLET_PATH)) {
+           	
+        	
+        }
+        else if(servletPath.equalsIgnoreCase(CONTROL_SERVLET_PATH)){
         	//control servlet
         	if(request.getParameter(FAN_PARAMETER_STRING) != null && request.getParameter(FAN_PARAMETER_STRING).trim().length() != 0){
         		int fan = Integer.parseInt(request.getParameter(FAN_PARAMETER_STRING));

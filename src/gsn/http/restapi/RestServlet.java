@@ -43,6 +43,7 @@ public class RestServlet extends HttpServlet {
         switch (determineRequest(request.getRequestURI())) {
             case REQUEST_GET_ALL_SENSORS:
                 restResponse = getRequestHandler.getSensors();
+            
                 break;
             case REQUEST_GET_MEASUREMENTS_FOR_SENSOR_FIELD:
                 sensor = parseURI(request.getRequestURI())[3];

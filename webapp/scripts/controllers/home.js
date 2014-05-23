@@ -72,7 +72,7 @@ angular.module('gsnClientApp')
           }else{
             //$scope.sensors.push(entry); // new sensor added
             $scope.sensors.splice(index,1);
-            console.log(index);
+            //console.log(index);
           }
         });
     }

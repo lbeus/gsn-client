@@ -21,6 +21,20 @@
       GSN's Main Servlets, Must be enabled for any kind of HTTP based access
      ******************************************************************************* -->
     
+    
+    <servlet>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <display-name>PassiveHeatingController</display-name>
+        <servlet-class>hr.fer.rasip.http.PassiveHeatingControllerServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>RelayControllerServlet</servlet-name>
+        <display-name>RelayController</display-name>
+        <servlet-class>hr.fer.rasip.http.RelayControllerServlet</servlet-class>
+    </servlet>
+    
+    
 	<!-- GSN START -->
 	<servlet>
         <servlet-name>ControllerServlet</servlet-name>
@@ -193,7 +207,7 @@
         <servlet-class>gsn.http.ac.MyUpdateUserDataSourceServlet</servlet-class>
     </servlet>
 
-     <servlet>
+    <servlet>
         <servlet-name>MyAdminManagementServlet</servlet-name>
         <display-name>MyAdminManagementServlet</display-name>
         <servlet-class>gsn.http.ac.MyAdminManagementServlet</servlet-class>
@@ -241,10 +255,54 @@
        <display-name>RestServlet</display-name>
        <servlet-class>gsn.http.restapi.RestServlet</servlet-class>
    </servlet>
-
-
-
    
+   
+    <servlet-mapping>
+        <servlet-name>RelayControllerServlet</servlet-name>
+        <url-pattern>/relay/status</url-pattern>
+    </servlet-mapping>
+   
+    <servlet-mapping>
+        <servlet-name>RelayControllerServlet</servlet-name>
+        <url-pattern>/relay/command</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>RelayControllerServlet</servlet-name>
+        <url-pattern>/relay/config</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>RelayControllerServlet</servlet-name>
+        <url-pattern>/relay/config-update</url-pattern>
+    </servlet-mapping>
+    
+   <servlet-mapping>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <url-pattern>/passiveheating/control</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet-mapping>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <url-pattern>/passiveheating/autocontrol</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <url-pattern>/passiveheating/config</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <url-pattern>/passiveheating/config-update</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <url-pattern>/passiveheating/air</url-pattern>
+    </servlet-mapping>
+
 	<!-- mapping for GSN -->
 	
 	<servlet-mapping>

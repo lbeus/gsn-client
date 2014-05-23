@@ -20,7 +20,6 @@ function parseVSensorXML (xml) {
 
     var GSNinstance = {};
 
-
     GSNinstance.info = {
       name : $(nodes).filter(":first").attr("name"),
       author : $(nodes).filter(":first").attr("author"),

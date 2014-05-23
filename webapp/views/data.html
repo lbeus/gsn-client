@@ -4,48 +4,179 @@
 
       <dl ng-init="selectedAccordion = 1" ng-model="selectedAccordion" class="accordion" data-accordion>
         <dd>
-          <a ng-click="accordionClicked(1)">Accordion 1</a>
+          <a ng-click="accordionClicked(1)">Data Output</a>
           <div class="content"  ng-class = "{'active' : selectedAccordion == 1 }">
                 <div class="row">
                   <div class="medium-2 columns">
-                    <select ng-model="selectedSensor" 
-                          ng-options="o.name for o in sensors" ng-change="sensorSelected()">
+                    <select ng-model="numberOfValuesToFetch" 
+                          ng-options="o.name for o in numberOfValuesToFetchOptions" ng-change="numberOfValuesToFetchChanged()">
+                    </select>
+                  </div>
+                  <div class="medium-1 columns left">
+                    <input ng-model="valuesToFetch" 
+                                ng-disabled="numberOfValuesToFetch.name === 'All data'" type="text" placeholder="" />
+                  </div>
+
+                   <div class="medium-1 columns left" style="position:relative;top:5px;left:-15px;">
+                      Values
+                   </div>
+                </div>
+                <div class="row">
+                  <div class="medium-2 columns">
+                    <select ng-model="aggregation" 
+                          ng-options="o.name for o in aggregationOptions" ng-change="aggregationChanged()">
+                    </select>
+                  </div>
+                 
+                  <div class="medium-1 columns left">
+                    <input ng-model="aggregationPeriod" 
+                                ng-disabled="aggregation.name === 'No aggregation'" type="text" placeholder="" />
+                  </div>
+                  
+                  <div class="medium-2 columns left">
+                    <select ng-model="aggregationUnit" ng-disabled="aggregation.name === 'No aggregation'"
+                          ng-options="o.name for o in aggregationUnitOptions" ng-change="aggregationUnitChanged()">
+                    </select>
+                  </div>
+                </div>
+
+                <a ng-click="addOutput()" class="button [radius round]">Add output</a>
+                <div class="row" ng-repeat="dataOutput in dataOutputRows">
+                  <div class="medium-2 columns">
+                    <select ng-model="selectedSensor[$index]" 
+                          ng-options="o.name for o in dataOutput" ng-change="sensorSelected($index)">
                     </select>
                   </div>
                   <div class="medium-2 columns left">
-                    <select ng-model="selectedField" 
-                          ng-options="o for o in selectedSensor.structureFields" ng-change="">
+                    <select ng-model="selectedField[$index]" 
+                          ng-options="o for o in selectedSensor[$index].structureFields" ng-change="">
+                    </select>
+                  </div>
+                  <div class="medium-1 columns left" >
+                    <a ng-click="removeOutput($index)" 
+                        class="alert round left button tiny secondary" ng-show = "dataOutputRows.length > 1 "><strong>X</strong></a>
+                  </div>
+                </div>
+          </div>
+        </dd>
+        <dd>
+          <a ng-click="accordionClicked(2)">Condition</a>
+          <div class="content"  ng-class = "{'active' : selectedAccordion == 2 }">
+                
+                <div class="row">
+                  <div class="medium-1 columns" style="position:relative;top:5px;">
+                    From
+                  </div>
+                  <div class="medium-3 columns left" style="position:relative;left:-50px;">
+            <quick-datepicker ng-model='from' placeholder="Select Date" on-change="fromChanged()"></quick-datepicker>
+
+                  </div>
+
+                  <div class="medium-1 columns" style="position:relative;top:5px;left:-190px">
+                    Until
+                  </div>
+                  <div class="medium-3 columns left" style="position:relative;left:-250px;">
+                      <quick-datepicker ng-model='until' placeholder="Select Date" on-change="untilChanged()"></quick-datepicker>
+                  </div>
+                </div>
+                <br/>
+                <a ng-click="addCondition()" class="button [radius round]">Add condition</a>
+              
+                <div class="row" ng-repeat="conditionRow in conditionRows">
+                  
+                  <div class="medium-1 columns" ng-show="$index != 0">
+                    <select ng-model="selectedConditionJoin[$index]" 
+                          ng-options="o.name for o in conditionJoins" ng-change="">
                     </select>
                   </div>
 
-                </div>
-                
-          </div>
-        </dd>
-        <dd>
-          <a ng-click="accordionClicked(2)">Accordion 2</a>
-          <div class="content"  ng-class = "{'active' : selectedAccordion == 2 }">
-            Panel 2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </div>
-        </dd>
-        <dd>
-          <a ng-click="accordionClicked(3)">Accordion 3</a>
-          <div class="content" ng-class = "{'active' : selectedAccordion == 3 }">
+                  <div class="medium-2 columns left">
+                    <select ng-model="selectedConditionSensor[$index]" 
+                          ng-options="o.name for o in conditionRow" ng-change="sensorConditionSelected($index)">
+                    </select>
+                  </div>
+                  
+                  <div class="medium-2 columns left">
+                    <select ng-model="selectedConditionField[$index]" 
+                          ng-options="o for o in selectedConditionSensor[$index].structureFields" ng-change="">
+                    </select>
+                  </div>
 
+                  <div class="medium-1 columns left" style="position:relative;top:5px;left:-10px;">
+                      Between
+                  </div>
+
+                  <div class="medium-1 columns left"  style="position:relative;left:-35px;">
+                       <input ng-model="selectedConditionMinValue[$index]" 
+                                type="text" placeholder="" />
+                  </div>
+                  
+                  <div class="medium-1 columns left" style="position:relative;top:5px;left:-47px;">
+                      and
+                  </div>
+
+                  <div class="medium-1 columns left" style="position:relative;left:-105px;">
+                       <input ng-model="selectedConditionMaxValue[$index]" 
+                                type="text" placeholder="" />
+                  </div>
+
+                  <div class="medium-1 columns left" style="position:relative;left:-105px;">
+                    <a ng-click="removeCondition($index)" 
+                        class="alert round left button tiny secondary" ng-show = "conditionRows.length > 1 "><strong>X</strong></a>
+                  </div>
+                </div>       
+          </div>
+        </dd>
+        <dd>
+          <a ng-click="accordionClicked(3);">Results</a>
+          <div class="content" ng-class = "{'active' : selectedAccordion == 3 }">
             <dl class="tabs" ng-init="selectedTab = 1" ng-model="selectedTab" data-tab>
-              <dd ng-class = "{'active' : selectedTab == 1 }" ><a ng-click="selectedTab = 1" >Table</a></dd>
-              <dd ng-class = "{'active' : selectedTab == 2 }"><a ng-click="selectedTab = 2" >Graph</a></dd>
-              <dd ng-class = "{'active' : selectedTab == 3 }"><a ng-click="selectedTab = 3" >Report</a></dd>
+              <dd ng-class = "{'active' : selectedTab == 1 }" ><a ng-click="selectedTab = 1" >Download</a></dd>
+              <dd ng-class = "{'active' : selectedTab == 2 }"><a ng-click="selectedTab = 2" >Plot</a></dd>
+              <dd ng-class = "{'active' : selectedTab == 3 }"><a ng-click="selectedTab = 3;fetchData();" >Table</a></dd>
             </dl>
             <div class="tabs-content">
               <div class="content" ng-class = "{'active' : selectedTab == 1 }">
-                <p>First panel content goes here...</p>
+                <div class="row">
+                  <div class="medium-2 columns" >
+                      <a ng-click="downloadReport('csv')" 
+                        class="alert round left button tiny secondary">Download CSV</a>
+                  </div>
+                  <div class="medium-2 columns left" style="position:relative;left:-40px;">
+                      <a ng-click="downloadReport('xml')" 
+                        class="alert round left button tiny secondary">Download XML</a>
+                  </div>
+                  <div class="medium-2 columns left" style="position:relative;left:-70px;">
+                      <a ng-click="downloadReport('pdf')" 
+                        class="alert round left button tiny secondary">Generate PDF</a>
+                  </div>
+                  <div class="medium-2 columns left" style="position:relative;left:-110px;">
+                      <a ng-click="downloadReport('jpeg')" 
+                        class="alert round left button tiny secondary">Generate JPEG</a>
+                  </div>
+                  <div class="medium-2 columns left" style="position:relative;top:5px;left:-130px;">
+                    Time format
+                  </div>
+                  <div class="medium-2 columns left" style="position:relative;left:-230px;">
+                    <select ng-model="timeFormat" 
+                        ng-options="o.name for o in timeFormatOptions" ng-change="timeFormatChanged()">
+                    </select>
+                  </div>
+                </div>
               </div>
               <div class="content" ng-class = "{'active' : selectedTab == 2 }">
                 <p>Second panel content goes here...</p>
               </div>
               <div class="content" ng-class = "{'active' : selectedTab == 3 }">
-                <p>Third panel content goes here...</p>
+                <div class="row">
+                  <div class="medium-2 columns left">
+                    <select ng-model="selectedTable" 
+                              ng-options="o.name for o in results" ng-change="showResulTable()">
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="gridStyle" ng-grid="gridOptions"></div>
               </div>
             </div>
           </div>
