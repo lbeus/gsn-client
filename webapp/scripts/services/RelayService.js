@@ -9,8 +9,8 @@ angular.module('gsnClientApp')
         });
     };
 
-    this.getStatus = function(calback) {
-    	$http.get('/relay/status').succes(function(data) {
+    this.getStatus = function(callback) {
+    	$http.get('/relay/status').success(function(data) {
     		callback(parseStatus(data));
     	});
     };
@@ -34,7 +34,6 @@ function parseStatus(xml) {
 			status.push(relay);
 		}
 	);
-
 	return status;
 }
 
@@ -53,11 +52,8 @@ function parseRelayConfig(xml) {
 
  	$(nodes).find('relays').children().each(
  		function() {
-
  			var param = $(this);
-
  			var relay = {};
-
  			param.children().each(
 					function() {
 						var child = $(this);

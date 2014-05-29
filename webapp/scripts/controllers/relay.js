@@ -3,55 +3,66 @@
 angular.module('gsnClientApp')
   .controller('RelayController', function ($http, $scope, RelayService ) {
 
-  	$scope.relays = [
-  			{'displayName': "Letva", 'id': 0, 'status' : true},
+  	/*$scope.relays = [
+  			{'displayName': "Letva", 'id': 1, 'status' : true},
   			{'displayName': "Zarulja", 'id': 16, 'status' : false},
-  	];
-
+  	];*/
+    
+    $scope.relays = [];
+    $scope.config = [];
 
     RelayService.getConfig(function (config) {
       $scope.config = config;
+    });
 
-      console.log($scope.config.relays[0].id);
+    RelayService.getStatus(function (relaysStatus) {
+      $scope.relays = relaysStatus;
     });
 
 
   	$scope.relayChange = function(index) {
 
-  		var request = {name : $scope.relays[index].displayName, action : $scope.relays[index].status === true ? "ON" : "OFF" };
+  		  var request = {name : $scope.relays[index].displayName, action : $scope.relays[index].status === true ? "ON" : "OFF" };
   		
-  		$http({
+  		  $http({
               method: 'POST',
               url: '/relay/command',
               data: request,
               headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (data) {
                      console.log(data);  
-        }).error(function(error){
-               
-    	});	
-  	};
+        }).error(function(error){});	
+    };
 
     $scope.updateConfig = function() {
 
       var request = {'ip-address': $scope.config.connectionParams['ip-address'], 
                      'local-port': $scope.config.connectionParams['local-port'],
-                     'remote-port' : $scope.config.connectionParams['remote-port']
+                     'remote-port' : $scope.config.connectionParams['remote-port'],
+                     'numberOfRelays' : $scope.config.relays.length
+      };
+
+      for(var i = 0; i < $scope.config.relays.length; ++i) {
+        request["relay["+i+"].displayName"] = $scope.config.relays[i].displayname;
+        request["relay["+i+"].id"] = $scope.config.relays[i].id;
       }
 
+      $("#spinner").show();
       $http({
               method: 'POST',
               url: '/relay/config-update',
               data: request,
               headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (data) {
-                     console.log(data);  
+            $("#spinner").hide();
+            $scope.updateStatus = "Config updated";
+            $scope.showStatus = true;    
         }).error(function(error){
-               
-      }); 
+            $("#spinner").hide();
+            $scope.updateStatus = "Config failed";
+            $scope.showStatus = true;
+        }); 
     };
-
-
 
 
     $scope.relayAdd = function() {
@@ -59,8 +70,6 @@ angular.module('gsnClientApp')
     };
 
     $scope.relayRemove = function(index) {
-
       $scope.config.relays.splice(index,1);
-    
     };
  });
