@@ -1,7 +1,7 @@
 'use strict';
 
 var app = angular.module('gsnClientApp', [
-  'ngAnimate',
+  //'ngAnimate',
   'ngCookies',
   'ngResource',
   'ngSanitize',
@@ -39,6 +39,10 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/relay', {
         templateUrl: 'views/relay.html',
         controller: 'RelayController'
+      })
+      .when('/ipcamera', {
+        templateUrl: 'views/ipCamera.html',
+        controller: 'IPCamera'
       })
       .otherwise({
         redirectTo: '/'

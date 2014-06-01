@@ -22,4 +22,16 @@ angular.module('gsnClientApp')
                 clearInterval(polls[name]);
                 delete polls[name];
         }
+
+
+        this.startStreaming = function(name, pollingTime, callback) {
+                // Check to make sure poller doesn't already exist
+                if (!polls[name]) {
+                    var poller = function() {
+                       callback();
+                    }
+                    poller();
+                    polls[name] = setInterval(poller, pollingTime || defaultPollingTime);
+                }
+        };
   });

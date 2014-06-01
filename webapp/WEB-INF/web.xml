@@ -21,7 +21,12 @@
       GSN's Main Servlets, Must be enabled for any kind of HTTP based access
      ******************************************************************************* -->
     
-    
+     <servlet>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <display-name>IPCameraController</display-name>
+        <servlet-class>hr.fer.rasip.http.IPCameraControllerServlet</servlet-class>
+    </servlet>
+   
     <servlet>
         <servlet-name>PassiveHeatingControllerServlet</servlet-name>
         <display-name>PassiveHeatingController</display-name>
@@ -256,7 +261,31 @@
        <servlet-class>gsn.http.restapi.RestServlet</servlet-class>
    </servlet>
    
-   
+   <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/status</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/move-relative</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/move-absolute</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/config</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/config-update</url-pattern>
+    </servlet-mapping>
+  
     <servlet-mapping>
         <servlet-name>RelayControllerServlet</servlet-name>
         <url-pattern>/relay/status</url-pattern>
