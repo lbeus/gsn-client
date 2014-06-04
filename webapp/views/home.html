@@ -3,7 +3,7 @@
 	<div id="container" >
 		
 		<div class="row">	
-			<div class="medium-7 columns left">
+			<div class="medium-12 columns left">
 				<h1>GSN::{{info.name}}</h1>
 	        
 	            <div id="msg">
@@ -20,7 +20,7 @@
 
 			    <div class="medium-5 columns left">
 			            <input ng-click="refreshClicked()" type="button" value="refresh" class="button tiny radius" />
-		                <input type="button" value="close all" class="button tiny radius alert" />
+		              <!--  <input type="button" value="close all" class="button tiny radius alert" /> -->
 		                <span class="refreshing" ng-show="updating">
 		                    <img src="images/ajax-loader.gif" alt="loading" title="" />
 		                </span>
@@ -28,7 +28,7 @@
 
 
 			     <div class="row">
-			     	<div class="medium-12 medium-offset-1  columns">
+			     	<div class="medium-12   columns">
 	            	 	<div id="virtuals-sensors">
 		                    
 		                    <div ng-show="updating">
@@ -36,19 +36,35 @@
 		                        <br />
 		                    </div>
 
-		                    <div class="row">
-		                      <div class="medium-12 columns">
-			                    
+		                    <!--<div class="row">-->
+		                     
+		                    <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">	                   
+		                    	<div class="masonry-brick" ng-repeat="sensor in sensors" >
+				                    
+				                    <div class="panel radius vs-box" >
+				             			
+				                     	<a ng-click="removeSensor($index);" class="alert round right button tiny secondary">
+				                     		<strong>X</strong></a>
+									        <h4>
+												<strong>
+										            <span class="vsname">{{sensor.name}}</span>
+												</strong>
+									            <small><span class="timed" ng-show="updating">Loading...</span></small>
+									        </h4>
 
-			                    <div class="panel radius vs-box" ng-repeat="sensor in sensors" ng-show="sensor.visible" >
-			                     	<a ng-click="sensor.visible = false" class="alert round right button tiny secondary"><strong>X</strong></a>
-								        <h4>
-											<strong>
-									            <span class="vsname">{{sensor.name}}</span>
-											</strong>
-								            <small><span class="timed" ng-show="updating">Loading...</span></small>
-								        </h4>
-								   		                 	  
+									        <div ng-repeat="field in sensor.structureFields">
+												    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg'">
+												    			<img ng-src="{{sensor.fields[field].value}}" width="400" height="400" />
+												    	</div>
+														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg'">	
+															<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
+														</div>
+														<br/>
+											</div>
+									</div>
+								</div>
+								   		
+								   	   <!--                 	  
 					                   <dl ng-init="selectedTab[$index-1] = 1" ng-model="selectedTab[$index-1]" class="tabs" data-tab>
 										
 											<dd ng-class = "{'active' : selectedTab[$index-1] == 1 }">
@@ -87,15 +103,15 @@
 											  <div class="content" ng-class = "{'active' : selectedTab[$index-1]  == 4 }">
 											    <p>Fourth panel content goes here...</p>
 											  </div>
-										</div>
-									</div>
+										</div>-->
 								</div>
 							</div>
-		                </div>
+		               <!-- </div> -->
 		            </div>
 	            </div>
             </div>
 
+            <!--
 			<div id="sidebar" class="medium-3 columns right">
                 <h3>Description</h3>
                 <p id="gsn-desc">{{info.description}}</p>
@@ -109,7 +125,7 @@
                     <p>
                         <input class="hidden" id="toggleallmarkers" type="button" value="Show/hide all markers" />
                     </p>
-            </div>
+            </div>-->
 	              
         </div>
 	</div>
