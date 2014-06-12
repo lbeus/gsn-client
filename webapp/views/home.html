@@ -1,24 +1,27 @@
- <div class="medium-10 medium-offset-1 columns">
+ <div class="medium-12  columns">
 	
 	<div id="container" >
 		
-		<div class="row">	
+		<div class="row">
 			<div class="medium-12 columns left">
-				<h1>GSN::{{info.name}}</h1>
+				<!--<h1>GSN::{{info.name}}</h1>-->
 	        
 	            <!--<div id="msg">
 	                <p>Welcome to Global Sensor Networks. The first ten sensors are displayed by default, but you can easily close them with the
 	                <em>close all</em> button. By clicking on a virtual sensors on the left sidebar, it will bring it to the top of the list.</p>
 	            </div>-->
-	            <p>Auto-refresh every :</p>
+	            <br/>
+	            <div class="medium-2 columns left" style="position:relative;top:7px;">
+	            	Auto-refresh every :
+	        	</div>
 
-	            <div class="medium-2 columns left">
+	            <div class="medium-2 columns left" style="position:relative;left:-80px;">
 			            <select ng-model="interval" 
 			            			ng-options="o.name for o in intervalOptions" ng-change="setRefreshInterval()">
 			            </select>
 			    </div>        
 
-			    <div class="medium-5 columns left">
+			    <div class="medium-5 columns left" style="position:relative;left:-80px;">
 			            <input ng-click="refreshClicked()" type="button" value="refresh" class="button tiny radius" />
 		              <!--  <input type="button" value="close all" class="button tiny radius alert" /> -->
 		                <span class="refreshing" ng-show="updating">
@@ -26,9 +29,9 @@
 		                </span>
 		        </div>
 
-
+		        <br />
 			     <div class="row">
-			     	<div class="medium-12   columns">
+			     	<div class="medium-12 columns">
 	            	 	<div id="virtuals-sensors">
 		                    
 		                    <div ng-show="updating">
@@ -36,7 +39,7 @@
 		                        <br />
 		                    </div>
 
-		                    <!--<div class="row">-->
+		                 <!--   <div class="row">  -->
 		                     
 		             <!-- <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">-->
 		             		<div class="wall" gridster="gridsterOpts">
@@ -110,8 +113,8 @@
 											  </div>
 										</div>-->
 								</div>
-							</div>
-		               <!-- </div> -->
+							<!-- </div> -->
+		               </div>
 		            </div>
 	            </div>
             </div>

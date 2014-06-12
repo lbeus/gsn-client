@@ -19,12 +19,13 @@ angular.module('gsnClientApp')
         rowHeight:115,
         width:'auto',
         margins:[0,5],
-        minColumns: 3,
+        minColumns: 1,
         avoidOverlappedWidgets:true,
         isMobile: true,
-        //mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
+        mobileBreakPoint: 600,
+       // if the screen is not wider that this, remove the grid layout and stack the items
         resizable: {
-           enabled: true,
+           enabled: false,
            start: function(event, uiWidget, $element) {}, // optional callback fired when resize is started,
            resize: function(event, uiWidget, $element) {}, // optional callback fired when item is resized,
            stop: function(event, uiWidget, $element) {} // optional callback fired when item is finished resizing

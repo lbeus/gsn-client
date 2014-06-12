@@ -56,10 +56,13 @@ public class GetRequestHandler {
 
                 String field_name = df.getName().toLowerCase();
                 String field_type = df.getType().toLowerCase();
+                String field_description = df.getDescription();
 
-                if (field_type.indexOf("double") >= 0) {
-                    listOfFields.add(field_name);
-                }
+                JSONObject json = new JSONObject();
+                json.put("name", field_name);
+                json.put("type", field_type);
+                json.put("description", field_description);
+                listOfFields.add(json);
             }
 
             aSensor.put("fields", listOfFields);

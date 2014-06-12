@@ -7,7 +7,8 @@ h1, h2, h3, h4, h5, h6, body {
 }
 
 body {
-    background: url(../images/wrapper-bg.jpg);
+    /*background: url(../images/wrapper-bg.jpg);*/
+    background-color: gray;
 }
 
 
@@ -57,9 +58,9 @@ body,html{
 
 #container {
     background: #FFF;
-    border-left: 1px solid #ddd;
+   /* border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    /*max-height: 90vh; */
+    max-height: 90vh; */
 }
 
 
@@ -125,6 +126,11 @@ table.tablesorter thead tr .header {
 .wall {
     background-color: white;
 } 
+
+.gridster {
+ 
+}
+
 /*
 
 .gridster .gridster-item {
