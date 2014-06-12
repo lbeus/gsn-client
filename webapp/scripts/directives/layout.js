@@ -5,8 +5,7 @@ angular.module('gsnClientApp')
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs) {
-
-                         
+                  $(element).gridly();       
                 }
             };
    });

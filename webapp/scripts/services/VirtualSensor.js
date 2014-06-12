@@ -32,7 +32,7 @@ function parseVSensorXML (xml) {
        function (){
        		var currentSensor = $(this);
 
-       		var sensor = {};
+       		var sensor = {size:{y: 1}};
        		sensor.name = currentSensor.attr("name");
           sensor.description = currentSensor.attr("description");
 
@@ -43,12 +43,19 @@ function parseVSensorXML (xml) {
             	var currentField = $(this);
 
             	var field = {};
-            	field["type"] = currentField.attr("type");
-            	field["description"] = currentField.attr("description");
-            	field["category"] = currentField.attr("category");
-            	field["value"] = currentField.text();
+              
+              if(typeof currentField.attr("command") === "undefined"){
+            	   field["type"] = currentField.attr("type");
+            	   field["description"] = currentField.attr("description");
+            	   field["category"] = currentField.attr("category");
+            	   field["value"] = currentField.text();
+                 field["command"] = currentField.attr("command");
 
-            	sensor.fields[currentField.attr("name")] = field;
+                 if(field["type"] === "binary:image/jpeg")
+                  sensor.size.y = 2;
+
+            	   sensor.fields[currentField.attr("name")] = field;
+              }
             });
 
             var keys = Object.keys(sensor.fields);
@@ -64,7 +71,7 @@ function parseVSensorXML (xml) {
             sensors.push(sensor);
        }
     );
-
+    
     GSNinstance.sensors = sensors;
   	
 	return GSNinstance;

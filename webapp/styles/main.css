@@ -95,7 +95,7 @@ button, .button {
 }
 
 button.tiny, .button.tiny {
-    font-size: 13px;
+    font-size: 10px;
 }
 
 button.tiny, .button.small {
@@ -113,8 +113,8 @@ table.tablesorter thead tr .header {
 
 .gridStyle {
     border: 1px solid rgb(212,212,212);
-    width: 1150px; 
-    height: 800px
+    width: 100%; 
+    height: 30vh;
 }
 
 .green {
@@ -122,3 +122,18 @@ table.tablesorter thead tr .header {
     color: white;
 }
 
+.wall {
+    background-color: white;
+} 
+/*
+
+.gridster .gridster-item {
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: #004756;
+    background: #ffffff;
+    padding: 10px;
+    height: 100px;
+}
+*/

@@ -1,4 +1,4 @@
-<virtual-sensor name="ipRasipCam" priority="11">
+<virtual-sensor name="ipCamVS" priority="11">
 	<processing-class>
 		<class-name>gsn.vsensor.CommandVirtualSensor</class-name>
 		<web-input>
@@ -12,34 +12,26 @@
 			</command>
 			<command name="RST">
 				<field name="UnosNepotreban" type="bool"/>
-			</command>
-			<command name="PROFILE">
-				<field name="Profil" type="int"></field>
-			</command>
+			 </command>
 		</web-input>
 		<output-structure>
-			<field name="Slika" type="binary:image/jpeg" />
+			<field name="picture" type="binary:image/jpeg" />
 		</output-structure>
 	</processing-class>
-	<description>Virtualni senzor koji se direktno spaja na wrapper koji dobavlja podatke od IP kamere.</description>
+	<description>Capture image from IP camera!</description>
 	<life-cycle pool-size="2" />
 	<addressing>
-		<predicate key="geographical">Fakultet elektrotehnike i računarstva, Unska 3, Zagreb, Zavod za automatiku računalno inženjerstvo
-        </predicate>
-		<predicate key="LATITUDE">45.768</predicate>
-		<predicate key="LONGITUDE">15.854</predicate>
+		<predicate key="geographical">Not Specified!</predicate>
 	</addressing>
 	<streams>
-		<stream name="Slika">
+		<stream name="DATA">
 			<source alias="sourceCam" storage-size="1" sampling-rate="1">
 				<address wrapper="ipcam">
-					<predicate key="server-name">161.53.67.95</predicate>
-					<predicate key="user">leonard</predicate>
-					<predicate key="pass">leonardgsn</predicate>
-					<predicate key="port">8080</predicate>
-					<predicate key="rate">1000</predicate>
+					<predicate key="image-width">400</predicate>
+					<predicate key="image-height">400</predicate>
+					<predicate key="device-id">0</predicate>
 				</address>
-				<query>select picture as slika from wrapper</query>
+				<query>select picture from wrapper</query>
 			</source>
 			<query>select * from sourceCam</query>
 		</stream>

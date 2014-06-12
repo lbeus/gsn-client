@@ -6,10 +6,10 @@
 			<div class="medium-12 columns left">
 				<h1>GSN::{{info.name}}</h1>
 	        
-	            <div id="msg">
+	            <!--<div id="msg">
 	                <p>Welcome to Global Sensor Networks. The first ten sensors are displayed by default, but you can easily close them with the
 	                <em>close all</em> button. By clicking on a virtual sensors on the left sidebar, it will bring it to the top of the list.</p>
-	            </div>
+	            </div>-->
 	            <p>Auto-refresh every :</p>
 
 	            <div class="medium-2 columns left">
@@ -38,31 +38,36 @@
 
 		                    <!--<div class="row">-->
 		                     
-		                    <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">	                   
-		                    	<div class="masonry-brick" ng-repeat="sensor in sensors" >
-				                    
-				                    <div class="panel radius vs-box" >
-				             			
-				                     	<a ng-click="removeSensor($index);" class="alert round right button tiny secondary">
-				                     		<strong>X</strong></a>
-									        <h4>
-												<strong>
-										            <span class="vsname">{{sensor.name}}</span>
-												</strong>
-									            <small><span class="timed" ng-show="updating">Loading...</span></small>
-									        </h4>
+		             <!-- <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">-->
+		             		<div class="wall" gridster="gridsterOpts">
+								<ul>
+		                         	<li gridster-item class="box"  size-y="sensor.size.y"  ng-repeat="sensor in sensors">
+					                    <div class="panel radius vs-box">
+					                     		<a ng-click="removeSensor($index);" class="alert round right button tiny"
+					                     				style="position:relative; top:-10px;">
+					                     		X</a>
+										        <h4>
+													<strong>
+											            <span class="vsname">{{sensor.name}}</span>
+													</strong>
+										            <small><span class="timed" ng-show="updating">Loading...</span></small>
+										        </h4>
 
-									        <div ng-repeat="field in sensor.structureFields">
-												    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg'">
-												    			<img ng-src="{{sensor.fields[field].value}}" width="400" height="400" />
-												    	</div>
-														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg'">	
-															<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
-														</div>
-														<br/>
-											</div>
-									</div>
-								</div>
+										        <div ng-repeat="field in sensor.structureFields">
+													    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg'" 
+													    	style="position:relative;left:25px;">
+													    			<img ng-src="{{sensor.fields[field].value}}" 
+													    					style="width:220px; height:135px" />
+													    	</div>
+															<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg'">	
+																<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
+															</div>
+															<!--<br ng-show="$index < sensor.structureFields.length -1"/>-->	
+												</div>
+										</div>
+									</li>
+								</ul>
+							
 								   		
 								   	   <!--                 	  
 					                   <dl ng-init="selectedTab[$index-1] = 1" ng-model="selectedTab[$index-1]" class="tabs" data-tab>

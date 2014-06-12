@@ -11,7 +11,8 @@ var app = angular.module('gsnClientApp', [
   'ngQuickDate',
   'ngGrid',
   'NgSwitchery',
-  'wu.masonry'
+  //'wu.masonry',
+  'gridster'
 ]);
 
 
