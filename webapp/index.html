@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="bower_components/switchery/dist/switchery.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-layout/ui-layout.css"/>
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/styles/gridster.min.css"/>
+    <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/angular-multi-select.css"/>
+
 
     <!-- endbower -->
     <!-- endbuild -->
@@ -48,7 +50,7 @@
           <section id="navigation" class="top-bar-section">
             <ul class="left">
               <li ng-class="{active: page.active == true}"
-                          ng-repeat="page in pages"><a ng-href="#/{{page.url}}">{{page.pageName}}</a></li>
+                          ng-repeat="page in pages"><a ng-href="#{{page.url}}">{{page.pageName}}</a></li>
             </ul>
           </section>
         </div>
@@ -116,10 +118,11 @@
     <script src="bower_components/masonry/masonry.js"></script>
     <script src="bower_components/imagesloaded/imagesloaded.js"></script>
     <script src="bower_components/angular-masonry/angular-masonry.js"></script>-->
-    <script src="bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
+   <!-- <script src="bower_components/javascript-detect-element-resize/jquery.resize.js"></script>-->
 
    <script src="bower_components/angular-gridster/dist/scripts/gridster.min.js"></script>
-  
+   <script src="bower_components/isteven-angular-multiselect/angular-multi-select.js"></script>
+   
     <!-- endbower -->
     <!-- endbuild -->
 

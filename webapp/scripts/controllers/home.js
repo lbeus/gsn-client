@@ -1,54 +1,25 @@
 'use strict';
 
 angular.module('gsnClientApp')
-  .controller('HomeController', function ($scope, RefreshService, SettingsService) {
-
+  .controller('HomeController', function ($scope, RefreshService, SettingsService,$window) {
 
     $scope.gridsterOpts = {
-       /* columns: 4, // the width of the grid, in columns
-        width: 'auto', // can be an integer or 'auto'. 'auto' scales gridster to be the full width of its containing element
-        colWidth: 'auto', // can be an integer or 'auto'.  'auto' uses the pixel width of the element divided by 'columns'
-        //rowHeight: 'match', // can be an integer or 'match'.  Match uses the colWidth, giving you square widgets.
-        margins: [5, 5], // the pixel distance between each widget
-        isMobile: false, // stacks the grid items if true
-        minColumns: 1, // the minimum columns the grid must have
-        minRows: 1, // the minimum height of the grid, in rows
-        maxRows: 100,/*/
-        defaultSizeX: 2, // the default width of a gridster item, if not specifed
-        defaultSizeY: 1, // the default height of a gridster item, if not specified
-        rowHeight:115,
+        defaultSizeX: 2,
+        defaultSizeY: 1,
+        rowHeight:130,
+        colWidth:155,
         width:'auto',
-        margins:[0,5],
+        margins:[5,5],
         minColumns: 1,
         avoidOverlappedWidgets:true,
-        isMobile: true,
-        mobileBreakPoint: 600,
-       // if the screen is not wider that this, remove the grid layout and stack the items
+        columns:Math.floor($window.innerWidth/155),
         resizable: {
-           enabled: false,
-           start: function(event, uiWidget, $element) {}, // optional callback fired when resize is started,
-           resize: function(event, uiWidget, $element) {}, // optional callback fired when item is resized,
-           stop: function(event, uiWidget, $element) {} // optional callback fired when item is finished resizing
+           enabled: false
         },
         draggable: {
-           enabled: true, // whether dragging items is supported
-           //handle: '', // optional selector for resize handle
-           start: function(event, uiWidget, $element) {}, // optional callback fired when drag is started,
-           drag: function(event, uiWidget, $element) {}, // optional callback fired when item is moved,
-           stop: function(event, uiWidget, $element) {} // optional callback fired when item is finished dragging
+           enabled: true
         }
     };
-
-    /*
-    $scope.customItemMap = {
-        sizeX: 'sensor.size.x',
-        sizeY: 'sensor.size.y',
-        row: 'sensor.position[0]',
-        col: 'sensor.position[1]'
-    };*/
-
-   
-    $scope.sensors = [];
 
     $scope.updating = false;
 
@@ -58,16 +29,25 @@ angular.module('gsnClientApp')
 
   	$scope.interval = SettingsService.refreshInterval;
 
+    $scope.sensors = SettingsService.sensors;
+
     // init
     getSensorData();
 
     // callback functions
-
     $scope.removeSensor = function(index) {
-        $scope.sensors.splice(index,1);
+      for(var i=0; i < $scope.sensors.length;++i){
+        if($scope.visibleSensors[index].name == $scope.sensors[i].name){
+          $scope.sensors[i].visible = false;
+          $scope.visibleSensors.splice(index,1);
+          break;
+        }
+      }
     };
 
   	$scope.refreshClicked = function() {
+        SettingsService.setVisibleSensors($scope.visibleSensors);
+        SettingsService.setSensors($scope.sensors);      
         getSensorData();  
     };
 
@@ -77,25 +57,46 @@ angular.module('gsnClientApp')
 
 
     //utility functions
-
     function getSensorData() {
+      
       $scope.updating = true;    
       RefreshService.stopPolling("virtual-sensors");
     
-      if($scope.interval.value > 0){
+      if($scope.interval.value > 0) {
+
         RefreshService.startPolling("virtual-sensors", SettingsService.refreshInterval.value, function(data) {  
               $scope.updating = false;
               $scope.info = data.info;
+              //$scope.sensors = removeHidden(data.sensors);
               updateSensors(data.sensors);
+              removeHidden($scope.sensors);
         });
       }
       else
         $scope.updating = false;
     }
 
+    $scope.$on("$destroy", function() {
+        SettingsService.setVisibleSensors($scope.visibleSensors);  
+        SettingsService.setSensors($scope.sensors);   
+    });
+
+    function removeHidden(data){
+      
+      if(SettingsService.initialLoad == false){
+            data.forEach(function(entry){
+              var name = entry.name;
+              var result = $.grep($scope.visibleSensors, function(sensor){ return sensor.name == name; });
+              if( result.length == 0 ) {
+                entry.visible = false;
+              }
+            });
+      } else {
+        SettingsService.setInitialLoad(false);
+      }
+    }
 
     function updateSensors(data) {
-
         // add new sensors
         data.forEach(function(entry){
           var name = entry.name;
@@ -114,13 +115,10 @@ angular.module('gsnClientApp')
               var fields = Object.keys(result[0].fields);
              
               fields.forEach(function(field) {
-                  
                   $scope.sensors[index].fields[field] = result[0].fields[field];
               });
-          }else{
-            //$scope.sensors.push(entry); // new sensor added
+          }else {
             $scope.sensors.splice(index,1);
-            //console.log(index);
           }
         });
     }

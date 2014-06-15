@@ -1,15 +1,21 @@
 <div class="medium-12 columns">
 	<div id="container" class="row" >
 		
-		<div class="medium-8 columns">
-			<google-map center="map.center" zoom="map.zoom"  draggable='true'>
-				<markers models="map.sensors" coords="'self'" labelContent="'title'"
-								labelAnchor="22 0" labelClass="marker-labels"></markers>
+		<div class="medium-12 columns">
+			<google-map 
+					center="map.center" 
+					zoom="map.zoom"  
+					draggable='true'>
+				<markers models="map.sensors" 
+						 coords="'self'" 
+						 labelContent="'title'"
+						 labelAnchor="22 0" 
+						 labelClass="marker-labels">
+				</markers>
 			</google-map>
 		</div>
 		
-		<div class="panel medium-4 right">
-    		
+		<!--<div class="panel medium-4 right">
          	<div class="row">
 			    <div class="medium-4 columns">
 			    	<label ng-repeat="sensor in map.sensors">
@@ -21,6 +27,6 @@
 					    ng-model="sensor.selected"> {{sensor.title}}
 					</label>
 		  </div>
-		</div>
+		</div>-->
 	</div>
 <div>

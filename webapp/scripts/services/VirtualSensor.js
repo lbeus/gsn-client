@@ -11,7 +11,6 @@ angular.module('gsnClientApp')
   });
 
 
-
 function parseVSensorXML (xml) {
 
   	var nodes = $(xml);

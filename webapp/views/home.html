@@ -1,22 +1,22 @@
- <div class="medium-12  columns">
+ <!--<div class="medium-12  columns">-->
 	
 	<div id="container" >
 		
-		<div class="row">
-			<div class="medium-12 columns left">
+		<!--<div class="row">-->
+			<!--<div class="medium-12 columns left">-->
 				<!--<h1>GSN::{{info.name}}</h1>-->
 	        
 	            <!--<div id="msg">
 	                <p>Welcome to Global Sensor Networks. The first ten sensors are displayed by default, but you can easily close them with the
 	                <em>close all</em> button. By clicking on a virtual sensors on the left sidebar, it will bring it to the top of the list.</p>
 	            </div>-->
-	            <br/>
+	            <br/><br/>
 	            <div class="medium-2 columns left" style="position:relative;top:7px;">
 	            	Auto-refresh every :
 	        	</div>
 
 	            <div class="medium-2 columns left" style="position:relative;left:-80px;">
-			            <select ng-model="interval" 
+			            <select ng-model="interval"
 			            			ng-options="o.name for o in intervalOptions" ng-change="setRefreshInterval()">
 			            </select>
 			    </div>        
@@ -29,26 +29,38 @@
 		                </span>
 		        </div>
 
-		        <br />
-			     <div class="row">
-			     	<div class="medium-12 columns">
-	            	 	<div id="virtuals-sensors">
+		        <div     
+  						multi-select
+  						helper-elements=""
+    					input-model="sensors"
+    					output-model="visibleSensors"
+    					button-label="name"
+    					max-labels="1"
+    					item-label="name"
+    					tick-property="visible">
+				</div>
+
+		        <br/><br/><br/><br/>
+			     <!--<div class="row">-->
+			     	<!--<div class="medium-9 columns">-->
+	            	 	<div class="wall" gridster="gridsterOpts">
 		                    
+		                    <!--
 		                    <div ng-show="updating">
 		                        <div class="loading">Virtual sensors are currently loading...</div>
 		                        <br />
 		                    </div>
-
+							-->
 		                 <!--   <div class="row">  -->
 		                     
 		             <!-- <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">-->
-		             		<div class="wall" gridster="gridsterOpts">
+		             	<!--	<div class="wall" gridster="gridsterOpts"> -->
 								<ul>
-		                         	<li gridster-item class="box"  size-y="sensor.size.y"  ng-repeat="sensor in sensors">
+		                         	<li gridster-item class="box"  size-y="sensor.size.y"  
+		                         								ng-repeat="sensor in sensors | filter:{visible:true}">
 					                    <div class="panel radius vs-box">
-					                     		<a ng-click="removeSensor($index);" class="alert round right button tiny"
-					                     				style="position:relative; top:-10px;">
-					                     		X</a>
+					                     		<a ng-click="removeSensor($index);" class="round-button"
+					                     				style="position:relative; top:-5px;left:260px;">X</a>
 										        <h4>
 													<strong>
 											            <span class="vsname">{{sensor.name}}</span>
@@ -58,14 +70,13 @@
 
 										        <div ng-repeat="field in sensor.structureFields">
 													    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg'" 
-													    	style="position:relative;left:25px;">
+													    	style="position:relative;left:5px;">
 													    			<img ng-src="{{sensor.fields[field].value}}" 
-													    					style="width:220px; height:135px" />
+													    					style="width:220px; height:152px" />
 													    	</div>
 															<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg'">	
 																<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
-															</div>
-															<!--<br ng-show="$index < sensor.structureFields.length -1"/>-->	
+															</div>	
 												</div>
 										</div>
 									</li>
@@ -112,12 +123,12 @@
 											    <p>Fourth panel content goes here...</p>
 											  </div>
 										</div>-->
-								</div>
+								<!--</div>-->
 							<!-- </div> -->
-		               </div>
+		              <!-- </div> -->
 		            </div>
-	            </div>
-            </div>
+	           <!-- </div> -->
+            <!--</div>-->
 
             <!--
 			<div id="sidebar" class="medium-3 columns right">
@@ -135,6 +146,6 @@
                     </p>
             </div>-->
 	              
-        </div>
+       <!-- </div>-->
 	</div>
-</div>
+<!--</div>-->

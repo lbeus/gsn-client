@@ -22,8 +22,6 @@ angular.module('gsnClientApp')
       else
         $scope.airIntake = false;
 
-      console.log($scope.config);
-
   		$scope.externaltemplimit = config.coreParams['externaltemplimit'];
       $scope.internaltemplimit1 = config.coreParams['internaltemplimit1'];
       $scope.internaltemplimit2 = config.coreParams['internaltemplimit2'];

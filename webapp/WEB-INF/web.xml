@@ -21,6 +21,13 @@
       GSN's Main Servlets, Must be enabled for any kind of HTTP based access
      ******************************************************************************* -->
     
+    
+    <servlet>
+        <servlet-name>RouteManagerServlet</servlet-name>
+        <display-name>RouteManager</display-name>
+        <servlet-class>hr.fer.rasip.http.ClientRoutemanagerServlet</servlet-class>
+    </servlet>
+    
      <servlet>
         <servlet-name>IPCameraControllerServlet</servlet-name>
         <display-name>IPCameraController</display-name>
@@ -260,6 +267,12 @@
        <display-name>RestServlet</display-name>
        <servlet-class>gsn.http.restapi.RestServlet</servlet-class>
    </servlet>
+   
+   
+    <servlet-mapping>
+        <servlet-name>RouteManagerServlet</servlet-name>
+        <url-pattern>/routes</url-pattern>
+    </servlet-mapping>
    
    <servlet-mapping>
         <servlet-name>IPCameraControllerServlet</servlet-name>
