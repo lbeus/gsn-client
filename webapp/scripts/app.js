@@ -1,5 +1,7 @@
 'use strict';
 
+var routeProviderReference;
+
 var app = angular.module('gsnClientApp', [
   //'ngAnimate',
   'ngCookies',
@@ -10,11 +12,16 @@ var app = angular.module('gsnClientApp', [
   'ui.date',
   'ngQuickDate',
   'ngGrid',
-  'NgSwitchery'
+  'NgSwitchery',
+  'gridster',
+  'multi-select'
 ]);
 
 
 app.config(function ($routeProvider, $httpProvider) {
+
+   routeProviderReference = $routeProvider;
+
    $routeProvider.
       when ('/', {
           templateUrl: 'views/home.html',
@@ -32,14 +39,14 @@ app.config(function ($routeProvider, $httpProvider) {
           templateUrl: 'views/map.html',
           controller: 'MapController'
       })
-      .when('/passiveHeating', {
+     /* .when('/passiveHeating', {
         templateUrl: 'views/passiveHeating.html',
         controller: 'PassiveHeatingController'
       })
       .when('/relay', {
         templateUrl: 'views/relay.html',
         controller: 'RelayController'
-      })
+      })*/
 	  .when('/admin', {
         templateUrl: 'views/admin.html',
         controller: 'AdminCtrl'
@@ -52,11 +59,11 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/config.html',
         controller: 'ConfigController'
 		})
-	  .when('/adminMain', {
-		templateUrl: 'views/adminMain.html',
-		controller: 'AdminMainCtrl'
-		})
-      .otherwise({
+	  /*.when('/adminMain', {
+		    templateUrl: 'views/adminMain.html',
+		    controller: 'AdminMainCtrl'
+		})*/
+    .otherwise({
         redirectTo: '/'
       });
   
@@ -94,12 +101,27 @@ app.factory('myHttpInterceptor', function ($q, $window) {
 
 
 
-app.run(function($rootScope, $location, NavigationService) {
+app.run(function($rootScope, $location, $http, NavigationService) {
+
+    $http.get('/routes').success(function(data){
+        for(var i=0; i<data.length;++i){
+          routeProviderReference.when(data[i].name,{
+              templateUrl: data[i].templateUrl,
+              controller: data[i].controller
+            }
+          );
+
+          NavigationService.addPage({
+              pageName: data[i].pageName,
+              url:data[i].url,
+              active:data[i].active
+          });
+        }
+    });
+
 
     $rootScope.$on('$routeChangeStart', function(next, current) { 
-
          NavigationService.pageChanged($location.path());
-    
     });
 });
 

@@ -19,8 +19,16 @@
 	   "name": "/ipcamera", 
        "templateUrl": "views/ipCamera.html",
        "controller": "IPCamera",
-       "pageName":"Relay managment",
+       "pageName":"IP camera",
        "url":"/ipcamera", 
+       "active":false
+	},
+	{
+	   "name": "/adminMain", 
+       "templateUrl": "views/adminMain.html",
+       "controller": "AdminMainCtrl",
+       "pageName":"Admin pages",
+       "url":"/adminMain", 
        "active":false
 	}	
 ]
