@@ -268,6 +268,20 @@
        <servlet-class>gsn.http.restapi.RestServlet</servlet-class>
    </servlet>
    
+    <servlet>
+		<servlet-name>AdminRESTServlet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+		  <param-name>jersey.config.server.provider.packages</param-name>
+		  <param-value>hr.fer.rasip.gsnadmin</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+  </servlet>
+   
+  <servlet-mapping>
+    <servlet-name>AdminRESTServlet</servlet-name>
+    <url-pattern>/adminRest/*</url-pattern>
+  </servlet-mapping>
    
     <servlet-mapping>
         <servlet-name>RouteManagerServlet</servlet-name>
@@ -628,5 +642,9 @@
      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
    </user-data-constraint>
  </security-constraint>
+ <context-param>
+        <param-name>pathToGsnRoot</param-name>
+        <param-value>F:\gsn\gsn-new</param-value>
+    </context-param>
 
 </web-app>

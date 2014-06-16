@@ -43,6 +43,9 @@
             <include name="**/*.jar" />
             </fileset>  -->
         </path>
+		<pathconvert property="classpathProp" refid="classpath"/>
+
+		<echo file="classpath.txt" append="false">${classpathProp}</echo>
         <available type="dir" file="${jmf.dir}" property="jmf.exists"/>
         <!--   	<fail unless="jmf.exists" message="The ${jmf.dir} directory is missing, please download  JMF from http://java.sun.com/products/java-media/jmf/2.1.1/download.html and place it in ${jmf.dir} directory." /> -->
     </target>
