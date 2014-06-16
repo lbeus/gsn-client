@@ -4,7 +4,6 @@ angular.module('gsnClientApp')
   .service('NavigationService', function () {
 		
 
-<<<<<<< HEAD
   		this.pages = [{pageName:"Home", url:"home", active:true},
 					  {pageName:"Data", url:"data", active:false},
 					  {pageName:"Map", url:"map", active:false},
@@ -19,15 +18,13 @@ angular.module('gsnClientApp')
 			"/map" : 2,
 			"/passiveHeating" : 3,
 			"/relay" : 4,
-			"/adminMain" : 5
-=======
+			"/adminMain" : 5};
   		this.pages = [{pageName:"Home", url:"/home", active:true},
 					  {pageName:"Data", url:"/data", active:false},
 					  {pageName:"Map", url:"/map", active:false}];
 
 		this.addPage = function(page){
 			this.pages.push(page);
->>>>>>> e1f9763357fa22388183cfb3153def638debfa46
 		};
 
 		this.pageChanged = function(page){
