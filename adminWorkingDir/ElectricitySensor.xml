@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><virtual-sensor name="Electricity" priority="10">
+	<processing-class>
+		<class-name>gsn.vsensor.BridgeVirtualSensor</class-name>
+		<output-structure>
+		<field name="current_power_t1" type="double"/><field name="max_cumm_power_t1" type="double"/><field name="power" type="double"/><field name="power_t1" type="double"/><field name="energy_phase_1" type="double"/><field name="energy_phase_2" type="double"/><field name="energy_phase_3" type="double"/></output-structure>
+	</processing-class>	
+	<description/>
+	<life-cycle pool-size="10"/>
+	<addressing>
+	</addressing>	
+	<storage history-size="5m"/>
+	<streams>
+		<stream name="input1">
+			<source alias="source1" sampling-rate="1" storage-size="1">
+				<address wrapper="Electricity">
+				</address>
+				<query>select * from wrapper</query>
+			</source>
+			<query>select * from source1</query>
+		</stream>
+	</streams>
+</virtual-sensor>
