@@ -23,6 +23,18 @@
     
     
     <servlet>
+        <servlet-name>RouteManagerServlet</servlet-name>
+        <display-name>RouteManager</display-name>
+        <servlet-class>hr.fer.rasip.http.ClientRoutemanagerServlet</servlet-class>
+    </servlet>
+    
+     <servlet>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <display-name>IPCameraController</display-name>
+        <servlet-class>hr.fer.rasip.http.IPCameraControllerServlet</servlet-class>
+    </servlet>
+   
+    <servlet>
         <servlet-name>PassiveHeatingControllerServlet</servlet-name>
         <display-name>PassiveHeatingController</display-name>
         <servlet-class>hr.fer.rasip.http.PassiveHeatingControllerServlet</servlet-class>
@@ -271,6 +283,36 @@
     <url-pattern>/adminRest/*</url-pattern>
   </servlet-mapping>
    
+    <servlet-mapping>
+        <servlet-name>RouteManagerServlet</servlet-name>
+        <url-pattern>/routes</url-pattern>
+    </servlet-mapping>
+   
+   <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/status</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/move-relative</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/move-absolute</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/config</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IPCameraControllerServlet</servlet-name>
+        <url-pattern>/ipcamera/config-update</url-pattern>
+    </servlet-mapping>
+  
     <servlet-mapping>
         <servlet-name>RelayControllerServlet</servlet-name>
         <url-pattern>/relay/status</url-pattern>

@@ -19,7 +19,7 @@
 				  		<div class="row" ng-repeat="relay in relays">
 				  			<div class="medium-8 columns left">
 							  	<div class="medium-4 columns">
-			          				<label class="right inline">{{relay.displayName}}</label>
+			          				<label class="right inline">{{relay.displayname}}</label>
 			        			</div>
 			        			<div class="medium-4 columns left">
 			        				<input type="checkbox" class="js-switch" ui-switch ng-model="relays[$index].status" 
@@ -30,6 +30,14 @@
 			        </fieldset>
 				</div>
 				<div class="content" ng-class = "{'active' : selectedTab  == 2 }">
+					<div class="row" ng-show="showStatus === true">
+							<div class="medium-8 columns left" >
+								<div data-alert class="alert-box success radius">
+  									{{updateStatus}}
+  									<a class="close" ng-click="showStatus=false;">&times;</a>
+								</div>
+							</div>
+					</div>
 					<fieldset>
 	    					<legend>Connection params</legend>
 				  				<div class="row">
@@ -90,8 +98,13 @@
 	    			</fieldset>
 	    			<div class="row">
 	    				<div class="medium-8 columns left">
-	    					<a class="button" ng-click="updateConfig();">Save</a>
-	    				</div>
+	    					<div class="medium-2 columns left">
+	    						<a class="button" ng-click="updateConfig();">Save</a>
+	    					</div>
+	    					<div class="medium-2 columns" style="position:relative; top:10px; left:-300px;">
+			        			<img id="spinner" ng-src="images/ajax-loader.gif" style="display:none;">
+			        		</div>
+			        	</div>
 	    			</div>
 				</div>
 			</div>	

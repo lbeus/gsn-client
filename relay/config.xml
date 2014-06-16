@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<connection-params>
-		<local-port>27654</local-port>
-		<remote-port>26352</remote-port>
-		<ip-address>192.168.1.92</ip-address>
-	</connection-params>
-	<relays>
-		<relay>
-			<displayName>Letva</displayName>
-			<id>0</id>
-		</relay>
-		<relay>
-			<displayName>Zarulja</displayName>
-			<id>16</id>
-		</relay>
-		<relay>
-			<displayName>efefef</displayName>
-			<id>2</id>
-		</relay>
-	</relays>
+  <connection-params>
+    <local-port>27654</local-port>
+    <remote-port>26352</remote-port>
+    <ip-address>192.168.1.92</ip-address>
+  </connection-params>
+  <relays>
+    <relay>
+      <displayName>Zarulja</displayName>
+      <id>16</id>
+    </relay>
+  </relays>
 </config>
+

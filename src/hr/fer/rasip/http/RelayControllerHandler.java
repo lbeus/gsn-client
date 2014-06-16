@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -26,6 +27,8 @@ import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 public class RelayControllerHandler implements RequestHandler {
 	
@@ -130,16 +133,56 @@ public class RelayControllerHandler implements RequestHandler {
 	     }
 	    
 	     if(servletPath.equalsIgnoreCase(CONFIG_UPDATE_SERVLET_PATH)) {
-	    	 
-	    	 
-	    	 
-	    	 
-	    	 
+	    	 try {
+	      		SAXBuilder builder = new SAXBuilder();
+	  			File xmlFile = new File(CONFIG_FILE_PATH);
+	  			Document doc = (Document) builder.build(xmlFile);
+	  			Element root = doc.getRootElement();
+	  				
+	  			//get parameters from config file
+	  			Element connectionParameters = root.getChild("connection-params");
+	  			connectionParameters.getChild("ip-address").setText(request.getParameter("ip-address"));
+	  			connectionParameters.getChild("local-port").setText(request.getParameter("local-port"));
+	  			connectionParameters.getChild("remote-port").setText(request.getParameter("remote-port"));
+	  			
+	  			Element relaysElement = root.getChild("relays");
+	  			
+	  			relaysElement.removeChildren("relay");
+	  			
+	  			Integer numberOfRelays = Integer.valueOf(request.getParameter("numberOfRelays"));
+	  			
+	  			for(int i = 0; i < numberOfRelays; ++i) {
+	  				Element relayElement = new Element("relay");
+	  				
+	  				relayElement.addContent(
+	  					new Element("displayName").
+	  							setText(request.getParameter("relay["+i+"].displayName")));
+	  				
+	  				relayElement.addContent(
+		  				new Element("id").
+		  						setText(request.getParameter("relay["+i+"].id")));
+	  				
+	  				relaysElement.addContent(relayElement);
+	  			}
+	  					
+	  		    // save updated xml file
+    	        XMLOutputter xmlOutput = new XMLOutputter();
+    	   	 	xmlOutput.setFormat(Format.getPrettyFormat());
+    			xmlOutput.output(doc, new FileWriter(CONFIG_FILE_PATH));
+    			
+    			sb.append("<status>ok</status>");
+	      	}
+	      	catch(Exception e){
+	      		sb.append("<status>exception</status>\n<description>"+ e.getClass()+": " + e.getMessage() + "</description>\n</response>");
+	  			response.setHeader("Cache-Control", "no-store");
+	  	        response.setDateHeader("Expires", 0);
+	  	        response.setHeader("Pragma", "no-cache");
+	  	        response.getWriter().write(sb.toString());
+	      		return; 
+	      	}	 
 	     }
 	     
-	     
 	     if(servletPath.equalsIgnoreCase(RELAY_STATUS)) {
-	    	 
 	    	 InetAddress local = InetAddress.getLocalHost();
 			 InetAddress address = InetAddress.getByName(remoteIPAddress);
 				
@@ -191,13 +234,9 @@ public class RelayControllerHandler implements RequestHandler {
 	        		action = request.getParameter(ACTION_PARAMETER);
 	        	}
 				
-				
 				relayControl.setOutputState(relays.get(name),action.equalsIgnoreCase(ACTION_PARAMETER_ON) ? true :false);
-				
-				//while(request.getParameterNames().hasMoreElements())
-					//logger.error(request.getParameterNames().nextElement());
 					
-				sb.append("<status><relay><displayName>"+name+"</displayName><status>"+action+"</status></relay></status>");
+				sb.append("<relay><displayName>"+name+"</displayName><status>"+action+"</status></relay>");
 				
 	         } catch (Exception e) {
 				sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<response>\n");
@@ -210,6 +249,9 @@ public class RelayControllerHandler implements RequestHandler {
 			} 
 	     }
 	    
+	     
+	     
+	     sb.append("\n</response>");
 	     //control and servlet finished successfully
 		 response.setHeader("Cache-Control", "no-store");
 	     response.setDateHeader("Expires", 0);
