@@ -19,9 +19,6 @@ angular.module('gsnClientApp')
 			"/passiveHeating" : 3,
 			"/relay" : 4,
 			"/adminMain" : 5};
-  		this.pages = [{pageName:"Home", url:"/home", active:true},
-					  {pageName:"Data", url:"/data", active:false},
-					  {pageName:"Map", url:"/map", active:false}];
 
 		this.addPage = function(page){
 			this.pages.push(page);
