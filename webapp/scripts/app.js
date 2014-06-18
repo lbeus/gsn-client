@@ -14,7 +14,8 @@ var app = angular.module('gsnClientApp', [
   'ngGrid',
   'NgSwitchery',
   'gridster',
-  'multi-select'
+  'multi-select',
+  'highcharts-ng'
 ]);
 
 

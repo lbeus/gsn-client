@@ -129,7 +129,7 @@
 
         <dl class="tabs" ng-init="selectedTab = 1" ng-model="selectedTab" data-tab>
           <dd ng-class = "{'active' : selectedTab == 1 }" ><a ng-click="selectedTab = 1" >Download</a></dd>
-          <dd ng-class = "{'active' : selectedTab == 2 }"><a ng-click="selectedTab = 2" >Plot</a></dd>
+          <dd ng-class = "{'active' : selectedTab == 2 }"><a ng-click="selectedTab = 2;fetchData();" >Plot</a></dd>
           <dd ng-class = "{'active' : selectedTab == 3 }"><a ng-click="selectedTab = 3;fetchData();" >Table</a></dd>
          </dl>
         
@@ -163,7 +163,26 @@
               </div>
           </div>
           <div class="content" ng-class = "{'active' : selectedTab == 2 }">
-              <p>Second panel content goes here...</p>
+            <div ng-controller = "ChartController">
+              <div class="row">
+                <div class="medium-2 columns left" style="position:relative;left:0px;">
+                  Virtual sensor:
+                  <select ng-model="selectedChart" 
+                          ng-options="o.name for o in results" ng-change="showResulChart()">
+                  </select>
+                </div>
+                <div class="medium-2 columns left" style="position:relative;left:0px;">
+                  Chart type:
+                  <select ng-model="selectedChartType" ng-options="selectedChartType for selectedChartType in chartTypes" ng-change="seriesTypeChange(selectedChartType)"></select>
+                </div><!--
+                <div class="medium-2 columns left" style="position:relative;left:0px;">
+                  <a ng-click="reconfigChart()" class="button [radius round]">Reconfig</a>
+                </div>-->            
+              </div>
+              <div>
+                <highchart id="chartdiv" config="chartConfig" style="width: 1400px; height: 400px;"> </highchart>
+              </div>
+            </div>
           </div>
           <div class="content" ng-class = "{'active' : selectedTab == 3 }">
               <div class="row">
