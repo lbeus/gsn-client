@@ -9,7 +9,8 @@ angular.module('gsnClientApp')
     $scope.chartTypes = ['areaspline','spline', 'column', 'area','line'];
     $scope.selectedChartType = $scope.chartTypes[0];
     
-    Highcharts.setOptions({                                            // This is for all plots, change Date axis to local timezone
+    // This is for all plots, change Date axis to local timezone
+    Highcharts.setOptions({                                            
         global : {
             useUTC : false
         }
@@ -29,9 +30,11 @@ angular.module('gsnClientApp')
       xAxis: {
         type: 'datetime',
         tickPixelInterval: 150,
-        formatter: function() {
-                return Highcharts.dateFormat('%l%p', Date.parse(this.value +' UTC'));
-            }
+        labels: {
+          formatter: function() {
+            return Highcharts.dateFormat('%H:%M:%S', this.value);
+          }
+        }
       },
 
       yAxis: {
@@ -43,10 +46,10 @@ angular.module('gsnClientApp')
       },
 
       plotOptions: {
-        area: {
+        series: {
           pointStart: 1,
           marker: {
-            enabled: false,
+            enabled: true,
             symbol: 'circle',
             radius: 2,
             states: {
@@ -72,7 +75,7 @@ angular.module('gsnClientApp')
 
       for(var i = 0; i < myData.length; i++)
       {
-        $scope.chartConfig.series.push(myData[i]);
+        seriesArray.push(myData[i]);
       }
       //$scope.chartConfig.title = $scope.selectedChart.name;
 

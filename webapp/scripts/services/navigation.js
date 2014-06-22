@@ -6,7 +6,8 @@ angular.module('gsnClientApp')
 
   		this.pages = [{pageName:"Home", url:"/home", active:true},
 					  {pageName:"Data", url:"/data", active:false},
-					  {pageName:"Map", url:"/map", active:false}
+					  {pageName:"Map", url:"/map", active:false},
+					  {pageName:"Electricity", url:"/electricity", active:false}
 					  //{pageName:"Passive heating", url:"/passiveHeating", active:false},
 					  //{pageName:"Relay managment", url:"/relay", active:false},
 					  //{pageName:"Admin pages", url:"/adminMain", active:false}];
