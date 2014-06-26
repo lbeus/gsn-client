@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gsnClientApp')
-  .controller('MapController', function ($scope, VirtualSensorService, $timeout) {
+  .controller('MapController', function ($scope, VirtualSensorService,SettingsService, $timeout) {
   		
   		$scope.map = {
     		center: {
@@ -12,20 +12,24 @@ angular.module('gsnClientApp')
     		sensors : []
       };
 
-		  VirtualSensorService.get(function(sensors){
-  			sensors.sensors.forEach( function (sensor) {
-					if(sensor.fields["latitude"] !== undefined && sensor.fields["longitude"] !== undefined)
+		  //VirtualSensorService.get(function(sensors){
+  			SettingsService.sensors.forEach( function (sensor) {
+					if(sensor.fields["latitude"] !== undefined && sensor.fields["longitude"] !== undefined && sensor.visible==true)
 						$scope.map.sensors
                     .push({   
                             "latitude": sensor.fields["latitude"].value, 
 												    "longitude": sensor.fields["longitude"].value,
-												    "showWindow" : false,
+												    "showWindow" : true,
 												    "title" : sensor.name,
-                            "selected" : true
+                            "selected" : false,
+                            "model": sensor,
+                            "url": '/views/mapTemplate.html'
                           });
 			   });
-  		});
+  		//});
 
+    $scope.windowOptions = {disableAutoPan : false};
+      
 
     // selected sensors
     $scope.selection = [];
@@ -43,6 +47,13 @@ angular.module('gsnClientApp')
         return sensor.name;
       });
     }, true);
+
+
+    var onMarkerClicked = function (marker) {
+      marker.showWindow = true;
+      $scope.$apply();
+      //window.alert("Marker: lat: " + marker.latitude + ", lon: " + marker.longitude + " clicked!!")
+    };
 
 });
 

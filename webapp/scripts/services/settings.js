@@ -4,12 +4,12 @@ angular.module('gsnClientApp')
   .service('SettingsService', function () {
 
   		this.intervalOptions = [
-	  		{name:"1hour" , value: 3600000},
-	  		{name:"10min", value: 600000},
-	  		{name:"1min", value: 60000},
-	  		{name:"5sec", value: 5000},
-	  		{name:"1sec", value: 1000},
-	  		{name:"disable", value: -1},
+	  		{name:"1hour" , value: 3600000, visible:false},
+	  		{name:"10min", value: 600000, visible:false},
+	  		{name:"1min", value: 60000, visible:true},
+	  		{name:"5sec", value: 5000, visible:false},
+	  		{name:"1sec", value: 1000, visible:false},
+	  		{name:"disable", value: -1, visible:false},
   		];
 
   		this.visibleSensors = [];

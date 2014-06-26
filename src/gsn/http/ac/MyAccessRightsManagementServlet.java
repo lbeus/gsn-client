@@ -143,10 +143,4 @@ public class MyAccessRightsManagementServlet extends HttpServlet
 
         }
     }
-
-
-
-
-
-
 }

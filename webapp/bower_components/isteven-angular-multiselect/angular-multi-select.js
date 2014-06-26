@@ -56,7 +56,9 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             onOpen          : '&',
             onClose         : '&',
             onBlur          : '&',
-            onFocus         : '&'            
+            onFocus         : '&',
+            callback: '&',
+            buttonLabelFn: '&'        
         },
 
         template: 
@@ -154,7 +156,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     $scope.toggleCheckboxes( e );
                 }
                                 
-                $scope.refreshSelectedItems();                                   
+                $scope.refreshSelectedItems();
                 e.target.focus();
             }     
 
@@ -176,10 +178,14 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 // Push into output model
                 if ( typeof attrs.outputModel !== 'undefined' ) {            
                     $scope.outputModel = angular.copy( $scope.selectedItems );                    
-                }                                
+                }         
+
+                if(typeof $scope.callback !== 'undefined')
+                    $scope.callback();
+                                      
 
                 // Write label...
-                if ( $scope.selectedItems.length === 0 ) {
+                /*if ( $scope.selectedItems.length === 0 ) {
                     $scope.varButtonLabel = 'None selected';
                 }
                 else {                
@@ -208,7 +214,14 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     if ( $scope.more === true ) {
                         $scope.varButtonLabel += ', ... (Total: ' + $scope.selectedItems.length + ')';
                     }
-                }
+                }*/
+                
+                //$scope.varButtonLabel = 'Active sensors ('+$scope.selectedItems.length+'/'+ $scope.inputModel.length+')';
+                if(typeof $scope.buttonLabelFn !== 'undefined')
+                    $scope.varButtonLabel = $scope.buttonLabelFn();
+                else
+                    $scope.varButtonLabel = $scope.buttonLabel;
+
                 $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="multiSelect caret"></span>' );
             }
 

@@ -234,7 +234,7 @@ public class RelayControllerHandler implements RequestHandler {
 	        		action = request.getParameter(ACTION_PARAMETER);
 	        	}
 				
-				relayControl.setOutputState(relays.get(name),action.equalsIgnoreCase(ACTION_PARAMETER_ON) ? true :false);
+				relayControl.setOutputState(relays.get(name)+1,action.equalsIgnoreCase(ACTION_PARAMETER_ON) ? true :false);
 					
 				sb.append("<relay><displayName>"+name+"</displayName><status>"+action+"</status></relay>");
 				

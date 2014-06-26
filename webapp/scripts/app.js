@@ -3,7 +3,6 @@
 var routeProviderReference;
 
 var app = angular.module('gsnClientApp', [
-  //'ngAnimate',
   'ngCookies',
   'ngResource',
   'ngSanitize',
@@ -39,14 +38,6 @@ app.config(function ($routeProvider, $httpProvider) {
           templateUrl: 'views/map.html',
           controller: 'MapController'
       })
-     /* .when('/passiveHeating', {
-        templateUrl: 'views/passiveHeating.html',
-        controller: 'PassiveHeatingController'
-      })
-      .when('/relay', {
-        templateUrl: 'views/relay.html',
-        controller: 'RelayController'
-      })*/
 	  .when('/admin', {
         templateUrl: 'views/admin.html',
         controller: 'AdminCtrl'
@@ -59,10 +50,6 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/config.html',
         controller: 'ConfigController'
 		})
-	  /*.when('/adminMain', {
-		    templateUrl: 'views/adminMain.html',
-		    controller: 'AdminMainCtrl'
-		})*/
     .otherwise({
         redirectTo: '/'
       });
@@ -73,36 +60,11 @@ app.config(function ($routeProvider, $httpProvider) {
         }
         return $.param(data);
     };
-
-    /*$httpProvider.responseInterceptors.push('myHttpInterceptor');
-
-    var spinnerFunction = function spinnerFunction(data, headersGetter) {
-      $("#spinner").show();
-      console.log('prikazi spinner');
-      return data;
-    };
-
-    $httpProvider.defaults.transformRequest.push(spinnerFunction);*/
   });
-
-app.factory('myHttpInterceptor', function ($q, $window) {
-  return function (promise) {
-    return promise.then(function (response) {
-      console.log('makni spinner');
-      $("#spinner").hide();
-      return response;
-    }, function (response) {
-      console.log('makni spinner');
-      $("#spinner").hide();
-      return $q.reject(response);
-    });
-  };
-});
 
 
 
 app.run(function($rootScope, $location, $http, NavigationService) {
-
     $http.get('/routes').success(function(data){
         for(var i=0; i<data.length;++i){
           routeProviderReference.when(data[i].name,{
@@ -110,7 +72,6 @@ app.run(function($rootScope, $location, $http, NavigationService) {
               controller: data[i].controller
             }
           );
-
           NavigationService.addPage({
               pageName: data[i].pageName,
               url:data[i].url,
@@ -118,8 +79,6 @@ app.run(function($rootScope, $location, $http, NavigationService) {
           });
         }
     });
-
-
     $rootScope.$on('$routeChangeStart', function(next, current) { 
          NavigationService.pageChanged($location.path());
     });

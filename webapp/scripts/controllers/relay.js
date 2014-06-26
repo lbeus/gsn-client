@@ -3,11 +3,6 @@
 angular.module('gsnClientApp')
   .controller('RelayController', function ($http, $scope, RelayService ) {
 
-  	/*$scope.relays = [
-  			{'displayName': "Letva", 'id': 1, 'status' : true},
-  			{'displayName': "Zarulja", 'id': 16, 'status' : false},
-  	];*/
-    
     $scope.relays = [];
     $scope.config = [];
 
@@ -16,13 +11,21 @@ angular.module('gsnClientApp')
     });
 
     RelayService.getStatus(function (relaysStatus) {
+      for(var i=0; i<relaysStatus.length;++i){
+        if(relaysStatus[i].status == "true")
+          relaysStatus[i].status = true;
+        else
+          relaysStatus[i].status = false;
+      }
       $scope.relays = relaysStatus;
+      console.log($scope.relays);
     });
 
 
   	$scope.relayChange = function(index) {
 
-  		  var request = {name : $scope.relays[index].displayName, action : $scope.relays[index].status === true ? "ON" : "OFF" };
+        //console.log($scope.relays);
+  		  var request = {name : $scope.relays[index].displayname, action : $scope.relays[index].status === true ? "ON" : "OFF" };
   		
   		  $http({
               method: 'POST',
@@ -30,7 +33,7 @@ angular.module('gsnClientApp')
               data: request,
               headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (data) {
-                     console.log(data);  
+                
         }).error(function(error){});	
     };
 

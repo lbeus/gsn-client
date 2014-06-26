@@ -638,11 +638,12 @@
      <web-resource-name>Everything in the webapp</web-resource-name>
      <url-pattern>/*</url-pattern>
    </web-resource-collection>
-   <user-data-constraint>
-     <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-   </user-data-constraint>
- </security-constraint>
- <context-param>
+   	<user-data-constraint>
+    	 <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+   	</user-data-constraint>
+ 	</security-constraint>
+ 	
+ 	<context-param>
         <param-name>pathToGsnRoot</param-name>
         <param-value>F:\gsn\gsn-new</param-value>
     </context-param>

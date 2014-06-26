@@ -105,9 +105,11 @@ angular.module('gsnClientApp')
       $scope.selectedConditionMaxValue[len-1] = "+inf";
   	};
 
+
   	$scope.numberOfValuesToFetchChanged = function () {
   		SettingsService.setNumberOfValuesOfFetch($scope.numberOfValuesToFetch);
   	};
+
 
   	$scope.aggregationChanged = function () {
   		SettingsService.setAggregation($scope.aggregation);
@@ -195,17 +197,19 @@ angular.module('gsnClientApp')
 
 
     function createGridOptions(sensorResult) {
-        
+ 
         var options = {};
         var sensor = $.grep(sensors, function(v) { return v.name === sensorResult.name; })[0];
         options["data"] = sensorResult.tuples;
         
         var columnDefs = [];
+
         for(var i = 0; i < sensorResult.header.length; ++i) {
           var column = {field:sensorResult.header[i], displayName:sensorResult.header[i]};
-
-          if(sensor.fields[sensorResult.header[i]]["type"] .match("^binary:image/jpeg")) {
-              column["cellTemplate"] = '<div><a style="position:relative;top:2px;left:150px;" href="{{row.getProperty(col.field)}}"><img src="{{row.getProperty(col.field)}}" width="30" height="30"/></a></div>';
+          if(typeof sensor.fields[sensorResult.header[i].toLowerCase()] !== 'undefined'){
+            if(sensor.fields[sensorResult.header[i].toLowerCase()]["type"] .match("^binary:image/jpeg")) {
+              column["cellTemplate"] = '<div><a style="position:relative;top:2px;left:150px;" href="{{row.getProperty(col.field)}}" target="_blank"><img src="{{row.getProperty(col.field)}}" width="30" height="30"/></a></div>';
+            }
           }
           columnDefs.push(column);
         }
@@ -272,9 +276,6 @@ jQuery.download = function(url, data, method){
             .appendTo('body').submit().remove();
     };
 };
-
-
-
 
 
 // Utility function

@@ -15,13 +15,26 @@
 	            	Auto-refresh every :
 	        	</div>
 
-	            <div class="medium-2 columns left" style="position:relative;left:-80px;">
-			            <select ng-model="interval"
+	            <div class="medium-2 columns left" style="position:relative;left:-90px;">
+			            <!--<select ng-model="interval"
 			            			ng-options="o.name for o in intervalOptions" ng-change="setRefreshInterval()">
-			            </select>
+			            </select>-->
+			            <div     
+  							multi-select
+  							helper-elements=""
+    						input-model="intervalOptions"
+    						output-model="interval"
+    						selection-mode="single"
+    						button-label="Refresh interval"
+    						max-labels="1"
+    						item-label="name"
+    						tick-property="visible"
+    						callback="setRefreshInterval()"
+    						button-label-fn="getRefreshLabel()">
+						</div>
 			    </div>        
 
-			    <div class="medium-5 columns left" style="position:relative;left:-80px;">
+			    <div class="medium-5 columns left" style="position:relative;left:-200px;">
 			            <input ng-click="refreshClicked()" type="button" value="refresh" class="button tiny radius" />
 		              <!--  <input type="button" value="close all" class="button tiny radius alert" /> -->
 		                <span class="refreshing" ng-show="updating">
@@ -34,10 +47,11 @@
   						helper-elements=""
     					input-model="sensors"
     					output-model="visibleSensors"
-    					button-label="name"
+    					button-label="Active sensors"
     					max-labels="1"
     					item-label="name"
-    					tick-property="visible">
+    					tick-property="visible"
+    					button-label-fn="getActiveSensorLabel()">
 				</div>
 
 		        <br/><br/><br/><br/>

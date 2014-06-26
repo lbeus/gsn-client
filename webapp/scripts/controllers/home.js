@@ -31,6 +31,8 @@ angular.module('gsnClientApp')
 
     $scope.sensors = SettingsService.sensors;
 
+    $scope.visibleSensors = [];
+
     // init
     getSensorData();
 
@@ -52,8 +54,25 @@ angular.module('gsnClientApp')
     };
 
     $scope.setRefreshInterval = function() {
-      SettingsService.setRefreshInterval($scope.interval);
+    
+      if( Object.prototype.toString.call( $scope.interval ) === '[object Array]' )
+          SettingsService.setRefreshInterval($scope.interval[0]);
+      else
+          SettingsService.setRefreshInterval($scope.interval);
     };
+
+
+    $scope.getRefreshLabel = function(){
+      if( Object.prototype.toString.call( $scope.interval ) === '[object Array]' )
+              return $scope.interval[0].name;
+
+      return $scope.interval.name;
+    }
+
+
+    $scope.getActiveSensorLabel = function(){
+      return "Active sensors";
+    }
 
 
     //utility functions
@@ -61,8 +80,16 @@ angular.module('gsnClientApp')
       
       $scope.updating = true;    
       RefreshService.stopPolling("virtual-sensors");
-    
-      if($scope.interval.value > 0) {
+      
+      var intervalValue;
+
+      if( Object.prototype.toString.call( $scope.interval ) === '[object Array]' ){
+          intervalValue = $scope.interval[0].value;
+      }else
+        intervalValue = $scope.interval.value;
+
+      if(intervalValue > 0) {
+        //console.log(SettingsService.refreshInterval.value);
 
         RefreshService.startPolling("virtual-sensors", SettingsService.refreshInterval.value, function(data) {  
               $scope.updating = false;
@@ -70,11 +97,14 @@ angular.module('gsnClientApp')
               //$scope.sensors = removeHidden(data.sensors);
               updateSensors(data.sensors);
               removeHidden($scope.sensors);
+              SettingsService.setSensors($scope.sensors);
         });
       }
       else
         $scope.updating = false;
     }
+
+
 
     $scope.$on("$destroy", function() {
         SettingsService.setVisibleSensors($scope.visibleSensors);  
