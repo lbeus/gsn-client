@@ -6,9 +6,13 @@ import gsn.utils.ParamParser;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
+import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
@@ -19,6 +23,12 @@ import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.FixedMillisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
 
 /**
  * The plot should be introduced in the init-param part of the configuration
@@ -46,7 +56,7 @@ public class ChartVirtualSensor extends AbstractVirtualSensor {
     * If you want to make the virtual sensor plot after receiving each K stream
     * elements, set <code>GENERATE_COUNT</code> to K.
     */
-   private final int                                   GENERATE_COUNT                     = 4;
+   private final int                                   GENERATE_COUNT                     = 1;
    
    private long                                        counter                            = 0;
    
@@ -55,22 +65,55 @@ public class ChartVirtualSensor extends AbstractVirtualSensor {
    private int                                         counter_pref                       = 0;
    
    public boolean initialize ( ) {
-      /**
-       * TODO : Checking if the user provides the arguements currectly. TODO :
-       * This can now plot only for one input stream value.
-       */
-      TreeMap <  String , String > params = getVirtualSensorConfiguration( ).getMainClassInitialParams( );
-      ChartInfo chartInfo = new ChartInfo( );
-      chartInfo.setInputStreamName( params.get( "input-stream" ) );
       
-      chartInfo.setPlotTitle( params.get( "title" ) );
-      chartInfo.setType( params.get( "type" ) );
-      chartInfo.setHeight( ParamParser.getInteger( params.get( "height" ) , 480 ) );
-      chartInfo.setWidth( ParamParser.getInteger( params.get( "width" ) , 640 ) );
-      chartInfo.setVerticalAxisTitle( params.get( "vertical-axis" ) );
-      chartInfo.setHistorySize( ParamParser.getInteger( params.get( "history-size" ) , 10 ) );
-      input_stream_name_to_ChartInfo_map.put( chartInfo.getInputStreamName( ) , chartInfo );
-      chartInfo.initialize( );
+      TreeMap <String, String> params = getVirtualSensorConfiguration( ).getMainClassInitialParams( );
+
+      
+      String[] inputStreams = params.get("input-stream").split(","); //Input stream names should be separated by commas
+       
+       for(int i=0; i<inputStreams.length; i++){
+       	inputStreams[i]=inputStreams[i].trim();
+       	
+       	if(inputStreams[i].equals("")){
+       		logger.warn("input-streams parameters must be non-empty strings");
+       		return false;
+       	}
+       }
+       	
+       String[] titles = params.get("title").split(",");
+       
+       for(int i=0; i<titles.length; i++)
+       	titles[i]=titles[i].trim();
+       	
+       String[] verticals = params.get("vertical-axis").split(",");
+       
+       for(int i=0; i<verticals.length; i++)
+       	titles[i]=titles[i].trim();
+       	
+       String[] types = params.get("type").split(",");
+       
+       for(int i=0; i<types.length; i++)
+       	types[i]=types[i].trim();
+       	
+       if(verticals.length!=inputStreams.length || titles.length!=inputStreams.length || types.length!=inputStreams.length)
+       	return false;
+       	
+       for(int i=0; i<inputStreams.length; i++){
+       	ChartInfo chartInfo = new ChartInfo( );
+       	
+	chartInfo.setInputStreamName( inputStreams[i] );
+	chartInfo.setPlotTitle( titles[i] );
+	chartInfo.setType( types[i] );
+	chartInfo.setHeight( ParamParser.getInteger( params.get( "height" ) , 480 ) );
+	chartInfo.setWidth( ParamParser.getInteger( params.get( "width" ) , 640 ) );
+	chartInfo.setVerticalAxisTitle( verticals[i] );
+	chartInfo.setHistorySize( ParamParser.getInteger( params.get( "history-size" ) , 10 ) );
+	
+	input_stream_name_to_ChartInfo_map.put( chartInfo.getInputStreamName( ) , chartInfo );
+	
+	chartInfo.initialize( );
+       }
+       
       return true;
    }
    
@@ -79,6 +122,7 @@ public class ChartVirtualSensor extends AbstractVirtualSensor {
       /**
        * Finding the appropriate ChartInfo object for this input stream.
        */
+       
       ChartInfo chartInfo = input_stream_name_to_ChartInfo_map.get( inputStreamName );
       /**
        * If there is not chartInfo configured for this input stream, the virtual
@@ -87,9 +131,9 @@ public class ChartVirtualSensor extends AbstractVirtualSensor {
        * virtual sensor also container integers), then one might comment the
        * following line.
        */
-      
+       
       if ( chartInfo == null ) {
-         logger.warn( "ChartVS drops the input because there is no chart specification defined for the specific input." );
+         logger.warn( "ChartVS drops the input because there is no chart specification defined for the specific input:"+inputStreamName );
          return;
       }
       /**
@@ -133,7 +177,7 @@ public class ChartVirtualSensor extends AbstractVirtualSensor {
        * it's stream elements's relation thus having one plot for several
        * variables.
        */
-      
+
       for ( int i = 0 ; i < fieldNames.length ; i++ ) {
          ChartInfo chart = input_stream_name_to_ChartInfo_map.get( fieldNames[ i ] );
          charts[ i ] = chart.writePlot( ).toByteArray( );
@@ -276,7 +320,20 @@ class ChartInfo {
       if ( !changed ) return byteArrayOutputStream;
       byteArrayOutputStream.reset( );
       try {
-         ChartUtilities.writeChartAsPNG( byteArrayOutputStream , chart , width , height , false , 8 );
+         if(this.type.equalsIgnoreCase("SVG")) {
+		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+		Document sensorDoc = domImpl.createDocument(null, "svg", null);
+		SVGGraphics2D svg2d = new SVGGraphics2D(sensorDoc);
+		
+		chart.draw(svg2d, new Rectangle(0, 0, width, height));
+		svg2d.setSVGCanvasSize(new Dimension(width, height));
+		
+		Writer out = new OutputStreamWriter(byteArrayOutputStream, "UTF-8");
+		svg2d.stream(out, false);
+		out.flush();
+		out.close();
+         } else
+         	ChartUtilities.writeChartAsPNG( byteArrayOutputStream , chart , width , height , false , 8 );
          
       } catch ( IOException e ) {
          logger.warn( e.getMessage( ) , e );

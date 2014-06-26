@@ -11,6 +11,7 @@ angular.module('gsnClientApp')
         width:'auto',
         margins:[5,5],
         minColumns: 1,
+        minRows: 5,
         avoidOverlappedWidgets:true,
         columns:Math.floor($window.innerWidth/155),
         resizable: {

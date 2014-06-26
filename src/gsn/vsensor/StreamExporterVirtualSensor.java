@@ -4,8 +4,11 @@ import gsn.Main;
 import gsn.beans.StreamElement;
 import gsn.beans.VSensorConfig;
 import gsn.utils.GSNRuntimeException;
+import gsn.beans.DataField;
+import gsn.beans.DataTypes;
 
 import java.sql.Connection;
+import java.io.Serializable;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.TreeMap;
@@ -32,6 +35,8 @@ public class StreamExporterVirtualSensor extends AbstractVirtualSensor {
 	private String user;
 	
 	private String url;
+	
+	private int counter = 0;
 
 	public boolean initialize ( ) {
 		VSensorConfig vsensor = getVirtualSensorConfiguration( );
@@ -42,7 +47,7 @@ public class StreamExporterVirtualSensor extends AbstractVirtualSensor {
 				logger.warn("Initialization Failed, The "+param+ " initialization parameter is missing");
 				return false;
 			}
-		table_name = params.get( TABLE_NAME );
+		//table_name = params.get( TABLE_NAME );
 		user = params.get(PARAM_USER);
 		password = params.get(PARAM_PASSWD);
 		url = params.get(PARAM_URL);
@@ -50,8 +55,8 @@ public class StreamExporterVirtualSensor extends AbstractVirtualSensor {
 			Class.forName(params.get(PARAM_DRIVER));
 			connection = getConnection();
 			logger.debug( "jdbc connection established." );
-			if (!Main.getStorage(table_name.toString()).tableExists(table_name,getVirtualSensorConfiguration().getOutputStructure() , connection))
-				Main.getStorage(table_name.toString()).executeCreateTable(table_name, getVirtualSensorConfiguration().getOutputStructure(), false,connection);
+			//if (!Main.getStorage(table_name.toString()).tableExists(table_name,getVirtualSensorConfiguration().getOutputStructure() , connection))
+				//Main.getStorage(table_name.toString()).executeCreateTable(table_name, getVirtualSensorConfiguration().getOutputStructure(), false,connection);
 		} catch (ClassNotFoundException e) {
 			logger.error(e.getMessage(),e);
 			logger.error("Initialization of the Stream Exporter VS failed !");
@@ -69,15 +74,34 @@ public class StreamExporterVirtualSensor extends AbstractVirtualSensor {
 	}
 
 	public void dataAvailable ( String inputStreamName , StreamElement streamElement ) {
-		StringBuilder query = Main.getStorage(table_name.toString()).getStatementInsert(table_name, getVirtualSensorConfiguration().getOutputStructure());
+		table_name = inputStreamName;
+		
+		DataField[] struct = new DataField[streamElement.getFieldNames().length];
+		
+		for(int i = 0; i < struct.length; i++){
+			struct[i] = new DataField(streamElement.getFieldNames()[i], streamElement.getFieldTypes()[i]);
+		}
 		
 		try {
-			Main.getStorage(table_name.toString()).executeInsert(table_name ,getVirtualSensorConfiguration().getOutputStructure(),streamElement,getConnection() );
+			if (!Main.getStorage(table_name.toString()).tableExists(table_name, struct, getConnection()))
+				Main.getStorage(table_name.toString()).executeCreateTable(table_name, struct, false, getConnection());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			logger.error("Error creating table");
+			return;
+		}
+	
+		StringBuilder query = Main.getStorage(table_name.toString()).getStatementInsert(table_name, struct);
+		
+		try {
+			Main.getStorage(table_name.toString()).executeInsert(table_name, struct, streamElement, getConnection());
+			counter++;
 		} catch (SQLException e) {
 			logger.error(e.getMessage(),e);
 			logger.error("Insertion failed! ("+ query+")");
 		}finally {
-			dataProduced( streamElement );
+			StreamElement se = new StreamElement(new String[] {"Counter"}, new Byte[] {DataTypes.INTEGER}, new Serializable[] {counter}, System.currentTimeMillis());
+			dataProduced( se );
 		}
 		
 	}
@@ -85,11 +109,17 @@ public class StreamExporterVirtualSensor extends AbstractVirtualSensor {
 
 	public Connection getConnection() throws SQLException {
 		if (this.connection==null || this.connection.isClosed())
-			this.connection=DriverManager.getConnection(url,user,password);
+			this.connection=DriverManager.getConnection(url, user, password);
 		return connection;
 	}
 
 
 	public void dispose ( ) {
+		try{
+			this.connection.close();
+		} catch(SQLException sqle){
+			logger.error("Closing SQL connection failed.");
+			logger.error(sqle.getMessage(), sqle);
+		}
 	}
 }
