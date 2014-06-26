@@ -22,7 +22,15 @@
        "pageName":"Relay managment",
        "url":"/ipcamera", 
        "active":false
-	}	
+	},	
+      {
+         "name": "/electricity", 
+       "templateUrl": "views/electricity.html",
+       "controller": "Electricity Meter",
+       "pageName":"Electricity managment",
+       "url":"/electricity", 
+       "active":false
+      }     
 ]
  
   

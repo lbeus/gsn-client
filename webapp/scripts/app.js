@@ -13,7 +13,8 @@ var app = angular.module('gsnClientApp', [
   'ngGrid',
   'NgSwitchery',
   'gridster',
-  'multi-select'
+  'multi-select',
+  'highcharts-ng'
 ]);
 
 
@@ -38,6 +39,18 @@ app.config(function ($routeProvider, $httpProvider) {
           templateUrl: 'views/map.html',
           controller: 'MapController'
       })
+      .when ( '/electricity', {
+          templateUrl: 'views/electricity.html',
+          controller: 'DataController'
+      })
+     /* .when('/passiveHeating', {
+        templateUrl: 'views/passiveHeating.html',
+        controller: 'PassiveHeatingController'
+      })
+      .when('/relay', {
+        templateUrl: 'views/relay.html',
+        controller: 'RelayController'
+      })*/
 	  .when('/admin', {
         templateUrl: 'views/admin.html',
         controller: 'AdminCtrl'
