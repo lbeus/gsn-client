@@ -39,7 +39,7 @@ angular.module('gsnClientApp')
       for (var j = 0; j < nValues; j++)
       {
         myData.push({
-          name: name,
+          name: valueNames[j],
           data: allData[j],
           type: type,
           dataLabels: valueNames[j],
