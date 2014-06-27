@@ -11,9 +11,9 @@ public class FieldMappings{
         fieldMap.put("b", "Battery");
         fieldMap.put("ha", "Humidity");
         fieldMap.put("ll", "Illumination");
-        fieldMap.put("te", "");
-        fieldMap.put("ea", "");
-        fieldMap.put("mv", "");
+        fieldMap.put("te", "Soil temperature");
+        fieldMap.put("ea", "Soil permittivity");
+        fieldMap.put("mv", "Soil moisture");
     }
 
    public static String getMapping(String s){
