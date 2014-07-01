@@ -66,6 +66,10 @@ import javax.imageio.ImageIO;
   * 'type' - string
   * 'timeout' - string, data timeout in minutes, 0 for no timeout
   * 'display' - string; "METER" (default)/ "BAR" / "BOOLEAN", separated by commas; how field data is displayed
+  * 'separator' - ";" or "!" determines parsing algorithm for message
+  * 'thermo-limit' - double, temperature when thermometer icons change the color of mercuy
+  * 'icon-dimension' - integer, dimension of icons
+  * 'include-geo-data' - boolean, determines if geo data is included in streamelement (output stream should declare additional field named "Geo" of type binary:image/png for geo image)
   */
   
  /**
@@ -96,9 +100,11 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
    //Variables for output
    private int timeout; //Timeout in minutes
    private int maxNumberofSensors; //Maximum number of resulting plots displayed
+   private Double thermoLimit;
 
-   private final int iconWidth = 250;
-   private final int iconHeight = 250;   
+   private int iconWidth = 250;
+   private int iconHeight = 250; 
+   private Integer iconDimension;  
    private int width; //Resulting image width
    private final int gap = 20; //Gap between field plots
    
@@ -123,6 +129,7 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
    
    //Flag for geo data
    private boolean reloadGeoData;
+   private boolean includeGeoData;
    
    private void makeSVGImage(){
    	int x;
@@ -194,7 +201,7 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				int rectangleX = x + this.iconWidth / 10;
 				int rectangleY = y + (int)(5 * this.iconHeight / 10);
 				int rectangleW = 8 * this.iconWidth / 10;
-				int rectangleH = (int)(1.5 * this.iconHeight / 10);
+				int rectangleH = (int)(1.05 * this.iconHeight / 10);
 	
 				int tickLength = 2 * this.iconHeight / 100;
 				int tickLabelSize = 4 * this.iconHeight / 100;
@@ -218,7 +225,7 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				svg2d.setColor(new Color(0x617aff));
 				svg2d.fillRoundRect(rectangleX, rectangleY, (int)(rectangleW * fillPercentage), rectangleH, 4, 4);
 	
-				svg2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1));
+				svg2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1));
 				svg2d.setColor(Color.BLACK);
 				svg2d.drawRoundRect(rectangleX, rectangleY, rectangleW, rectangleH, 4, 4);
 				
@@ -254,11 +261,11 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 			} else if( this.display[i] == SVGDataDisplayVirtualSensor.BOOLEAN ){
 			
 				//Draw on/off button
-				int buttonX = x + 20 * this.iconWidth / 100;
-				int buttonY = y + 20 * this.iconHeight / 100;
+				int buttonX = x + 25 * this.iconWidth / 100;
+				int buttonY = y + 25 * this.iconHeight / 100;
 				
-				int buttonH = 60 * this.iconHeight / 100;
-				int buttonW = 60 * this.iconWidth / 100;
+				int buttonH = 50 * this.iconHeight / 100;
+				int buttonW = 50 * this.iconWidth / 100;
 				
 				//Draw title
 				svg2d.setColor(Color.BLACK);
@@ -274,10 +281,10 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				svg2d.fillOval(buttonX, buttonY, buttonW, buttonH);
 
 				svg2d.setColor(Color.BLACK);
-				svg2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1));
+				svg2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1));
 				svg2d.drawOval(buttonX, buttonY, buttonW, buttonH);
 
-				svg2d.setStroke(new BasicStroke(16, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1));
+				svg2d.setStroke(new BasicStroke(9, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1));
 				
 				if(data != 0)
 					svg2d.setColor(Color.GREEN.darker());
@@ -302,7 +309,11 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				
 				plot.setAxisLocation(ThermometerPlot.LEFT);
 				plot.setUnits(ThermometerPlot.UNITS_CELCIUS);
-				plot.setMercuryPaint(Color.red);
+				
+				if(this.thermoLimit == null || data < this.thermoLimit)
+					plot.setMercuryPaint(new Color(0x617aff));
+				else 
+					plot.setMercuryPaint(Color.red);
 				plot.setGap(2);
 				plot.setBulbRadius(30);
 				plot.setColumnRadius(15);
@@ -332,7 +343,8 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 
 				//Drawing
 				StandardDialFrame standarddialframe = new StandardDialFrame();
-				standarddialframe.setBackgroundPaint(Color.BLACK);
+				standarddialframe.setStroke( new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1) );
+				standarddialframe.setBackgroundPaint(Color.white);
 				standarddialframe.setForegroundPaint(Color.BLACK);
 				dialplot.setDialFrame(standarddialframe);
 				
@@ -384,7 +396,10 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 		}
 		
 		totalHeight = y;
-		if(iconsPasted % iconsPerRow != 0) totalHeight += this.iconHeight;
+		if(iconsPasted % iconsPerRow != 0){
+			totalHeight += this.iconHeight;
+			y += this.iconHeight;
+		}
    	}
    	
    	int totalWidth = iconsPerRow * this.iconWidth + (iconsPerRow - 1) * this.gap;
@@ -510,6 +525,28 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
       	logger.warn("image width must be greater or equal " + this.iconWidth);
       	return false;
       }
+      
+      //Limit for color change on thermometer plot
+      try{
+      	this.thermoLimit = Double.parseDouble( params.get("thermo-limit") );
+      } catch(Exception e) {
+      	this.thermoLimit = null;
+      }
+      
+      //Icon dimensions
+      try{
+      	this.iconDimension = Integer.parseInt( params.get("icon-dimension") );
+      } catch(Exception e) {
+      	this.iconDimension = null;
+      }
+      
+      if(this.iconDimension != null && this.iconDimension > 50){
+      	this.iconHeight = this.iconDimension;
+      	this.iconWidth = this.iconDimension;
+      }
+      
+      //Should VS include geo data - default: false
+      this.includeGeoData = Boolean.parseBoolean( params.get("include-geo-data") );
       
       //Getting names of fields, units and type of display
       this.fields = params.get("field-names").split(",");
@@ -658,6 +695,13 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
       	out.close();
       } catch (IOException e){
       	System.out.println(e.getMessage());
+      	return;
+      }
+      
+      //If no geo data is needed, SE can be sent
+      if(!this.includeGeoData){
+      	StreamElement output = new StreamElement( new String[] {"Data"}, new Byte[] {DataTypes.BINARY}, new Serializable[] {this.byteArrayOutputStreamData.toByteArray()}, System.currentTimeMillis() );
+      	dataProduced( output );
       	return;
       }
       

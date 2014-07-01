@@ -115,8 +115,8 @@ public class TemperaturesVirtualSensor extends AbstractVirtualSensor {
       	return false;
       }
       
-      if(this.height < 260){
-      	logger.warn("height parameter must be at least 260");
+      if(this.height < 200){
+      	logger.warn("height parameter must be at least 200");
       	return false;
       }
       
