@@ -1,58 +1,95 @@
 'use strict';
 
 angular.module('gsnClientApp')
-  .controller('ElectricityController', function ($scope,  GaugeService, ChartService, $http) {
+  .controller('ElectricityController', function ($scope,  VirtualSensorService, GaugeService, ChartService, $http) {
   	var chart;
 	var data = [];
 	var value = -40;
-	var sensorName = 'temprabbit';
-	var request = {};
+	var sensorName = 'electricitymeter';
 	var selected = false;
 
+    var sensors;
+
+  	$scope.selectedField = [];
+	$scope.selectedSensor1 = [];
+
 	$scope.fetchData = function() {
-      request["download_format"] = "xml";
-      request["vs[0]"] = sensorName;
-      request["field[0]"] = 'temperatura';
-      selected = true;
-      $http({
-              method: 'POST',
-              url: '/multidata',
-              data: request,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-          }).success(function (data) {
-            	$scope.results = ChartService.parseXML(data);            	
-        });
+		var request = {};		
+		clearChart();
+		request["download_format"] = "xml";
+		request["vs[0]"] = sensorName;
+		request["field[0]"] = 'All';
+		selected = true;
+		$http({
+			method: 'POST',
+			url: '/multidata',
+			data: request,
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		}).success(function (data) {
+			$scope.results = ChartService.parseXML(data);
+			var fields = [];
+			var allSensors = {	name: "All",
+								description : "",
+								structureFields : []
+			};
+			$scope.results.forEach(function(sensor) {
+				$.merge(allSensors.structureFields, sensor.header);
+			});
+			allSensors.structureFields.forEach(function(value) {		  			
+				if(value != "timed")
+					fields.push(value);
+			});
+			allSensors.structureFields = fields;
+
+			allSensors.structureFields.splice(0,0, "All");
+			$.unique(allSensors.structureFields);
+
+			$scope.selectedSensor1[0] = allSensors;
+			$scope.selectedField[0] = $scope.selectedSensor1[0].structureFields[0];
+		});
     };
 
-    $scope.InitPage = function()
-    {
-    	if(selected)
-    	{
-			var myData = ChartService.getDataForDayChart($scope.selectedSensor, $scope.fromFormated, $scope.untilFormated, 'temperatura');
-			var seriesArray = $scope.chartDayConfig.series;
-			for(var i = 0; i < seriesArray.length; i++)
-			{
-				seriesArray.splice(i, seriesArray.length)
-			}
+   	function clearChart() {
+		var seriesArray = $scope.chartDayConfig.series;
+   		for(var i = 0; i < seriesArray.length; i++)
+		{
+			seriesArray.splice(i, seriesArray.length);
+		}
+   	}
 
-			for(var i = 0; i < myData.length; i++)
-			{
-				seriesArray.push(myData[i]);
-			}
-	    	$scope.chartDayConfig.series[0].type = 'areaspline';
-	    	$scope.chartJanConfig.series[0].type = 'areaspline';
-	    	$scope.chartFebConfig.series[0].type = 'areaspline';
-	    	$scope.chartMarConfig.series[0].type = 'areaspline';
-	    	$scope.chartAprConfig.series[0].type = 'areaspline';
-	    	$scope.chartMayConfig.series[0].type = 'areaspline';
-	    	$scope.chartJunConfig.series[0].type = 'areaspline';
-	    	$scope.chartJulConfig.series[0].type = 'areaspline';
-	    	$scope.chartAugConfig.series[0].type = 'areaspline';
-	    	$scope.chartSepConfig.series[0].type = 'areaspline';
-	    	$scope.chartOctConfig.series[0].type = 'areaspline';
-	    	$scope.chartNovConfig.series[0].type = 'areaspline';
-	    	$scope.chartDecConfig.series[0].type = 'areaspline';
-    	}    	
+
+    $scope.initPage = function()
+    {	
+		var myDataDay = ChartService.getDataForDayChart($scope.selectedSensor, $scope.fromFormated, $scope.untilFormated, $scope.selectedField[0]);
+		var seriesArrayDay = $scope.chartDayConfig.series;
+
+		var myDataMonth = ChartService.getDataForDayChart($scope.selectedSensor, $scope.fromFormated, $scope.untilFormated, $scope.selectedField[0]);
+		var seriesArrayMonth = $scope.chartMonthConfig.series;
+
+		for(var i = 0; i < seriesArrayDay.length; i++)
+			seriesArrayDay.splice(i, seriesArrayDay.length);
+
+		for(var i = 0; i < myDataDay.length; i++)
+			seriesArrayDay.push(myDataDay[i]);
+		
+		for(var i = 0; i < seriesArrayMonth.length; i++)
+			seriesArrayMonth.splice(i, seriesArrayMonth.length);
+
+		for(var i = 0; i < myDataMonth.length; i++)
+			seriesArrayMonth.push(myDataMonth[i]);
+
+    	$scope.chartJanConfig.series[0].type = 'areaspline';
+    	$scope.chartFebConfig.series[0].type = 'areaspline';
+    	$scope.chartMarConfig.series[0].type = 'areaspline';
+    	$scope.chartAprConfig.series[0].type = 'areaspline';
+    	$scope.chartMayConfig.series[0].type = 'areaspline';
+    	$scope.chartJunConfig.series[0].type = 'areaspline';
+    	$scope.chartJulConfig.series[0].type = 'areaspline';
+    	$scope.chartAugConfig.series[0].type = 'areaspline';
+    	$scope.chartSepConfig.series[0].type = 'areaspline';
+    	$scope.chartOctConfig.series[0].type = 'areaspline';
+    	$scope.chartNovConfig.series[0].type = 'areaspline';
+    	$scope.chartDecConfig.series[0].type = 'areaspline';    	
     }
 
     $scope.fromChanged = function() {
@@ -89,19 +126,18 @@ angular.module('gsnClientApp')
 		        plotShadow: false,
 		        events: {
                     load: function() {
-                        // set up the updating of the chart each second
-           		        var point = this.series[0].points[0],
-                        	y;
+                        // set up the updating of the chart each 5 seconds
+           		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                    		GaugeService.async(sensorName, "temperatura").then(function(d) {
+                    		GaugeService.async(sensorName, "current_phase_1").then(function(d) {
 						    	data.push(d.data);
 						  	});
-                            //y = fetchData("temprabbit", "temperatura");
-                            //alert(data.pop());
-                            y = ChartService.parseGaugeXML(data.pop(), "temperatura");
+                            
+                            y = ChartService.parseGaugeXML(data.pop(), "current_phase_1");
+                            
 						    if(typeof y != "undefined")
 						    {
-		        				point.update(parseInt(y));
+						    	point.update(parseFloat(y));
 		        			}
                         }, 5000);
                     }
@@ -109,7 +145,7 @@ angular.module('gsnClientApp')
 		    },
 		    
 		    title: {
-		        text: 'ElectricityMeter'
+		        text: 'Electricity Meter - Current Phase1'
 		    },
 		    
 		    pane: {
@@ -147,11 +183,11 @@ angular.module('gsnClientApp')
 		       
 		    // the value axis
 		    yAxis: {
-		        min: -40,
-		        max: 40,
+		        min: 0,
+		        max: 1,
 		        
 		        minorTickInterval: 'auto',
-		        minorTickWidth: 1,
+		        minorTickWidth: 0.1,
 		        minorTickLength: 10,
 		        minorTickPosition: 'inside',
 		        minorTickColor: '#666',
@@ -166,34 +202,33 @@ angular.module('gsnClientApp')
 		            rotation: 'auto'
 		        },
 		        title: {
-		            text: '°C'
+		            text: 'A'
 		        },
 		        plotBands: [{
-		            from: -40,
-		            to: 0,
+		            from: 0,
+		            to: 0.5,
 		            color: '#55BF3B' // green
 		        }, {
-		            from: 0,
-		            to: 30,
+		            from: 0.5,
+		            to: 0.7,
 		            color: '#DDDF0D' // yellow
 		        }, {
-		            from: 30,
-		            to: 40,
+		            from: 0.7,
+		            to: 1,
 		            color: '#DF5353' // red
 		        }]        
 		    },
 		
 		    series: [{
-		        name: 'Temperature',
-		        data: [-40],
+		        name: 'current_phase_1',
+		        data: [0],
 		        tooltip: {
-		            valueSuffix: ' °C'
+		            valueSuffix: ' A'
 		        }
 		    }]
 		});
 
-
-
+/*
 		var container_gauge2 = new Highcharts.Chart({
 		
 		    chart: {
@@ -206,26 +241,23 @@ angular.module('gsnClientApp')
 		        events: {
                     load: function() {
                         // set up the updating of the chart each second
-           		        var point = this.series[0].points[0],
-                        	y;
+           		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                    		GaugeService.async(sensorName, "temperatura").then(function(d) {
+                    		GaugeService.async(sensorName, "power_t1").then(function(d) {
 						    	data.push(d.data);
 						  	});
-                            //y = fetchData("temprabbit", "temperatura");
-                            //alert(data.pop());
-                            y = ChartService.parseGaugeXML(data.pop(), "temperatura");
+                            y = ChartService.parseGaugeXML(data.pop(), "power_t1");
 						    if(typeof y != "undefined")
 						    {
-		        				point.update(parseInt(y));
+		        				point.update(parseFloat(y));
 		        			}
-                        }, 500000);
+                        }, 6000);
                     }
                 }
 		    },
 		    
 		    title: {
-		        text: 'ElectricityMeter'
+		        text: 'ElectricityMeter - PowerT1'
 		    },
 		    
 		    pane: {
@@ -263,8 +295,8 @@ angular.module('gsnClientApp')
 		       
 		    // the value axis
 		    yAxis: {
-		        min: -40,
-		        max: 40,
+		        min: 0,
+		        max: 20,
 		        
 		        minorTickInterval: 'auto',
 		        minorTickWidth: 1,
@@ -285,28 +317,28 @@ angular.module('gsnClientApp')
 		            text: '°C'
 		        },
 		        plotBands: [{
-		            from: -40,
-		            to: 0,
+		            from: 0,
+		            to: 10,
 		            color: '#55BF3B' // green
 		        }, {
-		            from: 0,
-		            to: 30,
+		            from: 10,
+		            to: 15,
 		            color: '#DDDF0D' // yellow
 		        }, {
-		            from: 30,
-		            to: 40,
+		            from: 15,
+		            to: 20,
 		            color: '#DF5353' // red
 		        }]        
 		    },
 		
 		    series: [{
-		        name: 'Temperature',
-		        data: [-40],
+		        name: 'power_t1',
+		        data: [0],
 		        tooltip: {
-		            valueSuffix: ' °C'
+		            valueSuffix: ' kW'
 		        }
 		    }]
-		});
+		});*/
 	});
 
     Highcharts.setOptions({                                            
@@ -330,13 +362,41 @@ angular.module('gsnClientApp')
 			}
 		},
 
+		yAxis: {
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+      	},
+
 		title: {
 			text: ''
 		},
 
-        series: [],
+        series: []
+    },
 
-        loading: false
+    $scope.chartMonthConfig = {
+        chart: {
+        	renderTo: 'chartMonth'
+        },
+
+		xAxis: {
+			type: 'datetime',
+			tickPixelInterval: 150,
+			labels: {
+				formatter: function() {
+					return Highcharts.dateFormat('%H:%M:%S', this.value);
+				}
+			}
+		},
+
+		title: {
+			text: ''
+		},
+
+        series: []
     },
 
     // Grafovi za godišnji prikaz

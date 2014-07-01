@@ -50,10 +50,8 @@ function parseVSensorXML (xml) {
             	   field["value"] = currentField.text();
                  field["command"] = currentField.attr("command");
 
-                 if(field["type"] === "binary:image/jpeg" || field["type"] === "binary:image/png" || field["type"] === "binary:image/svg+xml"){
-                  sensor.size.y = 3;
-                  sensor.size.x = 3;
-                  }
+                 if(field["type"] === "binary:image/jpeg")
+                  sensor.size.y = 2;
 
             	   sensor.fields[currentField.attr("name")] = field;
               }

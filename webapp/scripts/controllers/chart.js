@@ -83,7 +83,7 @@ angular.module('gsnClientApp')
     
     $scope.seriesTypeChange = function(type) {
       $scope.chartConfig.series[0].type =  type;    
-    };  
+    };
     
     $scope.toggleLabels = function () {
       enableDataLabels = !enableDataLabels;

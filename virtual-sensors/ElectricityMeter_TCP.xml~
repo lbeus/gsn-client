@@ -1,10 +1,10 @@
-<virtual-sensor name="ElectricityMeter" priority="10">
+<virtual-sensor name="ElectricityMeter_TCP" priority="10">
 	<processing-class>
 		<class-name>gsn.vsensor.BridgeVirtualSensor</class-name>
 		<output-structure>
 			<!--Zakomentirati podatke koje ne želite u prikazu GSN-a-->
-			<!--<field name="CURRENT_POWER_T1" type="double" />
-			<field name="CURRENT_POWER_T2" type="double" />-->
+			<field name="CURRENT_POWER_T1" type="double" />
+			<field name="CURRENT_POWER_T2" type="double" />
 			<field name="MAX_CUMM_POWER_T1" type="double" />
 			<field name="MAX_CUMM_POWER_T2" type="double" />
 			<field name="POWER" type="double" />
@@ -16,7 +16,7 @@
 		</output-structure>
 	</processing-class>
 	
-	<description>This sensor measures power consumption over USB.</description>
+	<description>This sensor measures power consumption over Ethernet or USB.</description>
 	<life-cycle pool-size="10" />
 	<addressing>
 		<predicate key="geographical">ZARI</predicate>
@@ -28,8 +28,8 @@
 	<streams>
 		<stream name="input1">
 			<source alias="source1" sampling-rate="1" storage-size="1">
-				<address wrapper="Iskra">
-					<predicate key="serial-port">/dev/ttyUSB0</predicate>
+				<address wrapper="Iskra_TCP">
+					<predicate key="serial-port">/dev/ttyUSB1</predicate>
 				</address>
 				<query>select * from wrapper</query>
 			</source>
