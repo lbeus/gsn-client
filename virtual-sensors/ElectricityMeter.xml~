@@ -24,7 +24,7 @@
 		<predicate key="LONGITUDE">16.000000</predicate>
 	</addressing>
 	
-	<storage history-size="48" />
+	<storage history-size="24" />
 	<streams>
 		<stream name="input1">
 			<source alias="source1" sampling-rate="1" storage-size="1">

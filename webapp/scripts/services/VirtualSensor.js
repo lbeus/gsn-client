@@ -3,29 +3,19 @@
 angular.module('gsnClientApp')
   .service('VirtualSensorService', function ($http) {
 
-	this.get = function(callback){
+this.get = function(callback){
         $http.get('/gsn').success(function(data) {
           callback(parseVSensorXML(data));
         });
     };
   });
 
-function getImgSize(imgSrc)
-{
-    var newImg = new Image();
-    newImg.src = imgSrc;
-    var height = newImg.height;
-    var width = newImg.width;
-    
-    var d = {h: height, w: width};
-    return d;
-}
 
 function parseVSensorXML (xml) {
 
-  	var nodes = $(xml);
+   var nodes = $(xml);
 
-  	var sensors = [];
+   var sensors = [];
 
     var GSNinstance = {};
 
@@ -37,27 +27,27 @@ function parseVSensorXML (xml) {
     };
          
     
-  	$(nodes).find('virtual-sensor').each( // iterate over virtual-sensors
+   $(nodes).find('virtual-sensor').each( // iterate over virtual-sensors
        function (){
-       		var currentSensor = $(this);
+        var currentSensor = $(this);
 
-       		var sensor = {size:{y: 1, x: 2}};
-       		sensor.name = currentSensor.attr("name");
+        var sensor = {size:{y: 1}};
+        sensor.name = currentSensor.attr("name");
           sensor.description = currentSensor.attr("description");
 
-       		sensor.fields = {};
+        sensor.fields = {};
           sensor.visible = true;
 
             currentSensor.children().each( function (){ // iterate over virtual-sensor fields
-            	var currentField = $(this);
+             var currentField = $(this);
 
-            	var field = {};
+             var field = {};
               
               if(typeof currentField.attr("command") === "undefined"){
-            	   field["type"] = currentField.attr("type");
-            	   field["description"] = currentField.attr("description");
-            	   field["category"] = currentField.attr("category");
-            	   field["value"] = currentField.text();
+             field["type"] = currentField.attr("type");
+             field["description"] = currentField.attr("description");
+             field["category"] = currentField.attr("category");
+             field["value"] = currentField.text();
                  field["command"] = currentField.attr("command");
 
                  if(field["type"] === "binary:image/jpeg" || field["type"] === "binary:image/png" || field["type"] === "binary:image/svg+xml"){
@@ -94,7 +84,7 @@ function parseVSensorXML (xml) {
                  	sensor.size.y += 0.5;
                  }
 
-            	   sensor.fields[currentField.attr("name")] = field;
+             sensor.fields[currentField.attr("name")] = field;
               }
             });
             
@@ -114,8 +104,6 @@ function parseVSensorXML (xml) {
     );
     
     GSNinstance.sensors = sensors;
-  	
-	return GSNinstance;
+  
+return GSNinstance;
 }
-
-

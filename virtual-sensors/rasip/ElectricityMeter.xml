@@ -24,12 +24,12 @@
 		<predicate key="LONGITUDE">16.000000</predicate>
 	</addressing>
 	
-	<storage history-size="5m" />
+	<storage history-size="48" />
 	<streams>
 		<stream name="input1">
 			<source alias="source1" sampling-rate="1" storage-size="1">
 				<address wrapper="Iskra">
-					<predicate key="serial-port">COM9</predicate>					
+					<predicate key="serial-port">/dev/ttyUSB0</predicate>
 				</address>
 				<query>select * from wrapper</query>
 			</source>
