@@ -158,6 +158,10 @@ img
     max-width: 100%;
 }
 
+.gaugeTime {
+    font-size: 15px;
+    line-height:150%;
+}
 /*
 
 .gridster .gridster-item {
