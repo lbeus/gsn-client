@@ -1,6 +1,6 @@
  <!--<div class="medium-12  columns">-->
 	
-	<div id="container" >
+	<div id="container">
 		
 		<!--<div class="row">-->
 			<!--<div class="medium-12 columns left">-->
@@ -70,9 +70,9 @@
 		             <!-- <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">-->
 		             	<!--	<div class="wall" gridster="gridsterOpts"> -->
 								<ul>
-		                         	<li gridster-item class="box"  size-x="sensor.size.x" size-y="sensor.size.y"
+		                         	<li gridster-item class="box" style="overflow:auto" size-x="sensor.size.x" size-y="sensor.size.y"
 		                         								ng-repeat="sensor in sensors | filter:{visible:true}">
-					                    <div class="panel radius vs-box">
+					                    <div style="" class="panel radius vs-box">
 					                     		<a ng-click="removeSensor($index);" class="round-button"
 					                     				style="position:relative; top:0px;right:0px;">X</a><!--With this positioning, the button is always in the upper left corner. Otherwise the positioning would fluctuate depending on the width of the widget.-->
 										        <h4>
@@ -83,7 +83,8 @@
 										        </h4>
 
 										        <div ng-repeat="field in sensor.structureFields">
-													    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg' || sensor.fields[field].type === 'binary:image/png' || sensor.fields[field].type === 'binary:image/svg+xml'" style="position:relative;left:5px;">{{field}}<br />
+													    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg' || sensor.fields[field].type === 'binary:image/png' || sensor.fields[field].type === 'binary:image/svg+xml'" style="position:relative;left:0px;">{{field}}<br />
+													    			<!-- Modifikacija velicine li elementa nakon ucitavanja img elementa onload="this.parentNode.parentNode.parentNode.parentNode.style.height=..." -->
 													    			<img ng-src="{{sensor.fields[field].value}}" 
 													    					style="width:auto; height:auto" />
 													    	</div>
@@ -94,7 +95,6 @@
 										</div>
 									</li>
 								</ul>
-							
 								   		
 								   	   <!--                 	  
 					                   <dl ng-init="selectedTab[$index-1] = 1" ng-model="selectedTab[$index-1]" class="tabs" data-tab>

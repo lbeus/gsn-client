@@ -6,12 +6,12 @@ angular.module('gsnClientApp')
     $scope.gridsterOpts = {
         defaultSizeX: 2,
         defaultSizeY: 1,
-        rowHeight:130,
+        rowHeight:155,
         colWidth:155,
         width:'auto',
         margins:[5,5],
         minColumns: 1,
-        minRows: 5,
+        minRows: 6,
         avoidOverlappedWidgets:true,
         columns:Math.floor($window.innerWidth/155),
         resizable: {
@@ -151,6 +151,12 @@ angular.module('gsnClientApp')
           }else {
             $scope.sensors.splice(index,1);
           }
+          
+          /*
+          var str = "#{{sensor.name}}";
+	  
+	  $(str).parent().height( Math.ceil( $(str).height()/130 )*130 );
+	  $(str).parent().width( Math.ceil( $(str).width()/155 )*155 );*/
         });
     }
 });

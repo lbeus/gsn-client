@@ -635,9 +635,7 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
       if( logger.isDebugEnabled() ) logger.debug( new StringBuilder( "Data received under the name *" ).append( inputStreamName ).append( "* to the SVGDataDisplayVS." ).toString() );
       
       //Remove data older than specified timeout
-      if(timeout > 0 && this.dataFromSensors.size() > 0){
-      	long current = System.currentTimeMillis();
-      	
+      if(timeout > 0 && this.dataFromSensors.size() > 0){      	
       	//Get keys
       	String[] keys = this.dataFromSensors.keySet().toArray(new String[0]);
       	

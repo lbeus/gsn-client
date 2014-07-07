@@ -55,7 +55,7 @@ public class SensorData{
 	}
 	
 	public boolean isExpired(long inTimestamp){
-		if(this.timestamp < inTimestamp)
+		if(this.timestamp + inTimestamp < System.currentTimeMillis())
 			return true;
 		return false;
 	}
