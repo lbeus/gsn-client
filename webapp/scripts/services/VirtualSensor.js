@@ -31,7 +31,7 @@ function parseVSensorXML (xml) {
        function (){
         var currentSensor = $(this);
 
-        var sensor = {size:{y: 1}};
+        var sensor = {size:{y: 0}};
         sensor.name = currentSensor.attr("name");
           sensor.description = currentSensor.attr("description");
 
@@ -81,14 +81,18 @@ function parseVSensorXML (xml) {
                   sensor.size.y += 2;
 		              sensor.size.x = 3;
                  } else {
-                 	 //sensor.size.y += 0.5;
+                    if(currentField.attr("name") !== 'geographical' && currentField.attr("name") !== 'latitude' && currentField.attr("name") !== 'longitude')
+                 	    sensor.size.y += 0.5;
                  }
 
              sensor.fields[currentField.attr("name")] = field;
               }
             });
             
-           // sensor.size.y = Math.floor(sensor.size.y)-3;
+            sensor.size.y = Math.ceil(sensor.size.y);
+            if(sensor.size.y == 0)
+               sensor.size.y = 1;
+
             var keys = Object.keys(sensor.fields);
 
             sensor.fieldKeys = keys;

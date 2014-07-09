@@ -70,7 +70,7 @@
 		             <!-- <div masonry="{ gutter: 20, transitionDuration: '0.5s' }">-->
 		             	<!--	<div class="wall" gridster="gridsterOpts"> -->
 								<ul>
-		                         	<li gridster-item class="box" style="overflow:auto" size-x="sensor.size.x" size-y="sensor.size.y"
+		                         	<li gridster-item class="box" style="" size-x="sensor.size.x" size-y="sensor.size.y"
 		                         								ng-repeat="sensor in sensors | filter:{visible:true}">
 					                    <div style="" class="panel radius vs-box">
 					                     		<a ng-click="removeSensor($index);" class="round-button"
@@ -86,7 +86,7 @@
 													    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg' || sensor.fields[field].type === 'binary:image/png' || sensor.fields[field].type === 'binary:image/svg+xml'" style="position:relative;left:0px;">{{field}}<br />
 													    			<!-- Modifikacija velicine li elementa nakon ucitavanja img elementa onload="this.parentNode.parentNode.parentNode.parentNode.style.height=..." -->
 													    			<img ng-src="{{sensor.fields[field].value}}" 
-													    					style="width:auto; height:auto" />
+													    					style="width:340px; height:270px" />
 													    	</div>
 														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg' && sensor.fields[field].type !== 'binary:image/png' && sensor.fields[field].type !== 'binary:image/svg+xml'">	
 															<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>

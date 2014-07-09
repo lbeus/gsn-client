@@ -99,6 +99,7 @@ angular.module('gsnClientApp')
               updateSensors(data.sensors);
               removeHidden($scope.sensors);
               SettingsService.setSensors($scope.sensors);
+              console.log($scope.sensors);
         });
       }
       else

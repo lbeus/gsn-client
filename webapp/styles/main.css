@@ -155,7 +155,7 @@ table.tablesorter thead tr .header {
 
 img 
 {
-    max-width: 100%;
+    max-width: none;
 }
 
 .gaugeTime {
