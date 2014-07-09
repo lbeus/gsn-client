@@ -79,16 +79,16 @@ function parseVSensorXML (xml) {
                   }*/
                   
                   sensor.size.y += 2;
-		  sensor.size.x = 3;
+		              sensor.size.x = 3;
                  } else {
-                 	sensor.size.y += 0.5;
+                 	 //sensor.size.y += 0.5;
                  }
 
              sensor.fields[currentField.attr("name")] = field;
               }
             });
             
-            sensor.size.y = Math.floor(sensor.size.y)-3;
+           // sensor.size.y = Math.floor(sensor.size.y)-3;
             var keys = Object.keys(sensor.fields);
 
             sensor.fieldKeys = keys;
