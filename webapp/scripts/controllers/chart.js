@@ -32,7 +32,8 @@ angular.module('gsnClientApp')
         tickPixelInterval: 150,
         labels: {
           formatter: function() {
-            return Highcharts.dateFormat('%Y-%m-%d, %H:%M', this.value);
+            //return Highcharts.dateFormat('%Y-%m-%d, %H:%M', this.value);            
+            return Highcharts.dateFormat('%H:%M', this.value);
           }
         }
       },

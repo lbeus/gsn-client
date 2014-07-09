@@ -5,8 +5,20 @@
         <div class="medium-6 columns">
           <h1>Electricity Meter</h1>
           <br/><br/>
+          <h3>Current sensor: {{sensorTitle}}</h3>
+          <br/>
           <div class="row">
             <div id="content">
+
+              <div class="medium-2 columns">
+                Sensor field:              
+                <select ng-model="selectedSensor" 
+                        ng-options="o.name for o in results" ng-change="sensorChanged()">
+                </select>
+              </div>
+            </div>
+            </div>
+            <div class="row" style="position:relative;left:25px">
               <div class="medium-2 columns" style="position:relative;left:0px">
                 <div id="container_gauge1" style="min-width: 350px; max-width: 350px; height: 300px; margin: 0 auto"></div>            
                 </br>

@@ -49,52 +49,52 @@ public class dohvati {
             
             serialPort.writeBytes(fullPowerMessage);
             s[0] = serialPort.readString(18);
-            //System.out.println(s[0]);
+            System.out.println(s[0]);
             Thread.sleep(100);
             
             serialPort.writeBytes(currentPhase1);
             s[1] = serialPort.readString(10);
-            //System.out.println(s[1]);
+            System.out.println(s[1]);
             Thread.sleep(100);
             
             serialPort.writeBytes(maxCummulativePowerT1Message);
             s[2] = serialPort.readString(15);
-            //System.out.println(s[2]);
+            System.out.println(s[2]);
             Thread.sleep(100);
             
             serialPort.writeBytes(maxCummulativePowerT2Message);
             s[3] = serialPort.readString(15);
-            //System.out.println(s[3]);
+            System.out.println(s[3]);
             Thread.sleep(100);
             
             serialPort.writeBytes(fullPowerT1Message);
             s[4] = serialPort.readString(18);
-            //System.out.println(s[4]);
+            System.out.println(s[4]);
             Thread.sleep(100);
             
             serialPort.writeBytes(fullPowerT2Message);
             s[5] = serialPort.readString(18);
-            //System.out.println(s[5]);
+            System.out.println(s[5]);
             Thread.sleep(100);
             
             serialPort.writeBytes(currentPhase2);
             s[6] = serialPort.readString(10);
-            //System.out.println(s[6]);
+            System.out.println(s[6]);
             Thread.sleep(100);
             
             serialPort.writeBytes(currentPhase3);
             s[7] = serialPort.readString(10);
-            //System.out.println(s[7]);
+            System.out.println(s[7]);
             Thread.sleep(100);
             
             serialPort.writeBytes(currentPowerT1Message);
             s[8]=serialPort.readString(20);
-            //System.out.println(s[8]);
+            System.out.println(s[8]);
             Thread.sleep(100);
             
             serialPort.writeBytes(currentPowerT2Message);
             s[9] = serialPort.readString(20);
-            //System.out.println(s[9]);
+            System.out.println(s[9]);
             Thread.sleep(100);
             
             serialPort.writeBytes(closeMessage);  
