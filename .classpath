@@ -137,8 +137,6 @@
 	<classpathentry kind="lib" path="lib/junit-jars/Tidy.jar"/>
 	<classpathentry kind="lib" path="lib/junit-jars/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/junit-jars/xmlParserAPIs.jar"/>
-	<classpathentry kind="lib" path="lib/optional/charting/jcommon-1.0.10.jar"/>
-	<classpathentry kind="lib" path="lib/optional/charting/jfreechart-1.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/optional/compiling/installer/izpack-standalone-compiler-4.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/optional/compiling/bcel.jar"/>
 	<classpathentry kind="lib" path="lib/optional/compiling/jibx-bind.jar"/>
@@ -183,5 +181,7 @@
 	<classpathentry kind="lib" path="lib/stringtemplate.jar"/>
 	<classpathentry kind="lib" path="lib/xom-1.2.10.jar"/>
 	<classpathentry kind="lib" path="lib/slf/commons-math-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/optional/charting/jcommon-1.0.21.jar"/>
+	<classpathentry kind="lib" path="lib/optional/charting/jfreechart-1.0.17.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
