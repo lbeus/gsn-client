@@ -75,7 +75,7 @@ public class RelayWrapper extends AbstractWrapper implements CommandWrapper {
         while (isActive()) {
             try {
                 boolean[] statusi = relayControl.getOutputStatus();
-               // boolean[] statusi = {true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false};
+                //boolean[] statusi = {true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false};
                 int length = statusi.length;
                 
 				Serializable[] podaci = new Serializable[relays];

@@ -82,7 +82,7 @@ function parseVSensorXML (xml) {
 		              sensor.size.x = 3;
                  } else {
                     if(currentField.attr("name") !== 'geographical' && currentField.attr("name") !== 'latitude' && currentField.attr("name") !== 'longitude')
-                 	    sensor.size.y += 0.5;
+                 	    sensor.size.y += 0.2;
                  }
 
              sensor.fields[currentField.attr("name")] = field;
@@ -96,9 +96,7 @@ function parseVSensorXML (xml) {
             var keys = Object.keys(sensor.fields);
 
             sensor.fieldKeys = keys;
-            if(sensor.fieldKeys.length > 10)
-              sensor.size.y = 4;
-
+          
             sensor.structureFields = [];
             keys.forEach(function (entry) {
                 if (entry !== 'geographical' && entry !== 'latitude' && entry !== 'longitude' )
