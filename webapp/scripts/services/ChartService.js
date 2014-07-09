@@ -170,7 +170,7 @@ angular.module('gsnClientApp')
 
     this.parseGaugeXML = function(xml, fieldName) {
       var nodes = $(xml);
-      var results;
+      var results = [];
       var fieldPosition = 0;
       var tuples = 0;
       $(nodes).children().each( // iterate over results
@@ -193,7 +193,11 @@ angular.module('gsnClientApp')
 
                         if(tuples == fieldPosition)
                         {
-                          results = field.text();
+                          results[0] = field.text();                          
+                        }
+                        if(tuples == 1)
+                        {
+                          results[1] = field.text();
                           return false;
                         }
                         tuples++;

@@ -5,10 +5,13 @@ angular.module('gsnClientApp')
   	var chart;
 	var gaugeData = [];
 	var value = -40;
-	var sensorName = 'electricitymeter';
-	var value1 = 'current_phase_1';
-	var value2 = 'current_phase_2';
-	var value3 = 'current_phase_3';
+	var sensorName = '';
+	var value1 = '';
+	var value2 = '';
+	var value3 = '';
+
+	$scope.sensorTitle = "Choose the sensor!";
+
 	$scope.valueGauge1;
 	$scope.valueGauge2;
 	$scope.valueGauge3;
@@ -16,6 +19,49 @@ angular.module('gsnClientApp')
 	$scope.valueTime1;
 	$scope.valueTime2;
 	$scope.valueTime3;
+
+  	$scope.selectedField = [];
+	$scope.selectedSensor1 = [];
+	$scope.results = [];
+
+  	VirtualSensorService.get(function (data) {
+		$scope.allData = data.sensors;
+		var currentNames = [];
+		var fields = [];
+		var allSensors = {	name: "All",
+							description : "",
+							structureFields : []
+		};
+		$scope.allData.forEach(function(sensor) {
+			if(sensor.name.substring(0,4) == "elec")
+			{
+				$scope.results.push(sensor);
+				$.merge(allSensors.structureFields, sensor.structureFields);
+			}
+		});
+		allSensors.structureFields.forEach(function(value) {
+			if(value != "timed")
+				fields.push(value);
+		});
+		allSensors.structureFields = fields;
+
+		allSensors.structureFields.splice(0,0, "All");
+		$.unique(allSensors.structureFields);
+
+		$scope.selectedSensor1[0] = allSensors;
+		$scope.selectedField[0] = $scope.selectedSensor1[0].structureFields[0];
+
+		if($scope.results.length > 0)
+		{			
+			sensorName = $scope.results[0].name;
+			$scope.sensorTitle = sensorName;
+		}
+    });
+
+	$scope.sensorChanged = function () {
+		sensorName = $scope.selectedSensor.name;
+		$scope.sensorTitle = $scope.selectedSensor.name;
+  	};
 
 	$(function () {
 	    var container_gauge1 = new Highcharts.Chart({
@@ -32,29 +78,27 @@ angular.module('gsnClientApp')
                         // set up the updating of the chart each 5 seconds
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                        	$http({method: 'GET', url: 'http://localhost:22001/multidata?vs[0]='
+                        	$http({method: 'GET', url: '/multidata?vs[0]='
                         					+ sensorName + '&field[0]=' + 'current_phase_1' 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
 
-                            gaugeData.push(data);
-                            y = ChartService.parseGaugeXML(gaugeData.pop(), value1);
-						    if(typeof y != "undefined")
-						    {
-						    	point.update(parseFloat(y));
-						    	$scope.valueGauge1 = y;
-						    	var time = new Date();
-						    	$scope.valueTime1 = time.getFullYear()  + '/' + (time.getMonth() + 1) + '/' + time.getDate() + ' ' 
-						    						+ time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
-		        			}
-		        		});
+		                            gaugeData.push(data);
+		                            y = ChartService.parseGaugeXML(gaugeData.pop(), value1);
+								    if(typeof y != "undefined")
+								    {
+								    	point.update(parseFloat(y[0]));
+								    	$scope.valueGauge1 = y[0];
+								    	$scope.valueTime1 = y[1];
+				        			}
+		        				});
                         }, 5000);
                     }
                 }
 		    },
 		    
 		    title: {
-		        text: 'Electricity Meter - Current Phase1'
+		        text: 'Current Phase1'
 		    },
 		    
 		    pane: {
@@ -150,7 +194,7 @@ angular.module('gsnClientApp')
                         // set up the updating of the chart each 5 seconds
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                        	$http({method: 'GET', url: 'http://localhost:22001/multidata?vs[0]='
+                        	$http({method: 'GET', url: '/multidata?vs[0]='
                         					+ sensorName + '&field[0]=' + 'current_phase_2' 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
@@ -160,19 +204,17 @@ angular.module('gsnClientApp')
 						    if(typeof y != "undefined")
 						    {
 						    	point.update(parseFloat(y));
-						    	$scope.valueGauge2 = y;
-						    	var time = new Date();
-						    	$scope.valueTime2 = time.getFullYear()  + '/' + (time.getMonth() + 1) + '/' + time.getDate() + ' ' 
-						    						+ time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+						    	$scope.valueGauge2 = y[0];
+						    	$scope.valueTime2 = y[1];
 		        			}
 		        		});
-                        }, 10000);
+                        }, 5000);
                     }
                 }
 		    },
 		    
 		    title: {
-		        text: 'Electricity Meter - Current Phase2'
+		        text: 'Current Phase2'
 		    },
 		    
 		    pane: {
@@ -269,7 +311,7 @@ angular.module('gsnClientApp')
                         // set up the updating of the chart each 5 seconds
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                        	$http({method: 'GET', url: 'http://localhost:22001/multidata?vs[0]='
+                        	$http({method: 'GET', url: '/multidata?vs[0]='
                         					+ sensorName + '&field[0]=' + 'current_phase_3' 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
@@ -279,10 +321,8 @@ angular.module('gsnClientApp')
 						    if(typeof y != "undefined")
 						    {
 						    	point.update(parseFloat(y));
-						    	$scope.valueGauge3 = y;
-						    	var time = new Date();
-						    	$scope.valueTime3 = time.getFullYear()  + '/' + (time.getMonth() + 1) + '/' + time.getDate() + ' ' 
-						    						+ time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+						    	$scope.valueGauge3 = y[0];
+						    	$scope.valueTime3 = y[1];
 		        			}
 		        		});
                         }, 5000);
@@ -291,7 +331,7 @@ angular.module('gsnClientApp')
 		    },
 		    
 		    title: {
-		        text: 'Electricity Meter - Current Phase3'
+		        text: 'Current Phase3'
 		    },
 		    
 		    pane: {

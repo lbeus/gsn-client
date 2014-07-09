@@ -88,7 +88,7 @@ function parseVSensorXML (xml) {
               }
             });
             
-            sensor.size.y = Math.floor(sensor.size.y)-3;
+            //sensor.size.y = Math.floor(sensor.size.y)-3;
             var keys = Object.keys(sensor.fields);
 
             sensor.fieldKeys = keys;
