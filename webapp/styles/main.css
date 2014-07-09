@@ -53,6 +53,7 @@ body,html{
     top : 50px;
     max-height: 90vh;
     overflow-y: scroll;
+    min-height: 90vh;
     /*width:100%;*/
 }
 
@@ -154,9 +155,13 @@ table.tablesorter thead tr .header {
 
 img 
 {
-    max-width: none;
+    max-width: 100%;
 }
 
+.gaugeTime {
+    font-size: 15px;
+    line-height:150%;
+}
 /*
 
 .gridster .gridster-item {

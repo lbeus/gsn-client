@@ -17,18 +17,16 @@ angular.module('gsnClientApp')
 
       for(var i = sensorResult.tuples.length - 1; i >= 0; --i)
       {
-        var time = new Date().getTime();
         var data = sensorResult.tuples[i];
         var date = data[sensorResult.header[nValues]].substring(0,10).split("-");
         var time = data[sensorResult.header[nValues]].substring((data[sensorResult.header[nValues]].indexOf("T") + 1),
                                                                 (data[sensorResult.header[nValues]].indexOf("T") + 7)).split(":");
         //var time = data[sensorResult.header[nValues]].substring(11,19).split(":");
         //var firstDate = new Date(Date.UTC(date[0], date[1], date[2], time[0], time[1]));
-        var firstDate = new Date(date[0], date[1], date[2], time[0], time[1]);
-
-        //alert("Data: " + data[sensorResult.header[j]]);
+        var firstDate = new Date(date[0], date[1]-1, date[2], time[0], time[1]);
+ 
         for (var j = 0; j < nValues; j++)
-        {          
+        {       
           allData[j].push({
             x: firstDate,
             y: parseFloat(data[sensorResult.header[j]])
@@ -62,14 +60,18 @@ angular.module('gsnClientApp')
       return myData;
     }
 
-    this.getDataForDayChart = function(sensorResult, dateFrom, dateUntil, type) {
+    this.getDataForDayChart = function(sensorResult, dateFrom, dateUntil, dataType) {
       var nValues = sensorResult.header.length-1;
       var allData = {};
       var valueNames = {};
       var myData = [];
       var pickedDateFrom;
       var isToday = true;
+      var fieldIndex = -1;
+      var nDataPush = 0;
 
+      if(dataType != 'All')
+        nDataPush = 1;
       var today = new Date();
       var dd = today.getDate();
       var mm = today.getMonth()+1; //January is 0!
@@ -86,7 +88,13 @@ angular.module('gsnClientApp')
 
       for (var j = 0; j < nValues; j++) {
         allData[j] = new Array();
-        valueNames[j] = sensorResult.header[j];
+        if(sensorResult.header[j] == dataType || dataType == 'All')
+        {
+          valueNames[j] = sensorResult.header[j];
+          fieldIndex = j;
+          if(dataType == 'All')
+            nDataPush++;
+        }
       }
 
       for(var i = sensorResult.tuples.length - 1; i >= 0; --i) {
@@ -102,22 +110,43 @@ angular.module('gsnClientApp')
         if(((dateFrom != "" && dateFrom != null) && 
           (date[0] == pickedDateFrom.getDate() && date[1] == ("0" + (pickedDateFrom.getMonth())).slice(-2) && date[2] == pickedDateFrom.getFullYear())) 
           || (isToday && (date[0] == dd && date[1] == mm && date[2] == yyyy))) {
-          for (var j = 0; j < nValues; j++)
-          {          
-            allData[j].push({
-              x: firstDate,
-              y: parseFloat(data[sensorResult.header[j]])
-            })
-          };
+          if(dataType == 'All')
+          {
+            for (var j = 0; j < nValues; j++)
+            {          
+              allData[j].push({
+                x: firstDate,
+                y: parseFloat(data[sensorResult.header[j]])
+              })
+            };
+          }
+          else
+          {
+            for (var j = 0; j < nValues; j++)
+            {
+              if(j == fieldIndex)
+              {
+                allData[0].push({
+                  x: firstDate,
+                  y: parseFloat(data[sensorResult.header[j]])
+                })
+              }
+            };
+          }
         }
       }
 
-      for (var j = 0; j < nValues; j++)
+      if(dataType != 'All')
+      {
+        valueNames[0] = valueNames[fieldIndex];
+      }
+
+      for (var j = 0; j < nDataPush; j++)
       {
         myData.push({
-          name: 'temprabbit',
+          name: valueNames[j],
           data: allData[j],
-          type: type,
+          type: 'column',
           dataLabels: valueNames[j],
           id: valueNames[j],
           tooltip: {

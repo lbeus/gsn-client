@@ -1,13 +1,13 @@
- <virtual-sensor name="TempRabbit" priority="11">
+ <virtual-sensor name="RabbitBrojilo" priority="11">
     <processing-class>
         <class-name>gsn.vsensor.BridgeVirtualSensor</class-name>
         <output-structure>
-            <field name="TEMPERATURA" type="int" />
+            <field name="PODATAK" type="double" />
         </output-structure>
 
     </processing-class>
     <description>
-        Getting temperature.
+        Getting power from electricity meter via Rabbit.
     </description>
     <life-cycle pool-size="10" />
     <addressing>
@@ -18,8 +18,8 @@
     <storage history-size="5m" />
     <streams>
         <stream name="input1">
-            <source alias="source1" sampling-rate="100" storage-size="1">
-                <address wrapper="rabbit">
+            <source alias="source1" sampling-rate="1" storage-size="1">
+                <address wrapper="Brojilo">
                     <predicate key="sampling-rate">60000</predicate>
                 </address>
                 <query>select * from wrapper</query>

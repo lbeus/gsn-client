@@ -25,14 +25,14 @@ angular.module('gsnClientApp')
         text: ''
       },
 
-      useHighStocks: false,
+      useHighStocks: true,
 
       xAxis: {
         type: 'datetime',
         tickPixelInterval: 150,
         labels: {
           formatter: function() {
-            return Highcharts.dateFormat('%H:%M:%S', this.value);
+            return Highcharts.dateFormat('%Y-%m-%d, %H:%M', this.value);
           }
         }
       },
@@ -83,7 +83,7 @@ angular.module('gsnClientApp')
     
     $scope.seriesTypeChange = function(type) {
       $scope.chartConfig.series[0].type =  type;    
-    };  
+    };
     
     $scope.toggleLabels = function () {
       enableDataLabels = !enableDataLabels;
