@@ -16,6 +16,12 @@
 			</dl>
 			<div class="tabs-content">
 				<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:200px;">
+
+					<div class="row">
+						<div class="medium-2 columns" style="position:relative; top:10px;">
+			        			<img id="spinner1" ng-src="images/ajax-loader.gif" style="display:none;">
+			        	</div>
+			        </div>
 					
 					<div class="row" ng-show="showErrorCommand === true">
 							<div class="medium-8 columns left" >
@@ -47,6 +53,17 @@
 					</div>
 
 					<div class="row">
+
+						 <div class="medium-3 columns">
+            				<select ng-model="selectedFanSpeed" 
+                					ng-options="o.name for o in fanSpeed" ng-change="">
+            				</select>
+          				</div>
+					</div>
+
+
+
+					<div class="row">
 						<div class="medium-4 columns left" style="position:relative;left:20px;top:5px;">
 							<a ng-click="fanClicked();">
 								<img ng-src="/images/fan{{config.state['manual-fan']}}.gif" />
@@ -76,13 +93,7 @@
 						   Override
 						</div>
 						<div class="medium-4 columns left" style="position:relative;left:15px;top:5px;">
-						   <input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/> 
-						</div>
-					</div>
-					
-					<div class="row">
-						<div class="medium-4 columns left" style="">
-							{{responseStatus}}
+						   <input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/>
 						</div>
 					</div>
 				</div>

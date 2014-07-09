@@ -75,6 +75,7 @@ public class RelayWrapper extends AbstractWrapper implements CommandWrapper {
         while (isActive()) {
             try {
                 boolean[] statusi = relayControl.getOutputStatus();
+               // boolean[] statusi = {true,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false};
                 int length = statusi.length;
                 
 				Serializable[] podaci = new Serializable[relays];
@@ -118,6 +119,7 @@ public class RelayWrapper extends AbstractWrapper implements CommandWrapper {
             if(addressBean.getPredicateValue("Relays") != null){
                 relays = ParamParser.getInteger(addressBean.getPredicateValue("Sockets"), DEFAULT_NUMBER_OF_RELAYS);
             }
+            
             if(addressBean.getPredicateValue("port") != null){
                 port = ParamParser.getInteger(addressBean.getPredicateValue("port"), DEFAULT_PORT);
             }
@@ -125,6 +127,7 @@ public class RelayWrapper extends AbstractWrapper implements CommandWrapper {
             if(addressBean.getPredicateValue("IPAddress") != null){
                 ipAddress = addressBean.getPredicateValue("IPAddress");
             }
+            
 			InetAddress local = InetAddress.getLocalHost();
 			InetAddress address = InetAddress.getByName(ipAddress);
 			

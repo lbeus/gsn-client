@@ -1,13 +1,24 @@
 'use strict';
 
 angular.module('gsnClientApp')
-  .controller('PassiveHeatingController', function ($http, $scope, PassiveHeatingService ) {
+  .controller('PassiveHeatingController', function ($http, $scope, PassiveHeatingService) {
 
   	$scope.config = {state:{'manual-fan':0 , 'manual-heater':0}};
 
     $scope.showStatus = false;
     $scope.showError = false;
     $scope.showInfo = false;
+
+    $scope.fanSpeed = [
+        {name:"Select fan speed", value:0, visible:true},
+        {name:"1", value:1, visible:true},
+        {name:"2", value:2, visible:false},
+        {name:"3", value:3, visible:false},
+        {name:"4", value:4, visible:false},
+        {name:"5", value:5, visible:false}
+      ];
+
+    $scope.selectedFanSpeed = $scope.fanSpeed[0];
 
   	PassiveHeatingService.getConfig(function (config) {
   		$scope.config = config;
@@ -48,17 +59,26 @@ angular.module('gsnClientApp')
   	});
 
   	$scope.heaterClicked = function() {
-  		$scope.config.state["manual-heater"] = Math.abs(1 - $scope.config.state["manual-heater"]);
-
-      $scope.config.state['auto-control'] = 0;
-      $scope.autoControl = 0;
+      $scope.showErrorCommand = false;
+      $("#spinner1").show();
+  		
+      var heater = Math.abs(1 - $scope.config.state["manual-heater"]);
       
-      $http.get('/passiveheating/control?heater='+$scope.config.state['manual-heater']).success(
+      $http.get('/passiveheating/control?heater='+heater).success(
         function (data) {
-            $scope.responseStatus = data;
+            $("#spinner1").hide();
+            if(parseResponse(data) === "exception"){
+                $scope.errorMessageCommand = "Heater command execute failed";
+                $scope.showErrorCommand = true;
+            }else{
+              $scope.config.state["manual-heater"] = heater;
+              $scope.config.state['auto-control'] = 0;
+              $scope.autoControl = 0;
+            }
         }
       ).error(function (error) {
-          $scope.config.state["manual-heater"] = Math.abs(1 - $scope.config.state["manual-heater"]);
+          $("#spinner1").hide();
+          //$scope.config.state["manual-heater"] = Math.abs(1 - $scope.config.state["manual-heater"]);
           $scope.errorMessageCommand = "Heater command execute failed";
           $scope.showErrorCommand = true;
       });
@@ -66,38 +86,63 @@ angular.module('gsnClientApp')
 
 
   	$scope.fanClicked = function() {
-  		$scope.config.state["manual-fan"] = Math.abs(1 - $scope.config.state["manual-fan"]);
+      if($scope.selectedFanSpeed.value > 0){
+        $scope.showErrorCommand = false;
+        $("#spinner1").show();
 
-      $scope.config.state['auto-control'] = 0;
-      $scope.autoControl = 0;
-      
-  		$http.get('/passiveheating/control?fan='+$scope.config.state['manual-fan']).success(
+      var fanSpeed;
+      if($scope.config.state["manual-fan"] > 0)
+  		  fanSpeed = 0;
+      else
+        fanSpeed = $scope.selectedFanSpeed.value;
+
+  		$http.get('/passiveheating/control?fan='+fanSpeed).success(
   			function (data) {
-  				$scope.responseStatus = data;
+           $("#spinner1").hide();
+           if(parseResponse(data) === "exception"){
+              $scope.errorMessageCommand = "Fan command execute failed";
+              $scope.showErrorCommand = true;
+           }else{
+              $scope.config.state["manual-fan"] = fanSpeed;
+              $scope.config.state['auto-control'] = 0;
+              $scope.autoControl = 0;
+           }
   			}
   		).error( function(error) {
-          $scope.config.state["manual-fan"] = Math.abs(1 - $scope.config.state["manual-fan"]);
+          $("#spinner").hide();
           $scope.errorMessageCommand = "Fan command execute failed";
           $scope.showErrorCommand = true;
       });
+      }else{
+        $scope.errorMessageCommand = "Select fan speed";
+        $scope.showErrorCommand = true;
+      }
   	}
 
     $scope.autoControlClicked = function() {
 
-      $scope.config.state['auto-control'] = $scope.autoControl * 1;
-
+      $scope.showErrorCommand = false;
+      $("#spinner1").show();
+      //$scope.config.state['auto-control'] = $scope.autoControl * 1;
       if($scope.autoControl === true) {
         $http.get('/passiveheating/autocontrol').success(
           function (data) {
-              $scope.responseStatus = data;
+              $("#spinner1").hide();
+              if(parseResponse(data) === "exception"){
+                  $scope.errorMessageCommand = "Auto control command execute failed";
+                  $scope.showErrorCommand = true;
+              }else
+                 $scope.config.state['auto-control'] = $scope.autoControl * 1;
           }
         ).error( function(error) {
-          $scope.autoControl = false;
+          $("#spinner1").hide();
+          //$scope.autoControl = false;
           $scope.errorMessageCommand = "Auto control command execute failed";
           $scope.showErrorCommand = true;
         });
       }
       else {
+        $("#spinner1").hide();
         $scope.autoControl = true;
         $scope.config.state['auto-control'] = $scope.autoControl * 1;
         $scope.showInfo = true;
@@ -107,28 +152,40 @@ angular.module('gsnClientApp')
 
     $scope.airIntakeClicked = function() {
 
+      $scope.showErrorCommand = false;
+      $("#spinner1").show();
+
+      var airIntake;
       if($scope.airIntake === false)
-        $scope.config.state['air-intake'] = "normal";
+        airIntake = "normal";
       else
-        $scope.config.state['air-intake'] = "override";
+        airIntake = "override";
 
       $http.get('/passiveheating/air?intake='+ $scope.config.state['air-intake']).success(
           function (data) {
-            $scope.responseStatus = data;
+            $("#spinner1").hide();
+            if(parseResponse(data) === "exception"){
+              $scope.errorMessageCommand = "Auto control command execute failed";
+              $scope.showErrorCommand = true;
+              $scope.airIntake = !$scope.airIntake;
+            }else{
+              $scope.config.state['air-intake'] = airIntake;
+            }
           }
         ).error( function(error) {
-
+          $("#spinner1").hide();
           $scope.airIntake = !$scope.airIntake;
-          if($scope.airIntake === false)
+          /*if($scope.airIntake === false)
               $scope.config.state['air-intake'] = "normal";
           else
-              $scope.config.state['air-intake'] = "override";
+              $scope.config.state['air-intake'] = "override";*/
 
           $scope.errorMessageCommand = "Air intake command execute failed";
           $scope.showErrorCommand = true;
         });
     };
 
+    
     $scope.updateConfig = function() {
 
       var request = {
@@ -168,3 +225,10 @@ angular.module('gsnClientApp')
           });
     };
 });
+
+
+function parseResponse(xml){
+  var nodes = $(xml);
+
+  return  $(nodes).find('status').text();
+}

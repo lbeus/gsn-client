@@ -12,6 +12,9 @@ angular.module('gsnClientApp')
 	  		{name:"disable", value: -1, visible:false},
   		];
 
+  		
+
+
   		this.visibleSensors = [];
   		this.sensors = [];
 

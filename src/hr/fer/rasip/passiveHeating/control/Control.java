@@ -62,6 +62,8 @@ public class Control {
 					throw new Exception("Unknown result command.");
 			}
 		}
+		else
+			throw new Exception("Unknown result command.");
 	}
 	
 	/**
@@ -82,6 +84,8 @@ public class Control {
 					throw new Exception("Unknown result command.");
 			}
 		}
+		else
+			throw new Exception("Unknown result command");
 	}
 	
 	/**
@@ -109,6 +113,8 @@ public class Control {
 				default:
 					throw new Exception("Unknown result command.");
 			}
+		}else{
+			throw new Exception("Unknown result command.");	
 		}
 	}
 	

@@ -266,6 +266,35 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
         		heater = Integer.parseInt(request.getParameter(HEATER_PARAMETER_STRING));
         	}
         	
+        	try {
+        		//ovdje eventualno staviti kasnjenje
+        		Thread.sleep(2000);
+        		SAXBuilder builder = new SAXBuilder();
+    			File xmlFile = new File(CONFIG_FILE_PATH);
+    			Document doc = (Document) builder.build(xmlFile);
+    			Element root = doc.getRootElement();
+    			Element coreParameters = root.getChild("core-parameters");
+    			String rabbitIP = coreParameters.getChild("rabbit-ip").getValue();
+    			int freeServerPort = Integer.parseInt(coreParameters.getChild("free-server-port").getValue());
+        		InetAddress localInetAddress = InetAddress.getLocalHost();
+				InetAddress remoteInetAddress = InetAddress.getByName(rabbitIP);
+				Control control = new Control(localInetAddress, freeServerPort, remoteInetAddress);
+				if(fan != -1){
+					control.setFanPower(fan);
+				}
+				if(heater != -1){
+					control.setHeaterState((heater==1)?true:false);
+				}
+        	}
+        	catch(Exception e){
+        		sb.append("<status>exception</status>\n<description>"+ e.getClass()+": " + e.getMessage() + "</description>\n</response>");
+    			response.setHeader("Cache-Control", "no-store");
+    	        response.setDateHeader("Expires", 0);
+    	        response.setHeader("Pragma", "no-cache");
+    	        response.getWriter().write(sb.toString());
+        		return; 
+        	}
+        	
         	try{
             	SAXBuilder builder = new SAXBuilder();
             	
@@ -296,36 +325,7 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
     	        response.getWriter().write(sb.toString());
         		return; 
         	}
-        	
-        	try {
-        		//ovdje eventualno staviti kasnjenje
-        		Thread.sleep(2000);
-        		SAXBuilder builder = new SAXBuilder();
-    			File xmlFile = new File(CONFIG_FILE_PATH);
-    			Document doc = (Document) builder.build(xmlFile);
-    			Element root = doc.getRootElement();
-    			Element coreParameters = root.getChild("core-parameters");
-    			String rabbitIP = coreParameters.getChild("rabbit-ip").getValue();
-    			int freeServerPort = Integer.parseInt(coreParameters.getChild("free-server-port").getValue());
-        		InetAddress localInetAddress = InetAddress.getLocalHost();
-				InetAddress remoteInetAddress = InetAddress.getByName(rabbitIP);
-				Control control = new Control(localInetAddress, freeServerPort, remoteInetAddress);
-				if(fan != -1){
-					control.setFanPower(fan);
-				}
-				if(heater != -1){
-					control.setHeaterState((heater==1)?true:false);
-				}
-        	}
-        	catch(Exception e){
-        		sb.append("<status>exception</status>\n<description>"+ e.getClass()+": " + e.getMessage() + "</description>\n</response>");
-    			response.setHeader("Cache-Control", "no-store");
-    	        response.setDateHeader("Expires", 0);
-    	        response.setHeader("Pragma", "no-cache");
-    	        response.getWriter().write(sb.toString());
-        		return; 
-        	}
-			
+        
         	sb.append("<status>ok</status>\n<description>Passive heating values set to "
         				+ ((fan != -1)?"fan = " + fan + " ":" "  )
         				+ ((heater != -1)?"heater = " + heater + " ":" "  ) + "</description>\n</response>");
@@ -426,6 +426,7 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
     	        response.getWriter().write(sb.toString());
         		return; 
         	}
+        	
         	if(request.getParameter(INTAKE_PARAMETER_STRING).equalsIgnoreCase(INTAKE_NORMAL_STRING)){
         		sb.append("<status>ok</status>\n<description>Air intake set to " + INTAKE_NORMAL_STRING + "</description></response>\n");
 			}

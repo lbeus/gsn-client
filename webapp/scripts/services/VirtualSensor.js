@@ -60,6 +60,8 @@ function parseVSensorXML (xml) {
             var keys = Object.keys(sensor.fields);
 
             sensor.fieldKeys = keys;
+            if(sensor.fieldKeys.length > 10)
+              sensor.size.y = 4;
 
             sensor.structureFields = [];
             keys.forEach(function (entry) {

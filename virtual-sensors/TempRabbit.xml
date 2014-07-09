@@ -4,7 +4,6 @@
         <output-structure>
             <field name="TEMPERATURA" type="int" />
         </output-structure>
-
     </processing-class>
     <description>
         Getting temperature.
