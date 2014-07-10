@@ -83,7 +83,11 @@ angular.module('gsnClientApp')
     };
     
     $scope.seriesTypeChange = function(type) {
-      $scope.chartConfig.series[0].type =  type;    
+      var seriesArray = $scope.chartConfig.series;
+      for(var i = 0; i < seriesArray.length; i++)
+      {
+        $scope.chartConfig.series[i].type =  type;    
+      }
     };
     
     $scope.toggleLabels = function () {
