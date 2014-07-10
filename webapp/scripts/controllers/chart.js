@@ -25,7 +25,7 @@ angular.module('gsnClientApp')
         text: ''
       },
 
-      useHighStocks: true,
+      useHighStocks: false,
 
       xAxis: {
         type: 'datetime',
@@ -72,14 +72,11 @@ angular.module('gsnClientApp')
       {
         seriesArray.splice(i, seriesArray.length)
       }
-      //$scope.chartConfig.series[0].setData(chartData);
 
       for(var i = 0; i < myData.length; i++)
       {
         seriesArray.push(myData[i]);
       }
-      //$scope.chartConfig.title = $scope.selectedChart.name;
-
     };
     
     $scope.seriesTypeChange = function(type) {
