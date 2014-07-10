@@ -6,9 +6,9 @@ angular.module('gsnClientApp')
 	var gaugeData = [];
 	var value = -40;
 	var sensorName = '';
-	var value1 = '';
-	var value2 = '';
-	var value3 = '';
+	var value1 = 'current_phase_1';
+	var value2 = 'current_phase_2';
+	var value3 = 'current_phase_3';
 
 	$scope.sensorTitle = "Choose the sensor!";
 
@@ -24,8 +24,16 @@ angular.module('gsnClientApp')
 	$scope.selectedSensor1 = [];
 	$scope.results = [];
 
+	function isEmpty(str) {
+	    return (!str || 0 === str.length);
+	}
+
+	function isBlank(str) {
+	    return (!str || /^\s*$/.test(str));
+	}
+
   	VirtualSensorService.get(function (data) {
-		$scope.allData = data.sensors;
+  		$scope.allData = data.sensors;
 		var currentNames = [];
 		var fields = [];
 		var allSensors = {	name: "All",
@@ -39,17 +47,9 @@ angular.module('gsnClientApp')
 				$.merge(allSensors.structureFields, sensor.structureFields);
 			}
 		});
-		allSensors.structureFields.forEach(function(value) {
-			if(value != "timed")
-				fields.push(value);
-		});
-		allSensors.structureFields = fields;
-
-		allSensors.structureFields.splice(0,0, "All");
-		$.unique(allSensors.structureFields);
 
 		$scope.selectedSensor1[0] = allSensors;
-		$scope.selectedField[0] = $scope.selectedSensor1[0].structureFields[0];
+		$scope.selectedSensor = $scope.results[0];
 
 		if($scope.results.length > 0)
 		{			
@@ -78,20 +78,23 @@ angular.module('gsnClientApp')
                         // set up the updating of the chart each 5 seconds
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                        	$http({method: 'GET', url: '/multidata?vs[0]='
-                        					+ sensorName + '&field[0]=' + 'current_phase_1' 
+                        	if($scope.results.length > 0)
+                        	{
+                        		$http({method: 'GET', url: '/multidata?vs[0]='
+                        					+ sensorName + '&field[0]=' + value1 
                         					+ '&download_format=xml'}).
-    							success(function(data, status, headers, config) {
+    								success(function(data, status, headers, config) {
+			                            gaugeData.push(data);
+			                            y = ChartService.parseGaugeXML(gaugeData.pop(), value1);
 
-		                            gaugeData.push(data);
-		                            y = ChartService.parseGaugeXML(gaugeData.pop(), value1);
-								    if(typeof y != "undefined")
-								    {
-								    	point.update(parseFloat(y[0]));
-								    	$scope.valueGauge1 = y[0];
-								    	$scope.valueTime1 = y[1];
-				        			}
-		        				});
+									    if(!isEmpty(y) || !isBlank(y))
+									    {
+									    	point.update(parseFloat(y[0]));
+									    	$scope.valueGauge1 = y[0];
+									    	$scope.valueTime1 = y[1];
+					        			}
+		        					});
+    						}
                         }, 5000);
                     }
                 }
@@ -194,20 +197,24 @@ angular.module('gsnClientApp')
                         // set up the updating of the chart each 5 seconds
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
-                        	$http({method: 'GET', url: '/multidata?vs[0]='
-                        					+ sensorName + '&field[0]=' + 'current_phase_2' 
-                        					+ '&download_format=xml'}).
-    							success(function(data, status, headers, config) {
+                        	if($scope.results.length > 0)
+                        	{
+		                        $http({method: 'GET', url: '/multidata?vs[0]='
+		                        					+ sensorName + '&field[0]=' + value2 
+		                        					+ '&download_format=xml'}).
+		    							success(function(data, status, headers, config) {
 
-                            gaugeData.push(data);
-                            y = ChartService.parseGaugeXML(gaugeData.pop(), value2);
-						    if(typeof y != "undefined")
-						    {
-						    	point.update(parseFloat(y));
-						    	$scope.valueGauge2 = y[0];
-						    	$scope.valueTime2 = y[1];
-		        			}
-		        		});
+		                            gaugeData.push(data);
+		                            y = ChartService.parseGaugeXML(gaugeData.pop(), value2);
+									
+									if(!isEmpty(y) || !isBlank(y))
+								    {
+								    	point.update(parseFloat(y));
+								    	$scope.valueGauge2 = y[0];
+								    	$scope.valueTime2 = y[1];
+				        			}
+			        			});
+	    					}
                         }, 5000);
                     }
                 }
@@ -311,20 +318,24 @@ angular.module('gsnClientApp')
                         // set up the updating of the chart each 5 seconds
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
+                        if($scope.results.length > 0)
+                        {
                         	$http({method: 'GET', url: '/multidata?vs[0]='
-                        					+ sensorName + '&field[0]=' + 'current_phase_3' 
+                        					+ sensorName + '&field[0]=' + value3 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
 
-                            gaugeData.push(data);
-                            y = ChartService.parseGaugeXML(gaugeData.pop(), value3);
-						    if(typeof y != "undefined")
-						    {
-						    	point.update(parseFloat(y));
-						    	$scope.valueGauge3 = y[0];
-						    	$scope.valueTime3 = y[1];
-		        			}
-		        		});
+		                            gaugeData.push(data);
+		                            y = ChartService.parseGaugeXML(gaugeData.pop(), value3);
+
+									if(!isEmpty(y) || !isBlank(y))
+								    {
+								    	point.update(parseFloat(y));
+								    	$scope.valueGauge3 = y[0];
+								    	$scope.valueTime3 = y[1];
+				        			}
+				        		});
+    						}
                         }, 5000);
                     }
                 }

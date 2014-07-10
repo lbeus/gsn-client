@@ -162,6 +162,10 @@ img
     font-size: 15px;
     line-height:150%;
 }
+
+.chartstyle {
+    width: 70%;
+}
 /*
 
 .gridster .gridster-item {

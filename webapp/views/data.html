@@ -2,19 +2,19 @@
     <div id="container" >
     </br>
         <div class="row">
-                  <div class="medium-2 columns">
-                    <select ng-model="numberOfValuesToFetch" 
-                          ng-options="o.name for o in numberOfValuesToFetchOptions" ng-change="numberOfValuesToFetchChanged()">
-                    </select>
-                  </div>
-                  <div class="medium-1 columns left">
-                    <input ng-model="valuesToFetch" 
-                                ng-disabled="numberOfValuesToFetch.name === 'All data'" type="text" placeholder="" />
-                  </div>
+          <div class="medium-2 columns">
+            <select ng-model="numberOfValuesToFetch" 
+                  ng-options="o.name for o in numberOfValuesToFetchOptions" ng-change="numberOfValuesToFetchChanged()">
+            </select>
+          </div>
+          <div class="medium-1 columns left">
+            <input ng-model="valuesToFetch" 
+                        ng-disabled="numberOfValuesToFetch.name === 'All data'" type="text" placeholder="" />
+          </div>
 
-                   <div class="medium-1 columns left" style="position:relative;top:5px;left:-15px;">
-                      Values
-                   </div>
+           <div class="medium-1 columns left" style="position:relative;top:5px;left:-15px;">
+              Values
+           </div>
         </div>
         <div class="row">
           <div class="medium-2 columns">
@@ -131,7 +131,7 @@
           <dd ng-class = "{'active' : selectedTab == 1 }" ><a ng-click="selectedTab = 1" >Download</a></dd>
           <dd ng-class = "{'active' : selectedTab == 2 }"><a ng-click="selectedTab = 2;fetchData();" >Plot</a></dd>
           <dd ng-class = "{'active' : selectedTab == 3 }"><a ng-click="selectedTab = 3;fetchData();" >Table</a></dd>
-         </dl>
+        </dl>
         
         <div class="tabs-content">
           <div class="content" ng-class = "{'active' : selectedTab == 1 }">
@@ -163,9 +163,9 @@
               </div>
           </div>
           <div class="content" ng-class = "{'active' : selectedTab == 2 }">
-            <div ng-controller = "ChartController">
+            <div ng-controller = "DataController">
               <div class="row">
-                <div class="medium-2 columns left" style="position:relative;left:0px;">
+                <div class="medium-2 columns left" style="position:relative;">
                   Virtual sensor:
                   <select ng-model="selectedChart" 
                           ng-options="o.name for o in results" ng-change="showResulChart()">
@@ -174,14 +174,18 @@
                 <div class="medium-2 columns left" style="position:relative;left:0px;">
                   Chart type:
                   <select ng-model="selectedChartType" ng-options="selectedChartType for selectedChartType in chartTypes" ng-change="seriesTypeChange(selectedChartType)"></select>
-                </div><!--
-                <div class="medium-2 columns left" style="position:relative;left:0px;">
-                  <a ng-click="reconfigChart()" class="button [radius round]">Reconfig</a>
-                </div>-->            
+                </div>                
+                <div class="medium-2 columns left" style="position:relative;">
+                </br>
+                  <a ng-click="fetchData(); drawByFilter();" 
+                     class="alert round left button tiny secondary">Draw by filter</a>      
+                </div>
               </div>
-              <div>
-                <highchart id="chartdiv" config="chartConfig" style="width: 1100px; height: 500px;"></highchart>
-              </div>
+              <div class="row">
+                <div class="medium-2 columns left">
+                  <highchart id="chartdiv" config="chartConfig" style="height: 500px;" class="chartstyle"></highchart>
+                </div>
+            </div>
             </div>
           </div>
           <div class="content" ng-class = "{'active' : selectedTab == 3 }">
