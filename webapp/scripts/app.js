@@ -91,6 +91,17 @@ app.run(function($rootScope, $location, $http, NavigationService) {
               active:data[i].active
           });
         }
+
+        routeProviderReference.when('/about',{
+              templateUrl: 'views/about.html',
+              controller: 'AboutController'
+            }
+          );
+        NavigationService.addPage({
+              pageName: 'About',
+              url:'/about',
+              active:false
+          });
     });
     $rootScope.$on('$routeChangeStart', function(next, current) { 
          NavigationService.pageChanged($location.path());
