@@ -6,9 +6,9 @@ angular.module('gsnClientApp')
 	var gaugeData = [];
 	var value = -40;
 	var sensorName = '';
-	var value1 = '';
-	var value2 = '';
-	var value3 = '';
+	var value1 = 'current_phase_1';
+	var value2 = 'current_phase_2';
+	var value3 = 'current_phase_3';
 
 	$scope.sensorTitle = "Choose the sensor!";
 
@@ -23,6 +23,14 @@ angular.module('gsnClientApp')
   	$scope.selectedField = [];
 	$scope.selectedSensor1 = [];
 	$scope.results = [];
+
+	function isEmpty(str) {
+	    return (!str || 0 === str.length);
+	}
+
+	function isBlank(str) {
+	    return (!str || /^\s*$/.test(str));
+	}
 
   	VirtualSensorService.get(function (data) {
 		$scope.allData = data.sensors;
@@ -39,17 +47,9 @@ angular.module('gsnClientApp')
 				$.merge(allSensors.structureFields, sensor.structureFields);
 			}
 		});
-		allSensors.structureFields.forEach(function(value) {
-			if(value != "timed")
-				fields.push(value);
-		});
-		allSensors.structureFields = fields;
-
-		allSensors.structureFields.splice(0,0, "All");
-		$.unique(allSensors.structureFields);
 
 		$scope.selectedSensor1[0] = allSensors;
-		$scope.selectedField[0] = $scope.selectedSensor1[0].structureFields[0];
+		$scope.selectedSensor = $scope.results[0];
 
 		if($scope.results.length > 0)
 		{			
@@ -79,13 +79,14 @@ angular.module('gsnClientApp')
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
                         	$http({method: 'GET', url: '/multidata?vs[0]='
-                        					+ sensorName + '&field[0]=' + 'current_phase_1' 
+                        					+ sensorName + '&field[0]=' + value1 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
 
 		                            gaugeData.push(data);
 		                            y = ChartService.parseGaugeXML(gaugeData.pop(), value1);
-								    if(typeof y != "undefined")
+
+								    if(!isEmpty(y) || !isBlank(y))
 								    {
 								    	point.update(parseFloat(y[0]));
 								    	$scope.valueGauge1 = y[0];
@@ -195,13 +196,14 @@ angular.module('gsnClientApp')
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
                         	$http({method: 'GET', url: '/multidata?vs[0]='
-                        					+ sensorName + '&field[0]=' + 'current_phase_2' 
+                        					+ sensorName + '&field[0]=' + value2 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
 
                             gaugeData.push(data);
                             y = ChartService.parseGaugeXML(gaugeData.pop(), value2);
-						    if(typeof y != "undefined")
+							
+							if(!isEmpty(y) || !isBlank(y))
 						    {
 						    	point.update(parseFloat(y));
 						    	$scope.valueGauge2 = y[0];
@@ -312,13 +314,14 @@ angular.module('gsnClientApp')
            		        var point = this.series[0].points[0], y;
                         setInterval(function() {
                         	$http({method: 'GET', url: '/multidata?vs[0]='
-                        					+ sensorName + '&field[0]=' + 'current_phase_3' 
+                        					+ sensorName + '&field[0]=' + value3 
                         					+ '&download_format=xml'}).
     							success(function(data, status, headers, config) {
 
                             gaugeData.push(data);
                             y = ChartService.parseGaugeXML(gaugeData.pop(), value3);
-						    if(typeof y != "undefined")
+
+							if(!isEmpty(y) || !isBlank(y))
 						    {
 						    	point.update(parseFloat(y));
 						    	$scope.valueGauge3 = y[0];
