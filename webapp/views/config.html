@@ -74,9 +74,12 @@
                     data: jsonString,
                     type: "POST",
                     success: function(responseText) {
-                        //alert(responseText);
+                        alert("Changes are saved!");
                         //virtualSensorCm.setValue(responseText);
-                    }
+                    },
+		    error : function(jqxhr, status, error){
+				alert("Error while saving changes\n"+status+"\n"+ error);
+			}
                 });
             });
         </script>
