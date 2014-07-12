@@ -233,9 +233,19 @@ angular.module('gsnClientApp')
     });
 
     $scope.chartConfig = {
-      chart: {
-        renderTo: 'chartdiv',
-        zoomType: 'x',
+      options: {
+        chart: {
+          renderTo: 'chartdiv',
+          zoomType: 'x',
+          resetZoomButton: {
+            position: {
+                // align: 'right', // by default
+                // verticalAlign: 'top', // by default
+                x: -40,
+                y: 10
+            }
+          }
+        }
       },
 
       title: {
