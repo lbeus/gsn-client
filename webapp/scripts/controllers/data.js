@@ -202,7 +202,6 @@ angular.module('gsnClientApp')
             });
     };
 
-
     function createGridOptions(sensorResult) {
  
         var options = {};
@@ -233,9 +232,19 @@ angular.module('gsnClientApp')
     });
 
     $scope.chartConfig = {
-      chart: {
-        renderTo: 'chartdiv',
-        zoomType: 'x',
+      options: {
+        chart: {
+          renderTo: 'chartdiv',
+          zoomType: 'x',
+          resetZoomButton: {
+            position: {
+                // align: 'right', // by default
+                // verticalAlign: 'top', // by default
+                x: -40,
+                y: 10
+            }
+          }
+        }
       },
 
       title: {
@@ -247,12 +256,13 @@ angular.module('gsnClientApp')
       xAxis: {
         type: 'datetime',
         tickPixelInterval: 150,
+        /*
         labels: {
           formatter: function() {
             //return Highcharts.dateFormat('%Y-%m-%d, %H:%M', this.value);            
             return Highcharts.dateFormat('%H:%M', this.value);
           }
-        }
+        }*/
       },
 
       yAxis: {
@@ -279,11 +289,17 @@ angular.module('gsnClientApp')
         }
       },
 
-      series: []
+      series : [{
+          dataGrouping: {
+              enabled: false
+          }
+      }]
     };
 
     $scope.showResulChart = function() {
+      $scope.toggleLoading();
       myData = ChartService.getDataForChart($scope.selectedChart, $scope.selectedChartType);
+      $scope.toggleLoading();
       var seriesArray = $scope.chartConfig.series;
       for(var i = 0; i < seriesArray.length; i++)
       {
@@ -298,8 +314,10 @@ angular.module('gsnClientApp')
 
     $scope.drawByFilter = function(data)
     {
+      $scope.toggleLoading();
       var seriesArray = $scope.chartConfig.series;
       var l = $scope.results.length;
+      $scope.toggleLoading();
 
       for(var i = 0; i < seriesArray.length; i++)
       {
@@ -327,6 +345,10 @@ angular.module('gsnClientApp')
     $scope.toggleLabels = function () {
       enableDataLabels = !enableDataLabels;
       $scope.chartConfig.series[0].dataLabels.enabled =  enableDataLabels;        
+    }
+
+    $scope.toggleLoading = function () {
+        this.chartConfig.loading = !this.chartConfig.loading
     }
 
     function prepareRequest() {

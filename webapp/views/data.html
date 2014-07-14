@@ -59,18 +59,18 @@
         </div>
 
         <div class="row">
-            <div class="medium-1 columns" style="position:relative;top:5px;">
+            <div class="medium-1 columns">
               From
             </div>
-            <div class="medium-3 columns left" style="position:relative;left:-50px;">
-              <quick-datepicker ng-model='from' placeholder="Select Date" on-change="fromChanged()"></quick-datepicker>
+            <div class="medium-3 columns left">
+              <quick-datepicker ng-model='from' data-date-format="yyyy-MM-dd" placeholder="Select Date" on-change="fromChanged()"></quick-datepicker>
             </div>
 
-            <div class="medium-1 columns" style="position:relative;top:5px;left:-190px">
+            <div class="medium-1 columns">
               Until
             </div>
-            <div class="medium-3 columns left" style="position:relative;left:-240px;">
-              <quick-datepicker ng-model='until' placeholder="Select Date" on-change="untilChanged()"></quick-datepicker>
+            <div class="medium-3 columns left">
+              <quick-datepicker ng-model='until' data-date-format="yyyy-MM-dd" placeholder="Select Date" on-change="untilChanged()"></quick-datepicker>
             </div>
         </div>
         <br/>
@@ -148,10 +148,6 @@
                       <a ng-click="downloadReport('pdf')" 
                         class="alert round left button tiny secondary">Generate PDF</a>
                 </div>
-                <div class="medium-2 columns left" style="position:relative;left:-50px;">
-                      <a ng-click="downloadReport('jpeg')" 
-                        class="alert round left button tiny secondary">Generate JPEG</a>
-                </div>
                 <div class="medium-2 columns left" style="position:relative;top:5px;left:-60px;">
                     Time format
                 </div>
@@ -177,7 +173,7 @@
                 </div>                
                 <div class="medium-2 columns left" style="position:relative;">
                 </br>
-                  <a ng-click="fetchData(); drawByFilter();" 
+                  <a ng-click="drawByFilter();"
                      class="alert round left button tiny secondary">Draw by filter</a>      
                 </div>
               </div>

@@ -99,7 +99,8 @@
 
             $(document).ready(function()
             {
-                //virtualSensorCm = CodeMirror.fromTextArea($("#textArea")[0], {"lineNumbers": true, "mode": CodeMirror.mimeModes["text/xml"]});
+                //virtualSensorCm = CodeMirror.fromTextArea($("#textArea")[0], {"lineNumbers": true, "mode": CodeMirror.mimeModes["text/xml"]});		
+		$("#loader").hide();
                 sqlWrapperQueryCm = CodeMirror.fromTextArea($("#sqlWrapperArea")[0], {"lineNumbers": true, "mode": CodeMirror.mimeModes["text/x-mysql"]});
                 sqlSourceQueryCm = CodeMirror.fromTextArea($("#sqlSourceArea")[0], {"lineNumbers": true, "mode": CodeMirror.mimeModes["text/x-mysql"]});
 
@@ -110,7 +111,7 @@
                     wrapperObject["sqlSourceQuery"] = sqlSourceQueryCm.getValue();
                     wrapperObject["parameters"] = grid.getData();
 
-
+		    $("#loader").show();
                     var jsonString = JSON.stringify(wrapperObject);
                     $.ajax({
                         headers: {"Accept": "application/text",
@@ -119,9 +120,14 @@
                         data: jsonString,
                         type: "POST",
                         success: function(responseText) {
-                            //alert(responseText);
+                            alert("Sensor added successfully. Restart you GSN to see changes");
+			    $("#loader").hide();
                             //virtualSensorCm.setValue(responseText);
-                        }
+                        },
+			error : function(jqxhr, status, error){
+				alert("Error while adding sensor\n"+status+"\n"+ error);
+				$("#loader").hide();
+			}
                     });
                 });
 				$("#choose").click(function(e){
@@ -190,6 +196,7 @@
                 reader.onload = (function(theFile) {
                     wrapperObject["fileName"] = selectedFile.name;
                     wrapperObject["content"] = reader.result;
+		    $("#choosenFile").val(selectedFile.name);
                 });
                 reader.readAsText(selectedFile);
             }
@@ -199,13 +206,15 @@
         <div id="container" class="medium-10 medium-offset-1 columns ng-scope">
 			<h1>Add new sensor</h1>
             <div id="inputSection">
-			<div>
+			<div style="display : inline-block">
 				<input style="display:none" type="file" id="files" name="files[]" multiple />
 				<input type="submit" id="choose" value="Choose file" class="button"/>
+				<input type="text" id="choosenFile">
                     <output id="list"></output></div>
                 <div id="get-div"">
                     <span>Inject Description File</span>
                     <input class="button [radius round]" type="submit" value="Inject" id="get" />
+		    <img src="/images/ajax-loader.gif"" id="loader" style="display:inline"/>	
                 </div>   
 				<fieldset>
 				<legend id="sqlLegend">Specify SQL</legend>
