@@ -12,6 +12,7 @@ angular.module('gsnClientApp')
 					  //{pageName:"Relay managment", url:"/relay", active:false},
 					  //{pageName:"Admin pages", url:"/adminMain", active:false}];
 					  ];
+		this.dropdown = [];
 		/*this.pagesMapping = {
 			"/" : 0 ,
 			"/home" : 0,
@@ -24,6 +25,10 @@ angular.module('gsnClientApp')
 		this.addPage = function(page){
 			this.pages.push(page);
 		};
+
+		this.addDropdownPage = function(page){
+			this.dropdown.push(page);
+		}
 
 		this.pageChanged = function(page){
 			

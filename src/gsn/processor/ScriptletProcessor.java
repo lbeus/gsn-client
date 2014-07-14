@@ -106,7 +106,17 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
     private static final String PARAM_PERIOD = "period";
 
     private static final String PARAM_PERSITANT = "persistant";
-
+    
+    private static final String CRITICAL_PERIOD = "critical-period";
+    
+    private static final String NOTIFICATION_STATE = "notification-state";
+    
+    private static final String DELAY = "delay";
+    
+    private static final String LAST_ERROR_MESSAGE_TIME = "last-error-message-time";
+    
+    private static final String SENSOR_NAME = "sensor_name";
+    
     private Timer timer = null;
 
     /**
@@ -129,6 +139,16 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
     protected DataField[] outputStructure = null;
 
     private long period = -1;
+    
+    private long criticalPeriod;
+    
+    private long notificationState;
+    
+    private long delay;
+    
+    private long lastErrorMessageTime;
+    
+    private String sensorName;
 
     private boolean persistant = true;
 
@@ -171,7 +191,61 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
                 // ...   
             }
         }
-
+        
+        String c = parameters.get(CRITICAL_PERIOD);
+        if (c != null) {
+            try {
+                criticalPeriod = Long.parseLong(c);
+            }
+            catch (Exception e) {
+                // ...   
+            }
+        }
+        
+        
+        String notification = parameters.get(NOTIFICATION_STATE);
+        if (notification != null) {
+            try {
+                notificationState = Long.parseLong(notification);
+            }
+            catch (Exception e) {
+                // ...   
+            }
+        }
+        
+        String delayParam = parameters.get(DELAY);
+        if (delayParam != null) {
+            try {
+                delay = Long.parseLong(delayParam);
+            }
+            catch (Exception e) {
+                // ...   
+            }
+        }
+        
+        String sensornNameParam = parameters.get(SENSOR_NAME);
+        if (sensornNameParam != null) {
+            try {
+                sensorName = sensornNameParam;
+            }
+            catch (Exception e) {
+                // ...   
+            }
+        }
+        
+        String lastErrorParam = parameters.get(LAST_ERROR_MESSAGE_TIME);
+        if (lastErrorParam != null) {
+            try {
+                lastErrorMessageTime = Long.parseLong(lastErrorParam);
+            }
+            catch (Exception e) {
+                // ...   
+            }
+        }
+        
+        
+        
+        
         String ps1 = parameters.get(PARAM_SCRIPTLET);
         if (ps1 != null) {
             scriptlet = initScriptlet(ps1);
@@ -225,9 +299,16 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
         // Add the static import (for predefined services)
         scriptlet.append("import static ").append(gsn.utils.services.EmailService.class.getCanonicalName()).append(".*;\n");
         scriptlet.append("import static ").append(gsn.utils.services.TwitterService.class.getCanonicalName()).append(".*;\n");
+        scriptlet.append("import static ").append(coldwatch.parsingXML.UpdateVirtualSensorXML.class.getCanonicalName()).append(".*;\n");
         // Add the syntactic sugars
         scriptlet.append("def isdef(var){(binding.getVariables().containsKey(var))}\n");
         scriptlet.append("// end auto generated part --\n");
+        scriptlet.append("criticalPeriod="+criticalPeriod+";\n");
+        scriptlet.append("notificationState="+notificationState+";\n");
+        scriptlet.append("delay="+delay+";\n");
+        scriptlet.append("lastErrorMessageTime="+lastErrorMessageTime+";\n");
+        scriptlet.append("sensorName='"+sensorName+"';\n");
+        
         // Append the scriplet from the parameter
         scriptlet.append(ps);
         //

@@ -5,6 +5,8 @@ angular.module('gsnClientApp')
 		
 		$scope.pages = NavigationService.pages;
 
+		$scope.dropdown = NavigationService.dropdown;
+
 		VirtualSensorService.get(function(data){
 			$scope.info = data.info;
 		});

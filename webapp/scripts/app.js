@@ -92,7 +92,7 @@ app.run(function($rootScope, $location, $http, NavigationService) {
           });
         }
 
-        routeProviderReference.when('/about',{
+      routeProviderReference.when('/about',{
               templateUrl: 'views/about.html',
               controller: 'AboutController'
             }

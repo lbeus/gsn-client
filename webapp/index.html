@@ -29,7 +29,6 @@
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-
   </head>
   <body ng-app="gsnClientApp">
     <!-- <div class="columns"><br /><br /></div>-->
@@ -42,15 +41,16 @@
 
       <nav class="top-bar sticky">
         <div class="row">
-          <ul class="title-area">
+          <!--<ul class="title-area">
             <li class="name">
               <h1><a href="#"><strong ng-cloak>GSN::{{info.name}}</strong></a></h1>
             </li>
-          </ul>
+          </ul>-->
           <section id="navigation" class="top-bar-section">
             <ul class="left">
               <li ng-class="{active: page.active == true}"
                           ng-repeat="page in pages"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
+
             </ul>
           </section>
         </div>
@@ -74,7 +74,6 @@
     <script src="bower_components/angular/angular.js"></script>
 
 
-
     <script src="bower_components/angular-ui-date/src/date.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -83,7 +82,7 @@
     <script src="bower_components/fastclick/lib/fastclick.js"></script>
     <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
     <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
-    <script src="bower_components/foundation/js/foundation.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="bower_components/underscore/underscore.js"></script>
@@ -142,7 +141,8 @@
       <!--  <script src="scripts/directives/map.js"></script>-->
         <script src="scripts/controllers/IPCamera.js"></script>
         <script src="scripts/controllers/electricity.js"></script>
-         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/watchdog.js"></script>
 
         <script src="scripts/directives/layout.js"></script>
 

@@ -19,8 +19,16 @@
 	   "name": "/ipcamera", 
        "templateUrl": "views/ipCamera.html",
        "controller": "IPCamera",
-       "pageName":"IP camera",
+       "pageName":"Relay managment",
        "url":"/ipcamera", 
+       "active":false
+	},
+	{
+	   "name": "/watchdog", 
+       "templateUrl": "views/watchdog.html",
+       "controller": "WatchdogController",
+       "pageName":"Watchdog",
+       "url":"/watchdog", 
        "active":false
 	},
 	{
@@ -30,7 +38,7 @@
        "pageName":"Admin pages",
        "url":"/adminMain", 
        "active":false
-	}	
+	}
 ]
  
   
