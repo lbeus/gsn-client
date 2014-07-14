@@ -81,8 +81,13 @@ function parseVSensorXML (xml) {
                   sensor.size.y += 2;
 		              sensor.size.x = 3;
                  } else {
-                    if(currentField.attr("name") !== 'geographical' && currentField.attr("name") !== 'latitude' && currentField.attr("name") !== 'longitude')
-                 	    sensor.size.y += 0.2;
+                    if(currentField.attr("name") !== 'geographical' && currentField.attr("name") !== 'latitude' && currentField.attr("name") !== 'longitude'){
+                 	    if(field["value"].length > 30){
+                        field["value"] = [field["value"].slice(0, 25), " ", field["value"].slice(25)].join('');
+                        sensor.size.y += 0.4; 
+                      }else
+                        sensor.size.y += 0.2;
+                    }
                  }
 
              sensor.fields[currentField.attr("name")] = field;

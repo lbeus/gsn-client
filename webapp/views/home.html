@@ -83,7 +83,7 @@
 								<ul>
 		                         	<li gridster-item class="box" style="" size-x="sensor.size.x" size-y="sensor.size.y"
 		                         								ng-repeat="sensor in sensors | filter:{visible:true}">
-					                    <div style="" class="panel radius vs-box">
+					                    <div style="" class="panel radius vs-box" >
 					                     		<a ng-click="removeSensor($index);" class="round-button"
 					                     				style="position:relative; top:0px;right:0px;">X</a><!--With this positioning, the button is always in the upper left corner. Otherwise the positioning would fluctuate depending on the width of the widget.-->
 										        <h4>
@@ -99,8 +99,9 @@
 													    			<img ng-src="{{sensor.fields[field].value}}" 
 													    					style="width:340px; height:270px" />
 													    	</div>
-														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg' && sensor.fields[field].type !== 'binary:image/png' && sensor.fields[field].type !== 'binary:image/svg+xml'">	
+														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg' && sensor.fields[field].type !== 'binary:image/png' && sensor.fields[field].type !== 'binary:image/svg+xml'" style="overflow-x:scroll;">	
 															<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
+															<!--<div ng-bind-html="sensor.fields[field].value" style=""></div>-->
 														</div>	
 												</div>
 										</div>

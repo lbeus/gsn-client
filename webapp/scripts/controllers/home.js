@@ -6,7 +6,7 @@ angular.module('gsnClientApp')
     $scope.gridsterOpts = {
         defaultSizeX: 2,
         defaultSizeY: 1,
-        rowHeight:143,
+        rowHeight:146,
         colWidth:155,
         width:'auto',
         margins:[0,5],
