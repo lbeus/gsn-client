@@ -10,6 +10,8 @@
 			<param name="type">ANY</param>
 			<param name="timeout">60</param>
 			<param name="separator">;</param>
+			<param name="include-geo-data">true</param>
+			<param name="thermo-limit">50</param>
 		</init-params>
 		<output-structure>
 			<field name="Data" type="binary:image/svg+xml" />
@@ -27,7 +29,7 @@
 		<stream name="Data">
 			<source alias="networksrc" sampling-rate="1" storage-size="1">
 				<address wrapper="SerialNetworkWrapper">
-					<predicate key="type">Data</predicate>
+					<predicate key="port">5556</predicate>
 				</address>
 				<query>SELECT * FROM WRAPPER</query>
 			</source>
