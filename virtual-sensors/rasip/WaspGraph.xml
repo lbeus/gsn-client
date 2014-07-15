@@ -28,7 +28,7 @@
 				<address wrapper="local">
 					<predicate key="NAME">Wasp</predicate>
 				</address>
-				<query>SELECT TEMPERATURE, TIMED FROM WRAPPER</query>
+				<query>SELECT TEMPERATURE, TIMED FROM WRAPPER WHERE ID=1</query>
 			</source>
 			<query>SELECT * FROM wifiwasp</query>
 		</stream>
