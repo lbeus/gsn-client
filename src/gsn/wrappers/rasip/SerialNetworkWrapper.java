@@ -27,7 +27,26 @@ public class SerialNetworkWrapper extends AbstractWrapper {
 
 	@Override
 	public boolean initialize() {
-		logger.info( "Initializing Server. Creating socket." );
+	
+		logger.warn("Initializing SerialNetworkWrapper");
+	
+		int paramPort = -1;
+		
+		try{
+			paramPort = Integer.parseInt(getActiveAddressBean().getPredicateValue("port"));
+		} catch(Exception e){
+			logger.warn("Error parsing port value.");
+			paramPort = -1;
+		}
+		
+		if(paramPort > 0){
+			logger.warn("Setting port to value: " + paramPort);
+			this.port = paramPort;
+		}else{
+			logger.warn("Setting port to default value: " + this.port);
+		}
+	
+		logger.warn( "Creating socket - TCP port " + this.port + "." );
 
 		try {
 			serverSock = new ServerSocket( port, maxClients );

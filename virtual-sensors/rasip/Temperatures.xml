@@ -15,7 +15,6 @@
 		</output-structure>
 	</processing-class>
 	<description>This sensor displays latest temperature data.</description>
-	<life-cycle pool-size="2" />
 	<addressing>
 		<predicate key="geographical">FER - ZARI</predicate>
 		<predicate key="LATITUDE">45.801502</predicate>
