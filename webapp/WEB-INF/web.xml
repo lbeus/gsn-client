@@ -53,6 +53,14 @@
         <servlet-class>hr.fer.rasip.http.WatchdogControllerServlet</servlet-class>
     </servlet>
     
+    
+     <servlet>
+        <servlet-name>NotificationControllerServlet</servlet-name>
+        <display-name>NotificationController</display-name>
+        <servlet-class>hr.fer.rasip.http.NotificationControllerServlet</servlet-class>
+    </servlet>
+    
+    
 	<!-- GSN START -->
 	<servlet>
         <servlet-name>ControllerServlet</servlet-name>
@@ -365,6 +373,10 @@
         <url-pattern>/passiveheating/air</url-pattern>
     </servlet-mapping>
     
+    <servlet-mapping>
+        <servlet-name>NotificationControllerServlet</servlet-name>
+        <url-pattern>/notifications/create</url-pattern>
+    </servlet-mapping>
     
     <servlet-mapping>
         <servlet-name>WatchdogControllerServlet</servlet-name>

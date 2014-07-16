@@ -32,6 +32,14 @@
        "active":false
 	},
 	{
+	   "name": "/notifications", 
+       "templateUrl": "views/notifications.html",
+       "controller": "NotificationsController",
+       "pageName":"Notifications",
+       "url":"/notifications", 
+       "active":false
+	},
+	{
 	   "name": "/adminMain", 
        "templateUrl": "views/adminMain.html",
        "controller": "AdminMainCtrl",

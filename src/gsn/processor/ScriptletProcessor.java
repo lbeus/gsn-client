@@ -111,6 +111,8 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
     
     private static final String NOTIFICATION_STATE = "notification-state";
     
+    private static final String MAIL_STATE = "mail-state";
+    
     private static final String DELAY = "delay";
     
     private static final String LAST_ERROR_MESSAGE_TIME = "last-error-message-time";
@@ -143,6 +145,8 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
     private long criticalPeriod;
     
     private long notificationState;
+    
+    private long mailState;
     
     private long delay;
     
@@ -207,6 +211,17 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
         if (notification != null) {
             try {
                 notificationState = Long.parseLong(notification);
+            }
+            catch (Exception e) {
+                // ...   
+            }
+        }
+        
+        
+        String mailS = parameters.get(MAIL_STATE);
+        if (mailS != null) {
+            try {
+                mailState = Long.parseLong(mailS);
             }
             catch (Exception e) {
                 // ...   
@@ -308,6 +323,7 @@ public class ScriptletProcessor extends AbstractVirtualSensor {
         scriptlet.append("delay="+delay+";\n");
         scriptlet.append("lastErrorMessageTime="+lastErrorMessageTime+";\n");
         scriptlet.append("sensorName='"+sensorName+"';\n");
+        scriptlet.append("def mailState='"+mailState+"';\n");
         
         // Append the scriplet from the parameter
         scriptlet.append(ps);

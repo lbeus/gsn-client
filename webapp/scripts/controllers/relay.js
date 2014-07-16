@@ -3,7 +3,7 @@
 angular.module('gsnClientApp')
   .controller('RelayController', function ($http, $scope, RelayService ) {
 
-    $scope.relays = [];
+    $scope.relays = [{"displayname":"Zarulja", id:15}];
     $scope.config = [];
 
     RelayService.getConfig(function (config) {
@@ -17,7 +17,7 @@ angular.module('gsnClientApp')
         else
           relaysStatus[i].status = false;
       }
-      $scope.relays = relaysStatus;
+      //$scope.relays = relaysStatus;
     });
 
 
