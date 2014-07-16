@@ -1,8 +1,8 @@
- <div class="medium-10 medium-offset-1 columns">	
+<!-- <div class="medium-10 medium-offset-1 columns">-->	
 	<div id="container" >
 		
 		<div class="row">	
-			<div class="medium-8 columns">
+			<div class="large-8 columns">
 			<h1>Passive heating</h1>
 			<br/>
 
@@ -18,13 +18,13 @@
 				<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:200px;">
 
 					<div class="row">
-						<div class="medium-2 columns" style="position:relative; top:10px;">
+						<div class="large-2 columns" style="position:relative; top:10px;">
 			        			<img id="spinner1" ng-src="images/ajax-loader.gif" style="display:none;">
 			        	</div>
 			        </div>
 					
 					<div class="row" ng-show="showErrorCommand === true">
-							<div class="medium-8 columns left" >
+							<div class="large-8 columns left" >
 								<div data-alert class="alert-box alert round">
   									{{errorMessageCommand}}
   									<a class="close" ng-click="showErrorCommand=false;">&times;</a>
@@ -33,7 +33,7 @@
 					</div>
 
 					<div class="row" ng-show="showInfo === true">
-							<div class="medium-8 columns left" >
+							<div class="large-8 columns left" >
 								<div data-alert class="alert-box info radius">
   									{{infoMessage}}
   									<a class="close" ng-click="showInfo=false;">&times;</a>
@@ -44,17 +44,17 @@
 					<br/>
 
 					<div class="row">
-						<div class="medium-4 columns left" style="position:relative;left:20px;">
+						<div class="large-4 columns left" style="position:relative;left:20px;">
 							<h3>Manual-Fan</h3>
 						</div>
-						<div class="medium-4 columns left" style="position:relative;left:-25px;">
+						<div class="large-4 columns left" style="position:relative;left:-25px;">
 							<h3>Manual-Heater</h3>
 						</div>
 					</div>
 
 					<div class="row">
 
-						 <div class="medium-3 columns">
+						 <div class="large-3 columns">
             				<select ng-model="selectedFanSpeed" 
                 					ng-options="o.name for o in fanSpeed" ng-change="">
             				</select>
@@ -64,12 +64,12 @@
 
 
 					<div class="row">
-						<div class="medium-4 columns left" style="position:relative;left:20px;top:5px;">
+						<div class="large-4 columns left" style="position:relative;left:20px;top:5px;">
 							<a ng-click="fanClicked();">
 								<img ng-src="/images/fan{{config.state['manual-fan']}}.gif" />
 							</a>
 						</div>
-						<div class="medium-4 columns left" style="position:relative;left:-10px;top:5px;">
+						<div class="large-4 columns left" style="position:relative;left:-10px;top:5px;">
 							<a ng-click="heaterClicked();">
 								<img ng-src="/images/alarm{{config.state['manual-heater']}}.gif" />
 							</a>
@@ -78,28 +78,28 @@
 					<br/><br/><br/><br/>
 
 					<div class="row">
-						<div class="medium-4 columns left" style="position:relative;left:20px;">
+						<div class="large-4 columns left" style="position:relative;left:20px;">
 							<h3>Air intake</h3>
 						</div>
-						<div class="medium-4 columns left" style="position:relative;left:-25px;">
+						<div class="large-4 columns left" style="position:relative;left:-25px;">
 							<h3>Auto Control</h3>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="medium-4 columns left" style="position:relative;left:-5px;top:5px;">
+						<div class="large-4 columns left" style="position:relative;left:-5px;top:5px;">
 						   Normal
 						   <input type="checkbox" class="js-switch" ui-switch ng-model="airIntake" ng-change="airIntakeClicked();"/>
 						   Override
 						</div>
-						<div class="medium-4 columns left" style="position:relative;left:15px;top:5px;">
+						<div class="large-4 columns left" style="position:relative;left:15px;top:5px;">
 						   <input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/>
 						</div>
 					</div>
 				</div>
 				<div class="content" ng-class = "{'active' : selectedTab  == 2 }">
 						<div class="row" ng-show="showStatus === true">
-							<div class="medium-8 columns left" >
+							<div class="large-8 columns left" >
 								<div data-alert class="alert-box success radius">
   									{{updateStatus}}
   									<a class="close" ng-click="showStatus=false;">&times;</a>
@@ -108,7 +108,7 @@
 						</div>
 
 						<div class="row" ng-show="showError === true">
-							<div class="medium-8 columns left" >
+							<div class="large-8 columns left" >
 								<div data-alert class="alert-box alert round">
   									{{errorMessage}}
   									<a class="close" ng-click="showError=false;">&times;</a>
@@ -120,96 +120,96 @@
 						<fieldset>
 	    					<legend>Core params</legend>
 				  				<div class="row">
-				  					<div class="medium-8 columns left">
-							  	 		<div class="medium-4 columns">
+				  					<div class="large-8 columns left">
+							  	 		<div class="large-4 columns">
 			          						<label for="externaltemplimit" class="right inline">External Temp limit</label>
 			        					</div>
-			        					<div class="medium-2 columns left">
+			        					<div class="large-2 columns left">
 			          						<input type="text" id="externaltemplimit" placeholder="" ng-model="externaltemplimit">
 			        					</div>
 			        				</div>
-				  					<div class="medium-8 columns left">
+				  					<div class="large-8 columns left">
 							  	 		<div class="medium-4 columns">
 			          						<label for="internaltemplimit1" class="right inline">Internal Temp Limit 1</label>
 			        					</div>
-			        					<div class="medium-2 columns left">
+			        					<div class="large-2 columns left">
 			          						<input type="text" id="internaltemplimit1" placeholder="" ng-model="internaltemplimit1">
 			        					</div>
 			        				</div>
-				  					<div class="medium-8 columns left">
+				  					<div class="large-8 columns left">
 							  	 		<div class="medium-4 columns">
 			          						<label for="internaltemplimit2" class="right inline">Internal Temp Limit 2</label>
 			        					</div>
-			        					<div class="medium-2 columns left">
+			        					<div class="large-2 columns left">
 			          						<input type="text" id="internaltemplimit2" placeholder="" ng-model="internaltemplimit2">
 			        					</div>
 			        				</div>
 			        				<div class="medium-8 columns left">
-			        					<div class="medium-4 columns">
+			        					<div class="large-4 columns">
 			          						<label for="internaltemplimit3" class="right inline">Internal Temp Limit 3</label>
 			        					</div>
-			        					<div class="medium-2 columns left">
+			        					<div class="large-2 columns left">
 			          						<input type="text" id="internaltemplimit3" placeholder="" ng-model="internaltemplimit3">
 			        					</div>
         							</div>
-        							<div class="medium-8 columns left">
+        							<div class="large-8 columns left">
 			        					<div class="medium-4 columns">
 			          						<label for="rabbitip" class="right inline">Rabbit IP</label>
 			        					</div>
-			        					<div class="medium-4 columns left">
+			        					<div class="large-4 columns left">
 			          						<input type="text" id="rabbitip" placeholder="" ng-model="rabbitip">
 			        					</div>
         							</div>
         							
-        							<div class="medium-8 columns left">
-			        					<div class="medium-4 columns">
+        							<div class="large-8 columns left">
+			        					<div class="large-4 columns">
 			          						<label for="port" class="right inline">Port</label>
 			        					</div>
-			        					<div class="medium-3 columns left">
+			        					<div class="large-3 columns left">
 			          						<input type="text" id="port" placeholder="" ng-model="port">
 			        					</div>
         							</div>
 
         						</div>
         						<div class="row">
-        							<div class="medium-5 columns left">
+        							<div class="large-5 columns left">
         								<fieldset>
 	    									<legend>State 1</legend>
-	    									<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+	    									<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state1-heater" class="right inline">Heater</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state1-heater" placeholder="" ng-model="state1Heater">
 			        							</div>
 			        						</div>
-			        						<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+			        						<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state1-fan" class="right inline">Fan</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state1-fan" placeholder="" ng-model="state1Fan">
 			        							</div>
         									</div>
 	    								</fieldset>
 	    							</div>
         							
-        							<div class="medium-5 columns left">
+        							<div class="large-5 columns left">
         								<fieldset>
 	    									<legend>State 2</legend>
-	    									<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+	    									<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state2-heater" class="right inline">Heater</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state2-heater" placeholder="" ng-model="state2Heater">
 			        							</div>
 			        						</div>
-			        						<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+			        						<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state2-fan" class="right inline">Fan</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state2-fan" placeholder="" ng-model="state2Fan">
 			        							</div>
         									</div>
@@ -218,44 +218,44 @@
         						</div>
         						
         						<div class="row">
-        							<div class="medium-5 columns left">
+        							<div class="large-5 columns left">
         								<fieldset>
 	    									<legend>State 3</legend>
-	    									<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+	    									<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state3-heater" class="right inline">Heater</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state3-heater" placeholder="" ng-model="state3Heater">
 			        							</div>
 			        						</div>
-			        						<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+			        						<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state3-fan" class="right inline">Fan</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state3-fan" placeholder="" ng-model="state3Fan">
 			        							</div>
         									</div>
 	    								</fieldset>
 	    							</div>
 
-	    							<div class="medium-5 columns left">
+	    							<div class="large-5 columns left">
         								<fieldset>
 	    									<legend>State 4</legend>
-	    									<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+	    									<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state4-heater" class="right inline">Heater</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state4-heater" placeholder="" ng-model="state4Heater">
 			        							</div>
 			        						</div>
-			        						<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+			        						<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state4-fan" class="right inline">Fan</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state4-fan" placeholder="" ng-model="state4Fan">
 			        							</div>
         									</div>
@@ -264,22 +264,22 @@
         						</div>
         						
         						<div class="row">
-        							<div class="medium-5 columns left">
+        							<div class="large-5 columns left">
         								<fieldset>
 	    									<legend>State 5</legend>
-	    									<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+	    									<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state5-heater" class="right inline">Heater</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state5-heater" placeholder="" ng-model="state5Heater">
 			        							</div>
 			        						</div>
-			        						<div class="medium-8 columns left">
-			        							<div class="medium-4 columns">
+			        						<div class="large-8 columns left">
+			        							<div class="large-4 columns">
 			          								<label for="state5-fan" class="right inline">Fan</label>
 			        							</div>
-			        							<div class="medium-5 columns left">
+			        							<div class="large-5 columns left">
 			          								<input type="text" id="state5-fan" placeholder="" ng-model="state5Fan">
 			        							</div>
         									</div>
@@ -291,22 +291,22 @@
         						<fieldset>
 	    							<legend>Notifications</legend>
 				  					<div class="row">
-				  						<div class="medium-8 columns left">
-							  	 			<div class="medium-2 columns">
+				  						<div class="large-8 columns left">
+							  	 			<div class="large-2 columns">
 			          							<label for="email" class="right inline">Email</label>
 			        						</div>
-			        						<div class="medium-6 columns left">
+			        						<div class="large-6 columns left">
 			          							<input type="text" id="email" placeholder="" ng-model="email">
 			        						</div>
 			        					</div>
 			        				</div>
 			        			</fieldset>
 			        			<div class="row">
-        						<div class="medium-8 columns left">
-        							<div class="medium-2 columns">
+        						<div class="large-8 columns left">
+        							<div class="large-2 columns">
         								<a class="alert tiny round button" ng-click="updateConfig();">Save</a>
 			        				</div>
-			        				<div class="medium-2 columns" style="position:relative; top:10px; left:-300px;">
+			        				<div class="large-2 columns" style="position:relative; top:10px; left:-300px;">
 			        					<img id="spinner" ng-src="images/ajax-loader.gif" style="display:none;">
 			        				</div>
         						</div>
@@ -316,4 +316,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+<!--</div>-->

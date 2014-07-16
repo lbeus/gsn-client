@@ -73,7 +73,7 @@ angular.module('gsnClientApp')
             }else{
               $scope.config.state["manual-heater"] = heater;
               $scope.config.state['auto-control'] = 0;
-              $scope.autoControl = 0;
+              $scope.autoControl = false;
             }
         }
       ).error(function (error) {
@@ -105,7 +105,7 @@ angular.module('gsnClientApp')
            }else{
               $scope.config.state["manual-fan"] = fanSpeed;
               $scope.config.state['auto-control'] = 0;
-              $scope.autoControl = 0;
+              $scope.autoControl = false;
            }
   			}
   		).error( function(error) {
@@ -143,10 +143,26 @@ angular.module('gsnClientApp')
       }
       else {
         $("#spinner1").hide();
-        $scope.autoControl = true;
-        $scope.config.state['auto-control'] = $scope.autoControl * 1;
-        $scope.showInfo = true;
-        $scope.infoMessage = "In order to turn auto-control off you need to turn heater or fan on or off";
+        //$scope.autoControl = false;
+        //$scope.config.state['auto-control'] = $scope.autoControl * 1;
+        $http.get('/passiveheating/autocontrol-disable').success(
+          function (data) {
+              $("#spinner1").hide();
+              if(parseResponse(data) === "exception"){
+                  $scope.errorMessageCommand = "Auto control command execute failed";
+                  $scope.showErrorCommand = true;
+              }else{
+                 $scope.config.state['auto-control'] = $scope.autoControl * 1;
+               }
+          }
+        ).error( function(error) {
+          $("#spinner1").hide();
+          //$scope.autoControl = false;
+          $scope.errorMessageCommand = "Auto control command execute failed";
+          $scope.showErrorCommand = true;
+        });
+        //$scope.showInfo = true;
+        //$scope.infoMessage = "In order to turn auto-control off you need to turn heater or fan on or off";
       }
     };
 

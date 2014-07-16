@@ -29,7 +29,7 @@
     <free-server-port>23625</free-server-port>
   </core-parameters>
   <state>
-    <auto-control>0</auto-control>
+    <auto-control>1</auto-control>
     <manual-fan>0</manual-fan>
     <manual-heater>0</manual-heater>
     <air-intake>override</air-intake>

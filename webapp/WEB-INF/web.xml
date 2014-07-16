@@ -358,6 +358,11 @@
         <url-pattern>/passiveheating/autocontrol</url-pattern>
     </servlet-mapping>
     
+     <servlet-mapping>
+        <servlet-name>PassiveHeatingControllerServlet</servlet-name>
+        <url-pattern>/passiveheating/autocontrol-disable</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>PassiveHeatingControllerServlet</servlet-name>
         <url-pattern>/passiveheating/config</url-pattern>

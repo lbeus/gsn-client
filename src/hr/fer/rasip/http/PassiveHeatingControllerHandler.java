@@ -35,6 +35,8 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
 	
 	private static final String AUTOCONTROL_SERVLET_PATH = "/passiveheating/autocontrol";
 	
+	private static final String AUTO_CONTROL_DISABLE = "/passiveheating/autocontrol-disable";
+	
 	private static final String CONFIG_SERVLET_PATH = "/passiveheating/config";
 	
 	private static final String CONFIG_UPDATE_SERVLET_PATH = "/passiveheating/config-update";
@@ -331,6 +333,34 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
         				+ ((heater != -1)?"heater = " + heater + " ":" "  ) + "</description>\n</response>");
         	
         }
+        
+        
+        if(servletPath.equalsIgnoreCase(AUTO_CONTROL_DISABLE)){
+        	//auto control servlet
+        	try {
+        		SAXBuilder builder = new SAXBuilder();
+    			File xmlFile = new File(CONFIG_FILE_PATH);
+    			Document doc = (Document) builder.build(xmlFile);
+    			Element root = doc.getRootElement();
+    			
+    			root.getChild("state").getChild("auto-control").setText("0");
+    			
+    			// save updated xml file
+    	        XMLOutputter xmlOutput = new XMLOutputter();
+    	   	 	xmlOutput.setFormat(Format.getPrettyFormat());
+    			xmlOutput.output(doc, new FileWriter(CONFIG_FILE_PATH));
+    			
+        	}
+        	catch(Exception e){
+        		sb.append("<status>exception</status>\n<description>"+ e.getClass()+": " + e.getMessage() + "</description>\n</response>");
+    			response.setHeader("Cache-Control", "no-store");
+    	        response.setDateHeader("Expires", 0);
+    	        response.setHeader("Pragma", "no-cache");
+    	        response.getWriter().write(sb.toString());
+        		return; 
+        	}
+        	sb.append("<status>ok</status>\n<description>Auto control disabled</description></response>\n");
+        }
 
         if(servletPath.equalsIgnoreCase(AUTOCONTROL_SERVLET_PATH)){
         	//auto control servlet
@@ -484,6 +514,9 @@ public class PassiveHeatingControllerHandler implements RequestHandler {
         else{
         	if(servletPath.equalsIgnoreCase(AUTOCONTROL_SERVLET_PATH)){
         		//switch to auto control servlet
+        	}
+        	else if(servletPath.equalsIgnoreCase(AUTO_CONTROL_DISABLE)){
+        		
         	}
         	else{
         		if(servletPath.equalsIgnoreCase(CONFIG_SERVLET_PATH)){
