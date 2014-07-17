@@ -274,7 +274,7 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				
 				int titleX = x + this.iconWidth / 2 - svg2d.getFontMetrics().stringWidth(s) / 2;
 				int titleY = y + svg2d.getFontMetrics().getHeight();
-				svg2d.drawString(s, titleX, titleY);				
+				svg2d.drawString(s, titleX, titleY);
 				
 				//Button
 				svg2d.setColor(Color.WHITE);
@@ -335,6 +335,19 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				
 				chart.draw(svg2d, new Rectangle(x, y, this.iconWidth, this.iconHeight));				
 			} else {
+				//Draw title
+				svg2d.setColor(Color.BLACK);
+				svg2d.setFont(new Font("SansSerif", Font.PLAIN, 16));
+				s = this.fields[i];
+				
+				int titleX = x + this.iconWidth / 2 - svg2d.getFontMetrics().stringWidth(s) / 2;
+				int titleY = y + svg2d.getFontMetrics().getHeight();
+				svg2d.drawString(s, titleX, titleY);
+				
+				//Calculate corrected dimensions leaving some space for the title on top while retaining plot aspect ratio				
+				int startY = titleY + svg2d.getFontMetrics().getMaxDescent();
+				int startX = x + (startY - y)/2;
+			
 				//Meter
 				DialPlot dialplot = new DialPlot();
 			
@@ -379,10 +392,9 @@ public class SVGDataDisplayVirtualSensor extends AbstractVirtualSensor {
 				//Draw it into document
 				JFreeChart chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, dialplot, false);
 				chart.setBackgroundPaint(new Color(0, 0, 0, 0));
-				chart.addSubtitle( new TextTitle( this.fields[i], new Font("SansSerif", Font.PLAIN, 16) ) );
 				chart.setBorderVisible(false);
 				
-				chart.draw(svg2d, new Rectangle(x, y, this.iconWidth, this.iconHeight));
+				chart.draw( svg2d, new Rectangle( startX, startY, this.iconWidth - (startY - y), this.iconHeight - (startY - y) ) );
 			}
 		
 			iconsPasted++;
