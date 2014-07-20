@@ -14,7 +14,8 @@ var app = angular.module('gsnClientApp', [
   'NgSwitchery',
   'gridster',
   'multi-select',
-  'highcharts-ng'
+  'highcharts-ng',
+  'mm.foundation'
 ]);
 
 
@@ -85,7 +86,7 @@ app.run(function($rootScope, $location, $http, NavigationService) {
               controller: data[i].controller
             }
           );
-          NavigationService.addPage({
+          NavigationService.addDropdownPage({
               pageName: data[i].pageName,
               url:data[i].url,
               active:data[i].active
@@ -108,4 +109,4 @@ app.run(function($rootScope, $location, $http, NavigationService) {
     });
 });
 
-$(document).foundation();
+//$(document).foundation();

@@ -183,6 +183,7 @@ angular.module('gsnClientApp')
 
 
     $scope.showResulTable = function() {
+
       var options = createGridOptions($scope.selectedTable);
       $scope.columnDefs = options.columnDefs;
       $scope.tuples = options.data;
@@ -201,6 +202,8 @@ angular.module('gsnClientApp')
                 $scope.filterData = data;
             });
     };
+
+
 
     function createGridOptions(sensorResult) {
  

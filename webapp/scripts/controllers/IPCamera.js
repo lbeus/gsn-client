@@ -73,7 +73,8 @@ angular.module('gsnClientApp')
   	function init() {
   		RefreshService.startStreaming("camera", 500, function() {
 	  		var oImgElement = document.getElementById("cameraStream");
-	    	oImgElement.setAttribute('src', oImgElement.src);
+        if(oImgElement !== null)
+	    	  oImgElement.setAttribute('src', oImgElement.src);
   		});
 
   		IPCameraService.getConfig(function(data){

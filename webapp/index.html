@@ -39,13 +39,8 @@
    
     <div class="contain-to-grid fixed" ng-controller="NavigationController">
 
-      <nav class="top-bar sticky">
+      <!--<nav class="top-bar sticky">
         <div class="row">
-          <!--<ul class="title-area">
-            <li class="name">
-              <h1><a href="#"><strong ng-cloak>GSN::{{info.name}}</strong></a></h1>
-            </li>
-          </ul>-->
           <section id="navigation" class="top-bar-section">
             <ul class="left">
               <li ng-class="{active: page.active == true}"
@@ -54,7 +49,35 @@
             </ul>
           </section>
         </div>
-      </nav>    
+      </nav>-->
+      <top-bar>
+        <!--<ul class="title-area">
+          <li class="name">
+            <h1><a href="#">My Site</a></h1>
+          </li>
+          <li toggle-top-bar class="menu-icon"><a href="#">Menu</a></li>
+        </ul>-->
+
+        <top-bar-section>
+          <!-- Right Nav Section -->
+          <ul class="left">
+            <li ng-class="{active: page.active == true}"
+                          ng-repeat="page in pages"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
+          </ul>
+          <ul class="right">
+            <li has-dropdown>
+              <a href="#">Sensor control</a>
+              <ul top-bar-dropdown>
+                <li ng-class="{active: page.active == true}"
+                          ng-repeat="page in dropdown"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
+              </ul>
+            </li>
+          </ul>
+        </top-bar-section>
+     </top-bar>
+
+
+
     </div>  
     
     <!-- Add your site or application content here -->
@@ -91,28 +114,14 @@
     <script src="bower_components/ng-grid/build/ng-grid.js"></script>
     <script src="bower_components/switchery/dist/switchery.js"></script>
     <script src="bower_components/ng-switchery/src/ng-switchery.js"></script>
-
-  <!--  <script src="bower_components/jquery-bridget/jquery.bridget.js"></script>
-    <script src="bower_components/get-style-property/get-style-property.js"></script>
-    <script src="bower_components/get-size/get-size.js"></script>
-    <script src="bower_components/eventEmitter/EventEmitter.js"></script>
-    <script src="bower_components/eventie/eventie.js"></script>
-    <script src="bower_components/doc-ready/doc-ready.js"></script>
-    <script src="bower_components/matches-selector/matches-selector.js"></script>
-    <script src="bower_components/outlayer/item.js"></script>
-    <script src="bower_components/outlayer/outlayer.js"></script>
-    <script src="bower_components/masonry/masonry.js"></script>
-    <script src="bower_components/imagesloaded/imagesloaded.js"></script>
-    <script src="bower_components/angular-masonry/angular-masonry.js"></script>-->
-   <!-- <script src="bower_components/javascript-detect-element-resize/jquery.resize.js"></script>-->
-
-   <script src="bower_components/angular-gridster/dist/scripts/gridster.min.js"></script>
-   <script src="bower_components/isteven-angular-multiselect/angular-multi-select.js"></script>
+    <script src="bower_components/angular-gridster/dist/scripts/gridster.min.js"></script>
+    <script src="bower_components/isteven-angular-multiselect/angular-multi-select.js"></script>
     <script src="bower_components/highcharts-stock/js/highstock.js"></script>
     <script src="bower_components/highcharts-stock/js/modules/exporting.js"></script>
     <script src="bower_components/highcharts-ng/src/highcharts-ng.js"></script>
     <script src="bower_components/highcharts/js/highcharts-more.js"></script>
-
+    <script src="bower_components/angular-foundation/mm-foundation.js"></script>
+    <script src="bower_components/angular-foundation/mm-foundation-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     

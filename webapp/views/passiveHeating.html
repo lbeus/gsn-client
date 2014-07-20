@@ -1,11 +1,12 @@
 <!-- <div class="medium-10 medium-offset-1 columns">-->	
 	<div id="container" >
-		
+		<div class="large-8 columns">
 		<div class="row">	
-			<div class="large-8 columns">
+			
 			<h1>Passive heating</h1>
 			<br/>
 
+			<!--
 			<dl ng-init="selectedTab = 1" ng-model="selectedTab" class="tabs" data-tab>						
 				<dd ng-class = "{'active' : selectedTab == 1 }">
 					<a ng-click=" selectedTab  = 1" >Command</a>
@@ -13,8 +14,10 @@
 				<dd ng-class = "{'active' : selectedTab  == 2 }">
 					<a ng-click=" selectedTab  = 2">Config</a>
 				</dd>							
-			</dl>
-			<div class="tabs-content">
+			</dl>-->
+			<tabset>
+				<tab heading="Command">
+				<div ng-controller="PassiveHeatingController">
 				<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:200px;">
 
 					<div class="row">
@@ -25,78 +28,79 @@
 					
 					<div class="row" ng-show="showErrorCommand === true">
 							<div class="large-8 columns left" >
-								<div data-alert class="alert-box alert round">
-  									{{errorMessageCommand}}
-  									<a class="close" ng-click="showErrorCommand=false;">&times;</a>
-								</div>
+								<alert close="showErrorCommand=false;">{{errorMessageCommand}}</alert>
 							</div>
 					</div>
 
 					<div class="row" ng-show="showInfo === true">
 							<div class="large-8 columns left" >
-								<div data-alert class="alert-box info radius">
-  									{{infoMessage}}
-  									<a class="close" ng-click="showInfo=false;">&times;</a>
-								</div>
+								<alert close="showInfo=false;">{{infoMessage}}</alert>
 							</div>
 					</div>
 
 					<br/>
 
-					<div class="row">
-						<div class="large-4 columns left" style="position:relative;left:20px;">
-							<h3>Manual-Fan</h3>
+					<div class="large-10 columns">
+						
+						<div class="row">
+							<div class="large-4 columns left">
+								<h3>Manual-Fan</h3>
+							</div>
+							<div class="large-5 columns left">
+								<h3>Manual-Heater</h3>
+							</div>
 						</div>
-						<div class="large-4 columns left" style="position:relative;left:-25px;">
-							<h3>Manual-Heater</h3>
+
+						<div class="row">
+
+							 <div class="large-3 columns">
+	            				<select ng-model="selectedFanSpeed" 
+	                					ng-options="o.name for o in fanSpeed" ng-change="">
+	            				</select>
+	          				</div>
 						</div>
-					</div>
-
-					<div class="row">
-
-						 <div class="large-3 columns">
-            				<select ng-model="selectedFanSpeed" 
-                					ng-options="o.name for o in fanSpeed" ng-change="">
-            				</select>
-          				</div>
-					</div>
 
 
 
-					<div class="row">
-						<div class="large-4 columns left" style="position:relative;left:20px;top:5px;">
-							<a ng-click="fanClicked();">
-								<img ng-src="/images/fan{{config.state['manual-fan']}}.gif" />
-							</a>
+						<div class="row">
+							<div class="large-4 columns left">
+								<a ng-click="fanClicked();">
+									<img ng-src="/images/fan{{config.state['manual-fan']}}.gif" />
+								</a>
+							</div>
+							<div class="large-4 columns left" style="">
+								<a ng-click="heaterClicked();">
+									<img ng-src="/images/alarm{{config.state['manual-heater']}}.gif" />
+								</a>
+							</div>
 						</div>
-						<div class="large-4 columns left" style="position:relative;left:-10px;top:5px;">
-							<a ng-click="heaterClicked();">
-								<img ng-src="/images/alarm{{config.state['manual-heater']}}.gif" />
-							</a>
-						</div>
-					</div>
-					<br/><br/><br/><br/>
+						<br/><br/><br/><br/>
 
-					<div class="row">
-						<div class="large-4 columns left" style="position:relative;left:20px;">
-							<h3>Air intake</h3>
+						<div class="row">
+							<div class="large-4 columns left">
+								<h3>Air intake</h3>
+							</div>
+							<div class="large-4 columns left">
+								<h3>Auto Control</h3>
+							</div>
 						</div>
-						<div class="large-4 columns left" style="position:relative;left:-25px;">
-							<h3>Auto Control</h3>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="large-4 columns left" style="position:relative;left:-5px;top:5px;">
-						   Normal
-						   <input type="checkbox" class="js-switch" ui-switch ng-model="airIntake" ng-change="airIntakeClicked();"/>
-						   Override
-						</div>
-						<div class="large-4 columns left" style="position:relative;left:15px;top:5px;">
-						   <input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/>
+						<div class="row">
+							<div class="large-4 columns left">
+							   Normal
+							   <input type="checkbox" class="js-switch" ui-switch ng-model="airIntake" ng-change="airIntakeClicked();"/>
+							   Override
+							</div>
+							<div class="large-4 columns left">
+							   <input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/>
+							</div>
 						</div>
 					</div>
 				</div>
+				</div>
+				</tab>
+				<tab heading="Config">
+				<div ng-controller="PassiveHeatingController">
 				<div class="content" ng-class = "{'active' : selectedTab  == 2 }">
 						<div class="row" ng-show="showStatus === true">
 							<div class="large-8 columns left" >
@@ -312,7 +316,9 @@
         						</div>
         					</div>
         				</div>
-				</div>	
+        				</div>
+        				</tab>
+				</tabset>	
 			</div>
 		</div>
 	</div>

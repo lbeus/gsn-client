@@ -4,6 +4,7 @@
 			<div class="medium-8 columns">
 				<h1>IP Camera Control</h1>
 				<br/>
+				<!--
 				<dl ng-init="selectedTab = 1" ng-model="selectedTab" class="tabs" data-tab>						
 					<dd ng-class = "{'active' : selectedTab == 1 }">
 						<a ng-click=" selectedTab  = 1;" >Status</a>
@@ -11,10 +12,13 @@
 					<dd ng-class = "{'active' : selectedTab  == 2 }">
 						<a ng-click="selectedTab  = 2;">Config</a>
 					</dd>							
-				</dl>
-				<div class="tabs-content">
+				</dl>-->
+				<tabset>
+					<tab heading="Status">
+					<div ng-controller="IPCamera">
 					<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:200px;">
 						<img id="cameraStream" src="/ipcamera/status" />
+						
 						<br /><br />
 						<div class="row">
 							<img src="/images/arrow-up.png" width="50" 
@@ -66,22 +70,19 @@
 			        		</fieldset>
 						</div>
 					</div>
+					</div>
+					</tab>
+					<tab heading="Config">
+					<div ng-controller="IPCamera">
 					<div class="content" ng-class = "{'active' : selectedTab  == 2 }">
 						<div class="row" ng-show="showStatus === true">
 							<div class="medium-8 columns left" >
-								<div data-alert class="alert-box success radius">
-  									{{updateStatus}}
-  									<a class="close" ng-click="showStatus=false;">&times;</a>
-								</div>
+								<alert close="showStatus=false;">{{updateStatus}}</alert>
 							</div>
 						</div>
-
 						<div class="row" ng-show="showError === true">
 							<div class="medium-8 columns left" >
-								<div data-alert class="alert-box alert round">
-  									{{errorMessage}}
-  									<a class="close" ng-click="showError=false;">&times;</a>
-								</div>
+								<alert close="showError=false;">{{errorMessage}}</alert>
 							</div>
 						</div>
 
@@ -149,7 +150,9 @@
         					</div>
         				</div>
 					</div>
-				</div>
+					</div>
+					</tab>
+				</tabset>
 			</div>
 		</div>
 	</div>

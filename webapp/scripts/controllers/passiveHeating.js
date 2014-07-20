@@ -9,6 +9,8 @@ angular.module('gsnClientApp')
     $scope.showError = false;
     $scope.showInfo = false;
 
+    $scope.alertDanger= {type:'danger'};
+
     $scope.fanSpeed = [
         {name:"Select fan speed", value:0, visible:true},
         {name:"1", value:1, visible:true},
