@@ -1,6 +1,6 @@
 <div id="container">
-		
-			<!--<div class="medium-12 columns left">-->
+
+			<div>
 				<!--<h1>GSN::{{info.name}}</h1>-->
 	        
 	            <!--<div id="msg">
@@ -95,13 +95,11 @@
 
 										        <div ng-repeat="field in sensor.structureFields">
 													    	<div ng-show="sensor.fields[field].type === 'binary:image/jpeg' || sensor.fields[field].type === 'binary:image/png' || sensor.fields[field].type === 'binary:image/svg+xml'" style="position:relative;left:0px;">{{field}}<br />
-													    			<!-- Modifikacija velicine li elementa nakon ucitavanja img elementa onload="this.parentNode.parentNode.parentNode.parentNode.style.height=..." -->
 													    			<img ng-src="{{sensor.fields[field].value}}" 
 													    					style="width:340px; height:270px" />
 													    	</div>
-														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg' && sensor.fields[field].type !== 'binary:image/png' && sensor.fields[field].type !== 'binary:image/svg+xml'" style="overflow-x:scroll;">	
+														<div ng-show="sensor.fields[field].type !== 'binary:image/jpeg' && sensor.fields[field].type !== 'binary:image/png' && sensor.fields[field].type !== 'binary:image/svg+xml'" style="">	
 															<i>{{field}}</i> : <b>{{sensor.fields[field].value}}</b>
-															<!--<div ng-bind-html="sensor.fields[field].value" style=""></div>-->
 														</div>	
 												</div>
 										</div>
@@ -170,6 +168,6 @@
                         <input class="hidden" id="toggleallmarkers" type="button" value="Show/hide all markers" />
                     </p>
             </div>-->
-	         
-	</div>
+        </div>
+</div>
 </div>

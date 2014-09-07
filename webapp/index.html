@@ -50,27 +50,22 @@
           </section>
         </div>
       </nav>-->
+      
       <top-bar>
-        <!--<ul class="title-area">
-          <li class="name">
-            <h1><a href="#">My Site</a></h1>
-          </li>
-          <li toggle-top-bar class="menu-icon"><a href="#">Menu</a></li>
-        </ul>-->
-
         <top-bar-section>
-          <!-- Right Nav Section -->
           <ul class="left">
+            <li toggle-top-bar class="menu-icon"><a href="#">Menu</a></li>
             <li ng-class="{active: page.active == true}"
                           ng-repeat="page in pages"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
+            
           </ul>
           <ul class="right">
             <li has-dropdown>
-              <a href="#">Sensor control</a>
-              <ul top-bar-dropdown>
-                <li ng-class="{active: page.active == true}"
+                <a href="#">Sensor control</a>
+                 <ul top-bar-dropdown>
+                    <li ng-class="{active: page.active == true}"
                           ng-repeat="page in dropdown"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
-              </ul>
+                </ul>
             </li>
           </ul>
         </top-bar-section>

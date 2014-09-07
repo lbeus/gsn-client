@@ -15,8 +15,6 @@ angular.module('gsnClientApp')
 
   	$scope.generateNotification = function() {
   		
-  		console.log("rfrfr");
-  		
   		$scope.showError = false;
   		$scope.showInfo = false;
   		if(paramsDefined() === true) {
