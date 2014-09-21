@@ -1,7 +1,8 @@
 <!--<div class="medium-10 medium-offset-1 columns">-->	
 	<div id="container" >	
-		<div class="row">	
-			<div class="medium-8 columns">
+			
+			<div class="large-8 columns">
+				<div class="row">
 				<h1>IP Camera Control</h1>
 				<br/>
 				<!--
@@ -16,58 +17,77 @@
 				<tabset>
 					<tab heading="Status">
 					<div ng-controller="IPCamera">
-					<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:200px;">
-						<img id="cameraStream" src="/ipcamera/status" />
-						
+					<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="">
+						<div class="row">
+							<div class="large-5 centered columns left">
+								<img id="cameraStream" width="500" height="300" src="/ipcamera/status" />
+							</div>
+						</div>
 						<br /><br />
+						
 						<div class="row">
-							<img src="/images/arrow-up.png" width="50" 
-										height="50" style="position:relative;left:310px;" ng-click="move(0,1);">
+							<div class="large-2 centered columns left">
+								<img src="/images/arrow-up.png" width="50" 
+										height="50" ng-click="move(0,1);">
+							</div>
 						</div>
+
 						<div class="row">
-							<img src="/images/arrow-left.png" width="50" 
-									height="50" style="position:relative;left:230px;" ng-click="move(-1,0);">
-							<img src="/images/arrow-right.png" width="50" 
-									height="50" style="position:relative;left:335px;" ng-click="move(1,0);">
+							<div class="large-4 centered columns left" style="position:relative;left:43px;">
+								<div class="large-2 columns left">
+									<img src="/images/arrow-left.png" width="50" 
+										height="50" ng-click="move(-1,0);">
+								</div>
+								<div class="large-2 columns left">
+									<img src="/images/arrow-right.png" width="50" 
+										height="50" ng-click="move(1,0);">
+								</div>
+							</div>
 						</div>
+
 						<div class="row">
-							<img src="/images/arrow-down.png" width="50" 
-									height="50" style="position:relative;left:310px;" ng-click="move(0,-1);">
+							<div class="large-2 centered columns left">
+								<img src="/images/arrow-down.png" width="50" 
+									height="50" style="position:relative;left:0px;" ng-click="move(0,-1);">
+							</div>
 						</div>
+
 						<div class="row">
+						<div class="large-8 centered columns left">
 							<fieldset>
 	    						<legend>Absolute position</legend>
 					  			<div class="row">
-					  				<div class="medium-8 columns left">
-								  	 	<div class="medium-3 columns">
+					  				<div class="large-8 columns left">
+								  	 	<div class="large-3 columns">
 				          					<label for="x" class="right inline">X</label>
 				        				</div>
-				        				<div class="medium-2 columns left">
+				        				<div class="large-2 columns left">
 				          					<input type="text" id="x" placeholder="" ng-model="x">
 				        				</div>
 				        			</div>
 				        		</div>
 				        		<div class="row">
-					  				<div class="medium-8 columns left">
-								  	 	<div class="medium-3 columns">
+					  				<div class="large-8 columns left">
+								  	 	<div class="large-3 columns">
 				          					<label for="x" class="right inline">Y</label>
 				        				</div>
-				        				<div class="medium-2 columns left">
+				        				<div class="large-2 columns left">
 				          					<input type="text" id="x" placeholder="" ng-model="y">
 				        				</div>
 				        			</div>
 				        		</div>
 			        			<div class="row">
-		        					<div class="medium-8 columns left">
-		        						<div class="medium-2 columns">
+		        					<div class="large-8 columns left">
+		        						<div class="large-2 columns">
 		        							<a class="alert tiny round button" ng-click="setPosition();" style="position:relative;left:123px;">Set</a>
 					        			</div>
-					        			<div class="medium-2 columns" style="position:relative; top:10px; left:-300px;">
+					        			<div class="large-2 columns" style="position:relative; top:10px; left:-300px;">
 					        				<img id="spinner-position" ng-src="images/ajax-loader.gif" style="display:none;">
 					        			</div>
 		        					</div>
         						</div>
 			        		</fieldset>
+						</div>
 						</div>
 					</div>
 					</div>

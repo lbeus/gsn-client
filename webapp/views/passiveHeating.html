@@ -18,7 +18,7 @@
 			<tabset>
 				<tab heading="Command">
 				<div ng-controller="PassiveHeatingController">
-				<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:200px;">
+				<div class="content" ng-class = "{'active' : selectedTab  == 1 }" style="position:relative;left:0px;">
 
 					<div class="row">
 						<div class="large-2 columns" style="position:relative; top:10px;">
@@ -40,7 +40,75 @@
 
 					<br/>
 
-					<div class="large-10 columns">
+					<div class="row">
+					<div class="large-6 columns left">
+					<fieldset>
+	    				<legend>Manual-Fan</legend>
+	    					<div class="row">
+	    					<div class="row">
+							 	<div class="large-4 columns">
+	            					<select ng-model="selectedFanSpeed" 
+	                						ng-options="o.name for o in fanSpeed" ng-change="">
+	            					</select>
+	          					</div>
+							</div>
+							<div class="row">
+								<div class="large-2 columns left">
+									<a ng-click="fanClicked();">
+										<img ng-src="/images/fan{{config.state['manual-fan']}}.gif" />
+									</a>
+								</div>
+							</div>
+						</div>
+			        </fieldset>
+			    	</div>
+
+			    	<div class="large-5 columns left">
+						<fieldset>
+	    					<legend>Manual-Heater</legend>
+	    					<div class="row">
+			    				<div class="large-4 columns left">
+									<a ng-click="heaterClicked();">
+										<img ng-src="/images/alarm{{config.state['manual-heater']}}.gif" />
+									</a>
+								</div>
+							</div>	
+			        	</fieldset>
+			    	</div>
+			    	</div>
+
+			    	<div class="row">
+			    		<div class="large-6 columns left">
+						<fieldset>
+	    					<legend>Air intake</legend>
+	    					<div class="row">
+	    						<div class="large-2 columns left">
+							   		Normal
+							   	</div>
+							   	<div class="large-2 columns left">
+							   		<input type="checkbox" class="js-switch" ui-switch ng-model="airIntake" ng-change="airIntakeClicked();"/>
+							   	</div>
+							   	<div class="large-2 columns left">
+							   		Override
+								</div>
+							</div>
+			        	</fieldset>
+			        	</div>
+
+			        	<div class="large-5 columns left">
+			        		<fieldset>
+	    					<legend>Auto control</legend>
+	    					<div class="row">
+	    						<div class="large-4 columns left">
+							   		<input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/>
+								</div>
+	    					</div>
+	    					</fieldset>
+			        	</div>
+			    	</div>
+			    	
+			    
+				<!--	<div class="large-10 columns">
 						
 						<div class="row">
 							<div class="large-4 columns left">
@@ -95,7 +163,7 @@
 							   <input type="checkbox" class="js-switch" ui-switch ng-model="autoControl" ng-change="autoControlClicked();"/>
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
 				</div>
 				</tab>

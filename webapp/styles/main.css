@@ -187,3 +187,8 @@ img
     background: #cd5c5c !important;
     color: white !important;
 }
+
+.centered {
+margin-left: auto;
+margin-right: auto;
+float: none !important; }
