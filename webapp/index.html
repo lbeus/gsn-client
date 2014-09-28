@@ -13,15 +13,15 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
+
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.min.css" />
     <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css" href="bower_components/ngQuickDate/dist/ng-quick-date-plus-default-theme.css" media="all" />
     <link rel="stylesheet" type="text/css" href="bower_components/ng-grid/ng-grid.css" />
     <link rel="stylesheet" href="bower_components/switchery/dist/switchery.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-layout/ui-layout.css"/>
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/styles/gridster.min.css"/>
-    <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/angular-multi-select.css"/>
-
+    <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/angular-multi-select.css"/>    
 
     <!-- endbower -->
     <!-- endbuild -->
@@ -37,20 +37,33 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
    
-    <div class="contain-to-grid fixed" ng-controller="NavigationController">
+    <div ng-controller="NavigationController">
+        <top-bar scrolltop="true">
+        <ul class="title-area">
+            <li class="name">
+                <h1></h1>
+            </li>
+            <li toggle-top-bar class="menu-icon"><a>Menu</a></li>
+        </ul>
 
-      <!--<nav class="top-bar sticky">
-        <div class="row">
-          <section id="navigation" class="top-bar-section">
-            <ul class="left">
-              <li ng-class="{active: page.active == true}"
-                          ng-repeat="page in pages"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
-
+        <top-bar-section>
+            <ul class="right">
+                <li ng-class="{active: page.active == true}"
+                    ng-repeat="page in pages"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
+                <li has-dropdown>
+                    <a href="#">Sensor control</a>
+                    <ul id="directives-list" top-bar-dropdown>
+                        <li ng-class="{active: page.active == true}"
+                          ng-repeat="page in dropdown"><a ng-href="#{{page.url}}" ng-cloak>{{page.pageName}}</a></li>
+                    </ul>
+                </li>
             </ul>
-          </section>
-        </div>
-      </nav>-->
-      
+        </top-bar-section>
+        </top-bar>
+    </div>
+
+ <!--   <div class="contain-to-grid fixed" ng-controller="NavigationController">
+
       <top-bar>
         <top-bar-section>
           <ul class="left">
@@ -71,9 +84,7 @@
         </top-bar-section>
      </top-bar>
 
-
-
-    </div>  
+    </div>-->  
     
     <!-- Add your site or application content here -->
     <div id="viewContainer" class="viewContainer" ng-view=""></div> 
@@ -85,12 +96,19 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/angular/angular.js"></script>
 
+    <script src="bower_components/angular-foundation/mm-foundation-tpls-0.3.1.js"></script>
 
+
+   
+
+
+
+
+    <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="bower_components/angular-ui-date/src/date.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -115,8 +133,8 @@
     <script src="bower_components/highcharts-stock/js/modules/exporting.js"></script>
     <script src="bower_components/highcharts-ng/src/highcharts-ng.js"></script>
     <script src="bower_components/highcharts/js/highcharts-more.js"></script>
-    <script src="bower_components/angular-foundation/mm-foundation.js"></script>
-    <script src="bower_components/angular-foundation/mm-foundation-tpls.js"></script>
+<!--    <script src="bower_components/angular-foundation/mm-foundation.js"></script>-->
+   
     <!-- endbower -->
     <!-- endbuild -->
     
